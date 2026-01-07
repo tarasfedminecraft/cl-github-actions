@@ -79,7 +79,7 @@ This project uses assets and libraries from various sources. We are grateful to 
 * **Services:** CurseForge, Modrinth, LittleSkin.
 * **Loaders:** NeoForge, Fabric, Quilt, Forge, OptiFine, LiteLoader.
 
-*Detailed credits and licenses are available in the application and in the `LICENSE` file.*
+*Detailed credits and licenses are available in the application and in the `LICENSE` and `CREDITS` file.*
 
 ---
 
@@ -90,5 +90,6 @@ This project uses assets and libraries from various sources. We are grateful to 
 <b>Якщо вам подобається цей проект — поставте ⭐️ (Star) цьому репозиторію!</b>
 <i>Це мотивує розвивати український софт.</i>
 </div>
+
 
 
