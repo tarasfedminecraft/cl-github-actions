@@ -1,16 +1,15 @@
 <div align="center">
 
-# CL-Launcher (Open Source Edition)
-### CL (Clegendary Launcher)
+# CL-Launcher | CL (Clegendary Launcher)
+### Windows Edition
 
-![GitHub](https://img.shields.io/github/license/WER-CORE/CL-OpenSource?style=flat-square)
-![.NET](https://img.shields.io/badge/.NET-8.0-purple?style=flat-square&logo=dotnet)
-![Platform](https://img.shields.io/badge/Platform-Windows-blue?style=flat-square&logo=windows)
-[![Discord](https://img.shields.io/discord/1234567890?color=5865F2&label=Discord&logo=discord&style=flat-square)](https://discord.gg/r8setVHQPt)
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/WER-CORE/CL-Win-Edition--Update?style=for-the-badge&color=blue)
+![Platform](https://img.shields.io/badge/Platform-Windows-0078D6?style=for-the-badge&logo=windows&logoColor=white)
+![Downloads](https://img.shields.io/github/downloads/WER-CORE/CL-Win-Edition--Update/total?style=for-the-badge&color=green)
+![Made in Ukraine](https://img.shields.io/badge/MADE_IN-UKRAINE-ffd700?style=for-the-badge&labelColor=0057b7)
+[![Discord](https://img.shields.io/discord/1234567890?style=for-the-badge&label=Discord&logo=discord&color=5865F2)](https://discord.gg/RhyZjACs2U)
 
-**Сучасний, оптимізований та зручний лаунчер для Minecraft: Java Edition.** *Modern, optimized, and user-friendly launcher for Minecraft: Java Edition.*
-
-[Завантажити реліз (Releases)](https://github.com/WER-CORE/CL-Win-Edition--Update/releases/latest) • [Повідомити про баг](https://github.com/WER-CORE/CL-Win-Edition--Update/issues) • [Discord](https://discord.gg/r8setVHQPt)
+[📥 Завантажити останню версію](https://github.com/WER-CORE/CL-Win-Edition--Update/releases/latest) • [💻 Source Code (Github)](https://github.com/WER-CORE/CL-OpenSource) • [🐛 Повідомити про баг](https://github.com/WER-CORE/CL-Win-Edition--Update/issues) • [💬 Discord](https://discord.gg/RhyZjACs2U)
 
 </div>
 
@@ -18,7 +17,11 @@
 
 ## 📖 Про проект (About)
 
-**CL Launcher** створений, щоб зробити керування грою, модами, збірками та версіями максимально простим та швидким. Цей репозиторій містить відкриту частину коду проекту. **А головне для українців**
+**CL Launcher** — це сучасний Open Source лаунчер, розроблений з метою популяризації українського софту.
+
+Наша мета — **витіснити російські аналоги** та надати гравцям безпечний інструмент, яким можна пишатися.
+<br>
+<h3><b>Свій до свого по своє! 🇺🇦</b></h3>
 
 ### ✨ Основні можливості
 * 🔒 **Безпечна авторизація:** Підтримка входу через Microsoft Account (Xbox Live) та LittleSkin.
@@ -64,3 +67,4 @@
 
 ⚖️ Disclaimer
 This application is not affiliated with Mojang Studios or Microsoft. Minecraft is a trademark of Mojang Synergies AB.
+
