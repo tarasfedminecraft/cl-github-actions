@@ -1,0 +1,109 @@
+﻿<Window x:Name="MainWin" 
+        x:Class="CL_CLegendary_Launcher_.Windows.DowloadModPack"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        
+        Title="CL - Завантаження та імпорт мод-паків" 
+        Height="370" Width="350" 
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize"
+        Foreground="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"
+        Loaded="MainWin_Loaded" Background="{x:Null}" WindowStyle="None" FontFamily="Inter 18pt 18pt" Icon="/Icon/IconCL(Winter).ico">
+
+    <Grid x:Name="MainGird" Background="{DynamicResource MainBackgroundBrush}">
+        <Border x:Name="ImportModPacks" BorderThickness="1" HorizontalAlignment="Center" Height="30" Margin="0,10,0,0" VerticalAlignment="Top" Width="300" Background="{DynamicResource MainBackgroundBrush}" CornerRadius="12,12,12,12" Visibility="Hidden">
+            <Label x:Name="DowloadModPacksTXT" Content="Імпорт збірки" HorizontalAlignment="Center" Height="34" VerticalAlignment="Center" Width="298" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontFamily="Inter 18pt 18pt" FontSize="16" Foreground="{DynamicResource MainForegroundBrush}"/>
+        </Border>
+        <Border x:Name="ImportFileModPacks" BorderThickness="1" HorizontalAlignment="Left" Height="30" Margin="11,23,0,0" VerticalAlignment="Top" Width="117" Background="{DynamicResource MainBackgroundBrushServer}" CornerRadius="12,12,12,12">
+            <Label x:Name="ImportFileModPacksTXT" Content="Імпорт з файлу" HorizontalAlignment="Center" Height="34" VerticalAlignment="Center" Width="110" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontFamily="Inter 18pt 18pt" FontSize="14" Cursor="Hand" Foreground="{DynamicResource MainForegroundBrush}" MouseDown="ImportFileModPacksTXT_MouseDown"/>
+        </Border>
+        <Border x:Name="SearchModPack" BorderThickness="1" CornerRadius="12,12,12,12" Margin="128,23,82,317" Background="{DynamicResource MainBackgroundBrushServer}">
+            <TextBox x:Name="SearchSystemModsTXT" TextWrapping="Wrap" Margin="26,0,9,-1" Background="{x:Null}" Foreground="{DynamicResource MainForegroundBrush}" BorderBrush="{x:Null}" CaretBrush="White" VerticalContentAlignment="Center" FontSize="14" TextChanged="SearchSystemModsTXT_TextChanged"/>
+        </Border>
+        <Image x:Name="IconSelectVersion_Копировать8" RenderOptions.BitmapScalingMode="HighQuality" HorizontalAlignment="Left" Height="22" VerticalAlignment="Top" Width="22" Source="/search.png" Cursor="Hand" Stretch="Fill" ToolTip="ГРАТИ"  Margin="133,27,0,0"/>
+        <Border x:Name="DowloaadModPacksButton" BorderThickness="1" HorizontalAlignment="Center" Height="30" Margin="0,330,0,0" VerticalAlignment="Top" Width="300" Background="{DynamicResource MainBackgroundBrushServer}" CornerRadius="12,12,12,12">
+            <Label x:Name="DowloaadModPacksButtonTXT" Content="Завантажити" HorizontalAlignment="Center" Height="34" VerticalAlignment="Center" Width="298" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontFamily="Inter 18pt 18pt" FontSize="16" Cursor="Hand" Foreground="{DynamicResource MainForegroundBrush}" MouseDown="DowloaadModPacksButtonTXT_MouseDown"/>
+        </Border>
+        <Border x:Name="SelectSiteModPacks" BorderThickness="1" HorizontalAlignment="Left" Height="30" Margin="275,23,0,0" VerticalAlignment="Top" Width="65" CornerRadius="8,8,8,8" Background="{DynamicResource MainBackgroundBrushServer}">
+            <Border x:Name="SelectSiteModPacksNow" BorderThickness="1" Background="{DynamicResource MainBackgroundBrush}" CornerRadius="6,6,6,6" Margin="3,1,34,1"/>
+        </Border>
+        <Border BorderThickness="1" HorizontalAlignment="Left" Height="84" Margin="11,58,0,0" VerticalAlignment="Top" Width="70" CornerRadius="8,8,8,8" Background="{DynamicResource MainBackgroundBrushServer}">
+            <ui:ListView x:Name="VersionVanil" HorizontalAlignment="Center" Height="84" VerticalAlignment="Top" Width="60" d:ItemsSource="{d:SampleData ItemCount=5}" FontSize="14" BorderBrush="{x:Null}" Foreground="{DynamicResource MainForegroundBrush}" Background="{x:Null}" ScrollViewer.VerticalScrollBarVisibility="Hidden" ScrollViewer.HorizontalScrollBarVisibility="Hidden" Cursor="Hand" SelectionChanged="VersionVanil_SelectionChanged"/>
+        </Border>
+        <ui:ListView x:Name="ModsDowloadList" Height="267" Margin="87,58,5,0" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="{DynamicResource MainForegroundBrush}" ScrollViewer.VerticalScrollBarVisibility="Visible" ScrollViewer.HorizontalScrollBarVisibility="Disabled" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" VerticalAlignment="Top"/>
+        <Border x:Name="BorderTool" BorderThickness="1" HorizontalAlignment="Center" Height="17" VerticalAlignment="Top" Width="360" Background="{DynamicResource MainBackgroundBrushServer}" CornerRadius="3,3,3,3" MouseDown="BorderTool_MouseDown" Margin="0,-2,0,0">
+            <TextBlock TextWrapping="Wrap" Text="CL - Завантаження та імпорт мод-паків" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="{DynamicResource MainForegroundBrush}" Margin="69,0,0,0"/>
+        </Border>
+        <Border x:Name="SelectLoaderBorder"
+        BorderThickness="1"
+        HorizontalAlignment="Left"
+        VerticalAlignment="Top"
+        Width="70"
+        Height="30"
+        Margin="12,147,0,0"
+        CornerRadius="8"
+        Background="{DynamicResource MainBackgroundBrushServer}">
+
+            <ui:DropDownButton x:Name="SelectLoader"
+                       Content="Loader"
+                       Foreground="{DynamicResource MainForegroundBrush}"
+                       Background="Transparent"
+                       BorderBrush="Transparent"
+                       FontSize="11"
+                       Padding="0"
+                       HorizontalAlignment="Stretch"
+                       VerticalAlignment="Stretch"
+                       HorizontalContentAlignment="Center"
+                       Cursor="Hand">
+
+                <ui:DropDownButton.Flyout>
+                    <ContextMenu>
+                        <MenuItem Header="Fabric" Click="MenuItem_Click" Tag="Fabric"/>
+                        <MenuItem Header="Quilt" Click="MenuItem_Click" Tag="Quilt"/>
+                        <MenuItem Header="Forge" Click="MenuItem_Click" Tag="Forge"/>
+                        <MenuItem Header="NeoForge" Click="MenuItem_Click" Tag="NeoForge"/>
+                    </ContextMenu>
+                </ui:DropDownButton.Flyout>
+
+            </ui:DropDownButton>
+        </Border>
+        <Border x:Name="BordrHiddeTXT" BorderThickness="1" Margin="319,-1,5,347" RenderTransformOrigin="0.5,0.5" Background="#FF0828C5" CornerRadius="12,12,12,12" Visibility="Hidden">
+            <Border.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform ScaleX="1"/>
+                    <SkewTransform/>
+                    <RotateTransform/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Border.RenderTransform>
+        </Border>
+        <Border x:Name="BordrExitTXT" BorderThickness="1" Margin="334,-1,0,355" RenderTransformOrigin="0.5,0.5" Background="#FFC50808" CornerRadius="12,12,12,12" Visibility="Hidden">
+            <Border.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform ScaleX="1"/>
+                    <SkewTransform/>
+                    <RotateTransform/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Border.RenderTransform>
+        </Border>
+        <TextBlock x:Name="ExitTXT" HorizontalAlignment="Left" Margin="338,-1,0,0" TextWrapping="Wrap" Text="X" VerticalAlignment="Top" Width="7" Height="13" MouseDown="ExitLauncher_MouseDown" MouseLeave="ExitLauncher_MouseLeave" MouseEnter="ExitLauncher_MouseEnter" Foreground="{DynamicResource MainForegroundBrush}" Cursor="Hand"/>
+        <Border x:Name="Line_Копировать1" BorderThickness="1" Margin="0,-468,0,0" Background="{DynamicResource MainBackgroundBrush}" HorizontalAlignment="Center" VerticalAlignment="Top" Width="1" Height="964" RenderTransformOrigin="0.5,0.5">
+            <Border.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform ScaleX="2.894" ScaleY="0.345"/>
+                    <SkewTransform AngleX="-0.206"/>
+                    <RotateTransform Angle="90.028"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Border.RenderTransform>
+        </Border>
+        <Image x:Name="ModrinthSite" RenderOptions.BitmapScalingMode="HighQuality" HorizontalAlignment="Left" Height="16" Margin="284,30,0,0" VerticalAlignment="Top" Width="16" Source="/Assets/1200-818013157 1.png" Cursor="Hand" MouseDown="ModrinthSite_MouseDown"/>
+        <Image x:Name="CurseForgeSite" RenderOptions.BitmapScalingMode="HighQuality" HorizontalAlignment="Left" Height="16" Margin="316,30,0,0" VerticalAlignment="Top" Width="16" Source="/Assets/curseforge-logo-3499974474.png" Cursor="Hand" MouseDown="CurseForgeSite_MouseDown"/>
+
+    </Grid>
+</Window>

@@ -1,0 +1,2504 @@
+﻿<ui:FluentWindow
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+        xmlns:local="clr-namespace:CL_CLegendary_Launcher_.Class"
+        xmlns:Wpf="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf" xmlns:syncfusion="http://schemas.syncfusion.com/wpf" xmlns:Windows="clr-namespace:CL_CLegendary_Launcher_.Windows" x:Name="CL_CLegendary_Launcher_" x:Class="CL_CLegendary_Launcher_.CL_Main_"
+        mc:Ignorable="d"
+        Title="CL(CLegendary Launcher)" FontFamily="Inter 18pt 18pt" FontSize="14" Foreground="Transparent" WindowStartupLocation="CenterScreen" Icon="/Icon/IconCL(Winter).ico" HorizontalContentAlignment="Stretch" HorizontalAlignment="Left" VerticalAlignment="Top" Width="960" Height="542" Loaded="CL_CLegendary_Launcher__Loaded_1" Background="{x:Null}" AllowDrop="True" Closed="CL_CLegendary_Launcher__Closed" WindowStyle="None"
+    ExtendsContentIntoTitleBar="True" ResizeMode="CanResize"
+    WindowBackdropType="Mica" Closing="CL_CLegendary_Launcher__Closing">
+    <Window.Resources>
+        <Style TargetType="{x:Type Button}">
+            <Setter Property="Background" Value="{DynamicResource MainBackgroundButton}" />
+            <Setter Property="Foreground" Value="{DynamicResource MainForegroundBrush}" />
+            <Setter Property="FontFamily" Value="Arial" />
+        </Style>
+        <Style TargetType="{x:Type Label}">
+            <Setter Property="Foreground" Value="{DynamicResource MainForegroundBrush}" />
+            <Setter Property="FontFamily" Value="Arial" />
+        </Style>
+        <Style TargetType="{x:Type Border}">
+            <Setter Property="Background" Value="{DynamicResource MainBackgroundBrush}" />
+        </Style>
+        <Storyboard x:Key="FadeIn">
+            <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                             From="0.0" To="1.0" Duration="0:0:1"/>
+        </Storyboard>
+        <Storyboard x:Key="FadeOut">
+            <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                             From="1.0" To="0.0" Duration="0:0:1"/>
+        </Storyboard>
+        <Storyboard x:Key="SmoothScroll">
+            <DoubleAnimation Storyboard.TargetProperty="(ScrollViewer.ContentVerticalOffset)"
+                         Duration="0:0:0.3"
+                         To="{Binding VerticalOffset, RelativeSource={RelativeSource AncestorType={x:Type ScrollViewer}, Mode=FindAncestor}}" />
+        </Storyboard>
+        <Style TargetType="{x:Type CheckBox}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type CheckBox}">
+                        <BulletDecorator Background="Transparent">
+                            <BulletDecorator.Bullet>
+                                <Border Width="16" Height="16" CornerRadius="3" BorderThickness="2" BorderBrush="{x:Null}" Background="{TemplateBinding Background}">
+                                    <Grid>
+                                        <Rectangle x:Name="CheckMark" Visibility="Collapsed" Width="5" Height="5" Fill="White" />
+                                    </Grid>
+                                </Border>
+                            </BulletDecorator.Bullet>
+                            <ContentPresenter VerticalAlignment="Center" Margin="5,0,0,0" RecognizesAccessKey="True"/>
+                        </BulletDecorator>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="CheckMark" Property="Visibility" Value="Visible"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <QuadraticEase x:Key="QuadraticEaseOut" EasingMode="EaseOut"/>
+    </Window.Resources>
+    <Grid x:Name="GirdMain" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid x:Name="MainBackgroundContainer" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <Image x:Name="Bg" 
+           RenderOptions.BitmapScalingMode="HighQuality" 
+           HorizontalAlignment="Center" 
+           VerticalAlignment="Center" 
+           Stretch="UniformToFill" 
+           Source="/Assets/DarkThemBG.png"/>
+        </Grid>
+        <Grid x:Name="PanelListStats" 
+      HorizontalAlignment="Right" 
+      VerticalAlignment="Top"
+      Width="206" 
+      Height="134" 
+      Margin="0,80,20,0" Visibility="Hidden">
+
+            <Border x:Name="OnllinePanel1" 
+            BorderThickness="1" 
+            CornerRadius="16" 
+            Background="Transparent" 
+            BorderBrush="#33FFFFFF" 
+            ClipToBounds="True">
+                <Grid>
+                    <Border CornerRadius="12" Visibility="{DynamicResource GlassVisibility}">
+                        <Border.Background>
+                            <VisualBrush Visual="{Binding ElementName=MainBackgroundContainer}" Stretch="None"/>
+                        </Border.Background>
+                        <Border.Effect>
+                            <BlurEffect Radius="{DynamicResource GlassBlurRadius}"/>
+                        </Border.Effect>
+                    </Border>
+                    <Border CornerRadius="12" Background="{DynamicResource GlassTintBrush}"/>
+
+                    <Border CornerRadius="16" 
+                    Background="{DynamicResource GlassTintBrush}" 
+                    Opacity="0.6"/>
+                </Grid>
+            </Border>
+
+            <Grid>
+                <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="5">
+                    <Label x:Name="TextStatsGameMinecraft" 
+                   Content="Завантаження..." 
+                   HorizontalAlignment="Stretch" 
+                   VerticalAlignment="Top" 
+                   HorizontalContentAlignment="Center"
+                   FontFamily="Inter 18pt 18pt" 
+                   FontSize="12"
+                   Foreground="{DynamicResource MainForegroundBrush}"
+                   Background="Transparent"/>
+                </ScrollViewer>
+            </Grid>
+        </Grid>
+        <Grid x:Name="PanelManegerAccount" 
+      HorizontalAlignment="Right" 
+      VerticalAlignment="Top"
+      Width="206" 
+      Height="160" 
+      Margin="0,80,20,0" Visibility="Hidden">
+
+            <Border x:Name="OnllinePanel" 
+            BorderThickness="1" 
+            CornerRadius="16" 
+            Background="Transparent" 
+            BorderBrush="#33FFFFFF"
+            ClipToBounds="True">
+                <Grid>
+                    <Border CornerRadius="12" Visibility="{DynamicResource GlassVisibility}">
+                        <Border.Background>
+                            <VisualBrush Visual="{Binding ElementName=MainBackgroundContainer}" Stretch="None"/>
+                        </Border.Background>
+                        <Border.Effect>
+                            <BlurEffect Radius="{DynamicResource GlassBlurRadius}"/>
+                        </Border.Effect>
+                    </Border>
+                    <Border CornerRadius="12" Background="{DynamicResource GlassTintBrush}"/>
+
+                    <Border CornerRadius="16" 
+                    Background="{DynamicResource GlassTintBrush}" 
+                    Opacity="0.6"/>
+                </Grid>
+            </Border>
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <ui:ListView x:Name="ListAccount" 
+                     Grid.Row="0"
+                     HorizontalAlignment="Stretch" 
+                     VerticalAlignment="Stretch"
+                     Margin="0,5,0,0"
+                     Background="{x:Null}" 
+                     BorderBrush="{x:Null}" 
+                     Foreground="{DynamicResource MainForegroundBrush}" 
+                     ScrollViewer.VerticalScrollBarVisibility="Visible" 
+                     ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="ListBoxItem">
+                            <Setter Property="HorizontalContentAlignment" Value="Center" />
+                            <Setter Property="HorizontalAlignment" Value="Stretch" />
+                            <Setter Property="Padding" Value="5" />
+                            <Setter Property="Cursor" Value="Hand"/>
+                            <Setter Property="Background" Value="Transparent"/>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#20FFFFFF" />
+                                    <Setter Property="BorderBrush" Value="Transparent" />
+                                </Trigger>
+                                <Trigger Property="IsSelected" Value="True">
+                                    <Setter Property="Background" Value="#40FFFFFF" />
+                                    <Setter Property="BorderBrush" Value="Transparent" />
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+                </ui:ListView>
+
+                <Label x:Name="AddProfile" 
+               Grid.Row="1"
+               Content="Додати профіль +" 
+               HorizontalContentAlignment="Center" 
+               FontFamily="Inter 18pt 18pt" FontSize="12"
+               Cursor="Hand" MouseDown="AddProfile_MouseDown"
+               Foreground="{DynamicResource MainForegroundBrush}"
+               Background="Transparent"
+               Margin="0,5,0,0"/>
+
+                <Label x:Name="StatsTextOpen" 
+               Grid.Row="2"
+               Content="Статистика" 
+               HorizontalContentAlignment="Center" 
+               FontFamily="Inter 18pt 18pt" FontSize="12"
+               Cursor="Hand" MouseDown="StatsTextOpen_MouseDown"
+               Foreground="{DynamicResource MainForegroundBrush}"
+               Background="Transparent"
+               Margin="0,0,0,5"/>
+            </Grid>
+        </Grid>
+        <Grid x:Name="GirdPanelFooter" VerticalAlignment="Bottom" Height="Auto">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Border x:Name="PanelFooter" 
+            Grid.ColumnSpan="3"
+            BorderThickness="1" 
+            CornerRadius="8" 
+            Margin="-11,0,-11,-10"
+            Height="180"
+            VerticalAlignment="Bottom"
+            Background="Transparent" 
+            BorderBrush="#33FFFFFF" 
+            ClipToBounds="True">
+                <Grid>
+                    <Border CornerRadius="12" Visibility="{DynamicResource GlassVisibility}">
+                        <Border.Background>
+                            <VisualBrush Visual="{Binding ElementName=MainBackgroundContainer}" Stretch="None"/>
+                        </Border.Background>
+                        <Border.Effect>
+                            <BlurEffect Radius="{DynamicResource GlassBlurRadius}"/>
+                        </Border.Effect>
+                    </Border>
+                    <Border CornerRadius="12" Background="{DynamicResource GlassTintBrush}"/>
+                </Grid>
+            </Border>
+
+            <Label x:Name="DevLogMinecraft" Grid.Column="0" 
+           Content="Вікі - Оновлення майнкрафта" 
+           HorizontalAlignment="Left" VerticalAlignment="Bottom" 
+           Margin="10,0,0,135" Height="24" Width="301" FontFamily="Inter 18pt 18pt"/>
+
+            <ui:ListView x:Name="VersionMinecraftChangeLog"  
+                 Grid.Column="0"
+                 HorizontalAlignment="Left" VerticalAlignment="Bottom" 
+                 Margin="10,0,0,0" Height="135" Width="310"
+                 Background="{DynamicResource MainBackgroundBrushServer}" 
+                 Foreground="{DynamicResource MainForegroundBrush}" 
+                 BorderBrush="{x:Null}"
+                 Cursor="Hand" 
+                 ScrollViewer.HorizontalScrollBarVisibility="Hidden" 
+                 SelectionChanged="VersionMinecraftChangeLog_SelectionChanged" 
+                 PreviewMouseDown="VersionMinecraftChangeLog_PreviewMouseDown"
+                 ScrollViewer.CanContentScroll="True"
+                 VirtualizingPanel.IsVirtualizing="True"     
+                 VirtualizingPanel.VirtualizationMode="Recycling">
+                <ui:ListView.Style>
+                    <Style TargetType="{x:Type ui:ListView}">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type ui:ListView}">
+                                    <Border CornerRadius="12" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+                                        <ScrollViewer Margin="{TemplateBinding Padding}" CanContentScroll="{TemplateBinding ScrollViewer.CanContentScroll}">
+                                            <ItemsPresenter/>
+                                        </ScrollViewer>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </ui:ListView.Style>
+                <ui:ListView.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal" Margin="2">
+                            <Image Source="{Binding IconPath}" Width="20" Height="20" Margin="0,0,10,0" RenderOptions.BitmapScalingMode="HighQuality"/>
+                            <TextBlock Text="{Binding VersionId}" VerticalAlignment="Center" FontFamily="Inter 18pt 18pt" Foreground="{DynamicResource MainForegroundBrush}"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ui:ListView.ItemTemplate>
+            </ui:ListView>
+
+            <Grid Grid.Column="1" VerticalAlignment="Top" Margin="0,7,0,0" Height="207">
+
+                <Grid Grid.Column="1" VerticalAlignment="Top" Margin="10,7,10,0" Width="250" Height="207">
+
+                    <Border HorizontalAlignment="Center" VerticalAlignment="Top" 
+            Width="250" Height="140" 
+            Margin="0,57,0,0"
+            Background="{DynamicResource MainBackgroundBrushServer}" 
+            CornerRadius="16"
+            Padding="0,5">
+
+                        <StackPanel VerticalAlignment="Center">
+
+                            <Grid Height="40" Margin="5,2" Cursor="Hand" MouseDown="SettingPanel_MouseDown" Background="Transparent">
+                                <Border x:Name="SettingPanel" CornerRadius="12" Background="{DynamicResource MainBackgroundButton}" Opacity="0.5"/>
+                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="10,0">
+                                    <Image Source="/Assets/Vector.png" Width="24" Height="24" RenderOptions.BitmapScalingMode="HighQuality"/>
+                                    <TextBlock Text="Налаштування" 
+                               FontFamily="Inter" FontSize="16" Foreground="{DynamicResource MainForegroundBrush}" 
+                               VerticalAlignment="Center" Margin="12,0,0,0"/>
+                                </StackPanel>
+                            </Grid>
+
+                            <Grid Height="40" Margin="5,2" Cursor="Hand" MouseDown="FolderPanel_MouseDown" Background="Transparent">
+                                <Border x:Name="FolderPanel" CornerRadius="12" Background="{DynamicResource MainBackgroundButton}" Opacity="0.5"/>
+
+                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="10,0">
+                                    <Image Source="/Assets/Vector (1).png" Width="24" Height="24" RenderOptions.BitmapScalingMode="HighQuality"/>
+                                    <TextBlock Text="Папка лаунчера" 
+                               FontFamily="Inter" FontSize="16" Foreground="{DynamicResource MainForegroundBrush}" 
+                               VerticalAlignment="Center" Margin="12,0,0,0"/>
+                                </StackPanel>
+                            </Grid>
+
+                            <Grid Height="40" Margin="5,2" Cursor="Hand" MouseDown="InfoPanel_MouseDown" Background="Transparent">
+                                <Border x:Name="InfoLauncherPanel" CornerRadius="12" Background="{DynamicResource MainBackgroundButton}" Opacity="0.5"/>
+
+                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="10,0">
+                                    <Image Source="/Windows/InfoIcon.png" Width="24" Height="24" RenderOptions.BitmapScalingMode="HighQuality"/>
+                                    <TextBlock Text="Інформація" 
+                               FontFamily="Inter" FontSize="16" Foreground="{DynamicResource MainForegroundBrush}" 
+                               VerticalAlignment="Center" Margin="12,0,0,0"/>
+                                </StackPanel>
+                            </Grid>
+
+                        </StackPanel>
+                    </Border>
+
+                </Grid>
+                <Border x:Name="BorderButton" CornerRadius="12" 
+                VerticalAlignment="Top" Margin="0,20,0,0"
+                Height="36" Width="250" HorizontalAlignment="Center">
+                    <Border.Background>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="#FF17DA1F"/>
+                            <GradientStop Color="#FF18A61E" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Border.Background>
+                    <Image x:Name="BackMainWindow"
+                   HorizontalAlignment="Center" VerticalAlignment="Center"
+                   Height="50" Width="50"
+                   MouseDown="BackMainWindow_MouseDown"
+                   Cursor="Hand" Stretch="Uniform"
+                   ToolTip="ПОВЕРНУТИСЬ ДО ГОЛОВНОГО ВІКНА">
+                        <Image.Effect>
+                            <DropShadowEffect BlurRadius="10" Color="Black"/>
+                        </Image.Effect>
+                    </Image>
+                </Border>
+
+                <Label x:Name="PlayTXT" Content="ГРАТИ" 
+               VerticalAlignment="Top" HorizontalAlignment="Left" 
+               Margin="9,23,0,0" Width="176" Height="29" 
+               HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+               FontFamily="Inter 18pt 18pt" FontSize="10" Foreground="White" Background="{x:Null}"
+               PreviewMouseDown="PlayTXT_MouseDown"/>
+
+                <Image x:Name="IconSelectVersion" Source="/Assets/VanilaVersion.png" 
+               HorizontalAlignment="Right" VerticalAlignment="Top" 
+               Margin="0,22,32,0" Height="31" Width="30" 
+               RenderOptions.BitmapScalingMode="HighQuality" Cursor="Arrow" Stretch="Fill" ToolTip="ГРАТИ"/>
+
+                <Border x:Name="Line" BorderThickness="1" Background="#FF16951B" 
+                HorizontalAlignment="Right" VerticalAlignment="Top" 
+                Margin="0,20,62,0" Width="3" Height="38">
+                    <Image x:Name="BackMainWindow1" HorizontalAlignment="Left" Height="65" VerticalAlignment="Center" Width="62" MouseDown="BackMainWindow_MouseDown" Cursor="Hand" Stretch="Fill" ToolTip="ПОВЕРНУТИСЬ ДО ГОЛОВНОГО ВІКНА" Margin="157,0,0,0" Visibility="Hidden">
+                        <Image.Effect>
+                            <DropShadowEffect/>
+                        </Image.Effect>
+                    </Image>
+                </Border>
+
+                <Image x:Name="CheckMarkVersionSelect" Source="/Assets/keyboard_arrow_down_100dp_E8EAED_FILL0_wght400_GRAD0_opsz48.png" 
+                    HorizontalAlignment="Right" VerticalAlignment="Top" 
+                    Margin="0,25,9,0" Height="27" Width="26"
+                    RenderOptions.BitmapScalingMode="HighQuality" Cursor="Hand" Stretch="Fill" 
+                    ToolTip="НАТИСНІТЬ ЩОБ ДІЗНАТИСЯ ЯКІ Є ВЕРСІЇ НА ВИБІР" MouseDown="CheckMarkVersionSelect_MouseDown"   
+                    RenderTransformOrigin="0.5,0.5">
+                    <Image.RenderTransform>
+                        <RotateTransform x:Name="IconVersionRotateTransform" Angle="180"/>
+                    </Image.RenderTransform>
+                </Image>
+
+                <Grid x:Name="GirdInfo" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,39,0,0" Height="116" Width="246" Visibility="Hidden">
+                    <Border x:Name="BorderInfo" BorderThickness="1" Background="{DynamicResource MainBackgroundBrushServer}" CornerRadius="12"/>
+                    <StackPanel Margin="0,5,0,-5">
+                        <Border x:Name="ReportBorder" BorderThickness="1" Height="34" CornerRadius="10" Width="226" MouseDown="BugReport_MouseDown" Cursor="Hand">
+                            <Label Content="Повідомити про баг" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <Border x:Name="NewsBorder" BorderThickness="1" Height="33" CornerRadius="10" Width="226" MouseDown="NewsUpdateLauncher_MouseDown" Cursor="Hand">
+                            <Label Content="Новини запускача" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <Border x:Name="DocumentionBorder" BorderThickness="1" Height="34" CornerRadius="10" Width="226" MouseDown="TutorialYoutube_MouseDown" Cursor="Hand">
+                            <Label Content="Документація" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </StackPanel>
+                    <Image x:Name="BugReport" HorizontalAlignment="Left" Height="32" Margin="13,5,0,0" VerticalAlignment="Top" Width="32" Cursor="Hand" Stretch="UniformToFill" RenderOptions.BitmapScalingMode="HighQuality" ToolTip="Повідомити про баг" MouseDown="BugReport_MouseDown" Source="/Assets/bug_report_1000dp_E8EAED_FILL0_wght400_GRAD0_opsz48.png"/>
+                    <Image x:Name="NewsUpdateLauncher" RenderOptions.BitmapScalingMode="HighQuality" HorizontalAlignment="Left" Height="32" Margin="13,0,0,0" VerticalAlignment="Center" Width="32" Cursor="Hand" Stretch="UniformToFill" ToolTip="Оновлення лаунчера" MouseDown="NewsUpdateLauncher_MouseDown" Source="/Assets/newspaper_1000dp_E8EAED_FILL0_wght400_GRAD0_opsz48.png"/>
+                    <Image x:Name="TutorialYoutube" RenderOptions.BitmapScalingMode="HighQuality" HorizontalAlignment="Left" Height="32" Margin="13,74,0,0" VerticalAlignment="Top" Width="32" Cursor="Hand" Stretch="UniformToFill" ToolTip="Посібник" MouseDown="TutorialYoutube_MouseDown" Source="/Assets/youtube_activity_1000dp_B7B7B7_FILL0_wght700_GRAD200_opsz48.png"/>
+                </Grid>
+
+            </Grid>
+            <Label x:Name="PartnerServerTXT" Grid.Column="2" 
+       Content="Партнери" 
+       HorizontalAlignment="Right" VerticalAlignment="Top" 
+       HorizontalContentAlignment="Right"
+       Margin="0,44,10,0" 
+       Height="23" Width="55" 
+       FontFamily="Inter 18pt 18pt" FontSize="10"/>
+
+            <ui:HyperlinkButton x:Name="PartherHelper" Grid.Column="2"
+                    NavigateUri="https://wer-developers-organization.gitbook.io/cl-minecraft-launcher/chasti-pitannya/yak-potrapiti-do-spiskiv-partneri-serveri-v-cl" 
+                    Content="Як потрапити?" 
+                    HorizontalAlignment="Right" VerticalAlignment="Top" 
+                    Margin="0,48,255,0" 
+                    Background="{x:Null}" Foreground="{DynamicResource MainForegroundBrush}" 
+                    FontFamily="Inter 18pt 18pt" FontSize="10" Cursor="Hand" BorderBrush="{x:Null}"/>
+
+            <Border Grid.Column="2" 
+        BorderThickness="1" 
+        Background="{DynamicResource MainBackgroundBrushServer}" 
+        VerticalAlignment="Top" 
+        HorizontalAlignment="Right"
+        Width="315"
+        Margin="0,65,10,0" 
+        Height="67" 
+        CornerRadius="14"
+        ClipToBounds="True">
+
+                <ui:ListView x:Name="PartnerServer"
+                 SelectionChanged="PartnerServer_SelectionChanged"
+                 HorizontalAlignment="Center" VerticalAlignment="Center" 
+                 Background="{x:Null}" Foreground="{x:Null}" 
+                 BorderBrush="{x:Null}" BorderThickness="0"
+                 Cursor="Hand" 
+                 ScrollViewer.VerticalScrollBarVisibility="Disabled" 
+                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                 SelectedIndex="0" 
+                 HorizontalContentAlignment="Center" 
+                 VerticalContentAlignment="Center"
+                 MouseEnter="PartnerServer_MouseEnter" 
+                 MouseLeave="PartnerServer_MouseLeave">
+
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <Grid />
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="{x:Type ListBoxItem}">
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                            <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+                            <Setter Property="Padding" Value="0"/>
+                            <Setter Property="Margin" Value="0"/>
+                            <Setter Property="BorderThickness" Value="0"/>
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Style.Triggers>
+                                <Trigger Property="IsSelected" Value="True">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+                </ui:ListView>
+            </Border>
+
+            <Label x:Name="LatestActionsTXT" Grid.Column="2" 
+       Content="Останні дії" 
+       HorizontalAlignment="Right" VerticalAlignment="Top" 
+       HorizontalContentAlignment="Right"
+       Margin="0,126,10,0" 
+       Height="20" Width="315" 
+       FontFamily="Inter 18pt 18pt" FontSize="10"/>
+
+            <ui:ListView x:Name="ServerMonitoring" Grid.Column="2" 
+             VerticalAlignment="Top" 
+             HorizontalAlignment="Right"
+             Width="315"
+             Margin="0,150,10,0" 
+             Height="64"
+             Background="{DynamicResource MainBackgroundBrushServer}" 
+             Foreground="{DynamicResource MainForegroundBrush}" 
+             BorderBrush="{x:Null}" Cursor="Hand" FontSize="11">
+
+                <ui:ListView.Style>
+                    <Style TargetType="{x:Type ui:ListView}">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type ui:ListView}">
+                                    <Border CornerRadius="12" Background="{TemplateBinding Background}" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                ClipToBounds="True">
+                                        <ScrollViewer Margin="{TemplateBinding Padding}">
+                                            <ItemsPresenter />
+                                        </ScrollViewer>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </ui:ListView.Style>
+            </ui:ListView>
+        </Grid>
+        <Grid x:Name="Tool" VerticalAlignment="Top" Height="16" Background="{DynamicResource MainBackgroundBrushServer}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" MinWidth="70"/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <Border Grid.ColumnSpan="3" Background="Transparent" MouseDown="BorderTool_MouseDown"/>
+
+            <TextBlock Grid.Column="1" 
+           Text="CL - Головне вікно"
+           HorizontalAlignment="Center"  VerticalAlignment="Center"
+           Foreground="{DynamicResource MainForegroundBrush}"
+           FontSize="10"
+           IsHitTestVisible="False" Height="12" Width="86"/>
+
+            <StackPanel Grid.Column="2" Orientation="Horizontal" Margin="0,0,5,0">
+                <Grid Width="24" Height="24" Background="Transparent" Cursor="Hand"
+              MouseDown="HiddeWin_MouseDown" 
+              MouseEnter="HiddeWin_MouseEnter" 
+              MouseLeave="HiddeWin_MouseLeave">
+                    <Border x:Name="BordrHiddeTXT" 
+                    Width="14" Height="14" CornerRadius="7" 
+                    Background="#FF0828C5" Margin="5,1,5,9" Visibility="Hidden"/>
+                    <TextBlock x:Name="HiddeWin" Text="―" 
+                       HorizontalAlignment="Center" VerticalAlignment="Top" 
+                       Foreground="{DynamicResource MainForegroundBrush}" 
+                       FontSize="10" FontWeight="Bold" Margin="0,2,0,0"/>
+                </Grid>
+
+                <Grid Width="24" Height="24" Background="Transparent" Cursor="Hand"
+              MouseDown="MaxResWin_MouseDown" 
+              MouseEnter="MaxResWin_MouseEnter" 
+              MouseLeave="MaxResWin_MouseLeave">
+                    <Border x:Name="BordrMaxResTXT" 
+                    Width="14" Height="14" CornerRadius="7" 
+                    Background="#FF28C508" Margin="5,1,5,9" Visibility="Hidden"/>
+                    <TextBlock x:Name="MaxResTXT" Text="▢" 
+                       HorizontalAlignment="Center" VerticalAlignment="Top" 
+                       Foreground="{DynamicResource MainForegroundBrush}" 
+                       FontSize="10" Margin="0,3,0,0"/>
+                </Grid>
+
+                <Grid Width="24" Height="24" Background="Transparent" Cursor="Hand"
+              MouseDown="ExitLauncher_MouseDown" 
+              MouseEnter="ExitLauncher_MouseEnter" 
+              MouseLeave="ExitLauncher_MouseLeave">
+                    <Border x:Name="BordrExitTXT" 
+                    Width="14" Height="14" CornerRadius="7" 
+                    Background="#FFC50808" Margin="5,1,5,9" Visibility="Hidden"/>
+                    <TextBlock x:Name="ExitTXT" Text="✕" 
+                       HorizontalAlignment="Center" VerticalAlignment="Top" 
+                       Foreground="{DynamicResource MainForegroundBrush}" 
+                       FontSize="10" Margin="0,3,0,0"/>
+                </Grid>
+
+            </StackPanel>
+
+            <Border Grid.ColumnSpan="3" VerticalAlignment="Bottom" Height="1" Background="#33FFFFFF"/>
+        </Grid>
+        <Grid x:Name="VersionControlContainer" 
+      HorizontalAlignment="Center" 
+      VerticalAlignment="Bottom"
+      Margin="10,0,0,190" Height="331" Width="945">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="76*"/>
+                <ColumnDefinition Width="113*"/>
+            </Grid.ColumnDefinitions>
+            <Border x:Name="YourOpenMenuButton" Height="40" Width="200" Background="{x:Null}" Margin="0,331,365,-40" Grid.Column="1"/>
+
+            <Grid x:Name="VersionSelectorPopupArea" 
+      HorizontalAlignment="Left" 
+      VerticalAlignment="Top"
+      Margin="10,111,0,0" 
+      Width="485" 
+      Height="220" Grid.Column="1" RenderTransformOrigin="1,0.5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <Grid x:Name="SelectVersionTypeGird" 
+          HorizontalAlignment="Left" 
+          VerticalAlignment="Bottom" Margin="55,0,0,2" Visibility="Hidden">
+                    <Border x:Name="SelectVersionType" 
+                BorderThickness="1" 
+                CornerRadius="12" 
+                Width="155" 
+                Height="145"
+                Background="Transparent" 
+                BorderBrush="#33FFFFFF"   
+                ClipToBounds="True">
+                        <Grid>
+                            <Border CornerRadius="12" Visibility="{DynamicResource GlassVisibility}">
+                                <Border.Background>
+                                    <VisualBrush Visual="{Binding ElementName=MainBackgroundContainer}" Stretch="None"/>
+                                </Border.Background>
+                                <Border.Effect>
+                                    <BlurEffect Radius="{DynamicResource GlassBlurRadius}"/>
+                                </Border.Effect>
+                            </Border>
+                            <Border CornerRadius="12" Background="{DynamicResource GlassTintBrush}"/>
+                        </Grid>
+                    </Border>
+
+                    <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="2,0,0,0">
+
+                        <Border x:Name="SelectVersionVanila" 
+                    BorderThickness="1" CornerRadius="3" 
+                    Background="{DynamicResource MainBackgroundBrushServer}" 
+                    Width="145" Height="40"
+                    Margin="0,0,0,6" 
+                    RenderTransformOrigin="0.5,0.5" 
+                    Cursor="Hand"
+                    MouseEnter="SelectVersionVanila_MouseEnter" 
+                    MouseLeave="SelectVersionVanila_MouseLeave" 
+                    MouseDown="SelectVersionVanila_MouseDown">
+
+                            <Border.RenderTransform>
+                                <TransformGroup>
+                                    <ScaleTransform/>
+                                    <SkewTransform AngleY="-0.054"/>
+                                    <RotateTransform/>
+                                    <TranslateTransform Y="-0.066"/>
+                                </TransformGroup>
+                            </Border.RenderTransform>
+
+                            <Grid Margin="0,0,0,1">
+                                <Image x:Name="IconSelectVersion_Копировать" RenderOptions.BitmapScalingMode="HighQuality" HorizontalAlignment="Left" Height="31" VerticalAlignment="Center" Width="30" Source="/Assets/VanilaVersion.png" Stretch="Fill" ToolTip="ГРАТИ" Margin="4,0,0,0"/>
+
+                                <Label x:Name="SettingTXT1_Копировать" FontFamily="Inter 18pt 18pt" Content="Ваніла"  HorizontalAlignment="Left" VerticalAlignment="Top" Width="97" Height="24" Background="{x:Null}" FontSize="14" Foreground="{DynamicResource MainForegroundBrush}" Margin="33,-5,0,0"/>
+
+                                <Border x:Name="SelectVersion_Копировать1" BorderThickness="1" CornerRadius="3" Background="{DynamicResource MainBackgroundBrush}" Margin="36,15,46,1">
+                                    <Label x:Name="VersionRelesedVanilLast" FontFamily="Inter 18pt 18pt" Content="1.21.1"  HorizontalAlignment="Center" VerticalAlignment="Center" Width="47" Height="22" Background="{x:Null}" FontSize="10" Foreground="{DynamicResource MainForegroundBrush}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+                                </Border>
+                            </Grid>
+                        </Border>
+
+                        <Border x:Name="SelectVersionCustom" 
+                    BorderThickness="1" CornerRadius="3" 
+                    Background="{DynamicResource MainBackgroundBrushServer}" 
+                    Width="145" Height="40"
+                    Margin="0,0,0,6" 
+                    RenderTransformOrigin="0.5,0.5" 
+                    Cursor="Hand"
+                    MouseEnter="SelectVersionLocal_MouseEnter" 
+                    MouseLeave="SelectVersionLocal_MouseLeave" 
+                    MouseDown="SelectVersionLocal_MouseDown">
+
+                            <Border.RenderTransform>
+                                <TransformGroup>
+                                    <ScaleTransform/>
+                                    <SkewTransform AngleY="-0.054"/>
+                                    <RotateTransform/>
+                                    <TranslateTransform Y="-0.066"/>
+                                </TransformGroup>
+                            </Border.RenderTransform>
+
+                            <Grid Margin="0,0,0,1">
+                                <Image x:Name="IconSelectVersion_Custom" RenderOptions.BitmapScalingMode="HighQuality" HorizontalAlignment="Left" Height="31" VerticalAlignment="Center" Width="30" Source="/Assets/CustomVersion.png" Stretch="Fill" ToolTip="ГРАТИ" Margin="4,0,0,0"/>
+
+                                <Label x:Name="CustomVersion_Modificetion" FontFamily="Inter 18pt 18pt" Content="Кастомні"  HorizontalAlignment="Left" VerticalAlignment="Top" Width="97" Height="24" Background="{x:Null}" FontSize="14" Foreground="{DynamicResource MainForegroundBrush}" Margin="33,-5,0,0"/>
+
+                                <Border x:Name="SelectVersion_CustomBorder" BorderThickness="1" CornerRadius="3" Background="{DynamicResource MainBackgroundBrush}" Margin="36,15,46,1">
+                                    <Label x:Name="VersionRelesedVanilLast1" FontFamily="Inter 18pt 18pt" Content="1.21.1"  HorizontalAlignment="Center" VerticalAlignment="Center" Width="47" Height="22" Background="{x:Null}" FontSize="10" Foreground="{DynamicResource MainForegroundBrush}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+                                </Border>
+                            </Grid>
+                        </Border>
+
+                        <Border x:Name="SelectVersionOptifine" 
+                    BorderThickness="1" CornerRadius="3" 
+                    Background="{DynamicResource MainBackgroundBrushServer}" 
+                    Width="145" Height="40"
+                    Margin="0,0,0,0" 
+                    RenderTransformOrigin="0.5,0.5" 
+                    Cursor="Hand"
+                    MouseDown="SelectVersionOptifine_MouseDown" 
+                    MouseEnter="SelectVersionOptifine_MouseEnter" 
+                    MouseLeave="SelectVersionOptifine_MouseLeave">
+
+                            <Border.RenderTransform>
+                                <TransformGroup>
+                                    <ScaleTransform/>
+                                    <SkewTransform AngleY="-0.054"/>
+                                    <RotateTransform/>
+                                    <TranslateTransform Y="-0.066"/>
+                                </TransformGroup>
+                            </Border.RenderTransform>
+
+                            <Grid>
+                                <Image x:Name="IconSelectVersion_Optifine" RenderOptions.BitmapScalingMode="HighQuality" HorizontalAlignment="Left" Height="27" VerticalAlignment="Center" Width="30"  Cursor="Hand" ToolTip="ГРАТИ"  Margin="4,0,0,0" Stretch="Fill" Source="/Assets/IconOptiFine.png"/>
+
+                                <Label x:Name="SettingTXT1_Optifine" FontFamily="Inter 18pt 18pt" Content="Optifine"  HorizontalAlignment="Left" VerticalAlignment="Top" Width="98" Height="24" Background="{x:Null}" FontSize="14" Foreground="{DynamicResource MainForegroundBrush}" Margin="34,-4,0,0"/>
+
+                                <Border x:Name="VersionRelesedOptifineLast" BorderThickness="1" CornerRadius="3" Background="{DynamicResource MainBackgroundBrush}" Margin="37,17,45,0">
+                                    <Label x:Name="VersionRelesedVanilLast5" FontFamily="Inter 18pt 18pt" Content="1.21.1"  HorizontalAlignment="Center" VerticalAlignment="Center" Width="53" Height="20" Background="{x:Null}" FontSize="10" Foreground="{DynamicResource MainForegroundBrush}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+                                </Border>
+                            </Grid>
+                        </Border>
+
+                    </StackPanel>
+                </Grid>
+
+                <Border x:Name="SelectVersion" 
+            HorizontalAlignment="Left" 
+            VerticalAlignment="Bottom"
+            Width="270" Height="200"
+            BorderThickness="1" CornerRadius="3" BorderBrush="#33FFFFFF" 
+            ClipToBounds="True" 
+            Margin="215,0,0,2" Background="{DynamicResource MainBackgroundBrush}" Visibility="Hidden">
+
+                    <Grid>
+                        <Grid>
+                            <Border CornerRadius="12" Visibility="{DynamicResource GlassVisibility}">
+                                <Border.Background>
+                                    <VisualBrush Visual="{Binding ElementName=MainBackgroundContainer}" Stretch="None"/>
+                                </Border.Background>
+                                <Border.Effect>
+                                    <BlurEffect Radius="{DynamicResource GlassBlurRadius}"/>
+                                </Border.Effect>
+                            </Border>
+                            <Border CornerRadius="12" Background="{DynamicResource GlassTintBrush}"/>
+                        </Grid>
+                        <Grid Margin="5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition Width="114"/>
+                            </Grid.ColumnDefinitions>
+
+                            <ui:ListView x:Name="VersionList" 
+                             Grid.Column="0"
+                             Margin="0,0,5,0"
+                             FontSize="16" FontFamily="Arial" 
+                             Background="{x:Null}" BorderBrush="Transparent" 
+                             Foreground="{DynamicResource MainForegroundBrush}"
+                             SelectionChanged="VersionList_SelectionChanged"
+                             ScrollViewer.CanContentScroll="True"/>
+
+                            <StackPanel Grid.Column="1">
+                                <Border Background="{DynamicResource MainBackgroundBrushServer}" 
+        CornerRadius="8" 
+        BorderThickness="1" 
+        BorderBrush="#33FFFFFF" 
+        Height="30">
+                                    <ui:AutoSuggestBox x:Name="SearchSystemTXT1" 
+                       PlaceholderText="Пошук за версію..." 
+                       BorderThickness="0" 
+                       Foreground="{DynamicResource MainForegroundBrush}" 
+                       FontSize="10" 
+                       Padding="10,0,0,0" 
+                       VerticalContentAlignment="Center"
+                       TextChanged="SearchSystem1_TextChanged" 
+                       SuggestionChosen="SearchSystemTXT1_SuggestionChosen" 
+                       UpdateTextOnSelect="True" 
+                       Background="Transparent"/>
+                                </Border>
+                                <CheckBox x:Name="Relesed" Content="Реліз" FontSize="10" IsChecked="True" Foreground="{DynamicResource MainForegroundBrush}" Margin="0,0,0,5" Click="Relesed_MouseDown_1" Background="{DynamicResource MainBackgroundBrushServer}"/>
+                                <CheckBox x:Name="Snapshots" Content="Снапшоти" FontSize="10" Foreground="{DynamicResource MainForegroundBrush}" Margin="0,0,0,5" Click="Snapshots_Click" Background="{DynamicResource MainBackgroundBrushServer}"/>
+                                <CheckBox x:Name="Beta" Content="Бета" FontSize="10" Foreground="{DynamicResource MainForegroundBrush}" Margin="0,0,0,5" Click="Beta_Click" Background="{DynamicResource MainBackgroundBrushServer}"/>
+                                <CheckBox x:Name="Alpha" Content="Альфа" FontSize="10" Foreground="{DynamicResource MainForegroundBrush}" Click="Alpha_Click" Background="{DynamicResource MainBackgroundBrushServer}"/>
+                            </StackPanel>
+                        </Grid>
+                    </Grid>
+                </Border>
+
+                <Border x:Name="SelectVersionMod" 
+            HorizontalAlignment="Left" 
+            VerticalAlignment="Bottom"
+            Width="270" Height="200"
+            BorderThickness="1" CornerRadius="3" BorderBrush="#33FFFFFF" 
+            ClipToBounds="True" 
+            Margin="210,0,0,2" Visibility="Hidden" Background="{DynamicResource MainBackgroundBrush}">
+
+                    <Grid>
+                        <Grid>
+                            <Border CornerRadius="12" Visibility="{DynamicResource GlassVisibility}">
+                                <Border.Background>
+                                    <VisualBrush Visual="{Binding ElementName=MainBackgroundContainer}" Stretch="None"/>
+                                </Border.Background>
+                                <Border.Effect>
+                                    <BlurEffect Radius="{DynamicResource GlassBlurRadius}"/>
+                                </Border.Effect>
+                            </Border>
+                            <Border CornerRadius="12" Background="{DynamicResource GlassTintBrush}"/>
+                        </Grid>
+
+                        <Grid Margin="5">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="30"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <Border Background="{DynamicResource MainBackgroundBrushServer}" 
+        CornerRadius="8" 
+        BorderThickness="1" 
+        BorderBrush="#33FFFFFF" 
+        Margin="0,0,0,149" 
+        Grid.RowSpan="2"
+        Height="30" 
+        VerticalAlignment="Bottom">
+                                <ui:AutoSuggestBox x:Name="SearchSystemTXT2" 
+                       PlaceholderText="Пошук за версію..." 
+                       Background="Transparent" 
+                       BorderThickness="0" 
+                       Foreground="{DynamicResource MainForegroundBrush}" 
+                       FontSize="10" 
+                       Padding="10,0,0,0" 
+                       VerticalContentAlignment="Center"
+                       TextChanged="SearchSystemTXT2_TextChanged" 
+                       SuggestionChosen="SearchSystemTXT2_SuggestionChosen" 
+                       UpdateTextOnSelect="True" 
+                       FontFamily="Inter 18pt 18pt"/>
+                            </Border>
+                            <Grid Grid.Row="1">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <ui:ListView x:Name="VersionListVanila" Grid.Column="0" Margin="0,10,2,0" Background="{x:Null}" Foreground="{DynamicResource MainForegroundBrush}" FontSize="16" SelectionChanged="VersionListVanila_SelectionChanged"/>
+                                <ui:ListView x:Name="VersionListMod" Grid.Column="1" Margin="2,10,0,0" Background="{x:Null}" Foreground="{DynamicResource MainForegroundBrush}" FontSize="10" SelectionChanged="VersionListMod_SelectionChanged"/>
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                </Border>
+
+            </Grid>
+        </Grid>
+        <Grid x:Name="ServerName" Margin="0,17,0,0" Background="Transparent" Visibility="Hidden">
+
+            <Border Visibility="{DynamicResource GlassVisibility}">
+                <Border.Background>
+                    <VisualBrush Visual="{Binding ElementName=MainBackgroundContainer}" Stretch="None"/>
+                </Border.Background>
+                <Border.Effect>
+                    <BlurEffect Radius="{DynamicResource GlassBlurRadius}"/>
+                </Border.Effect>
+            </Border>
+            <Border CornerRadius="12" Background="{DynamicResource GlassTintBrush}"/>
+            <Border Background="{DynamicResource GlassTintBrush}" Opacity="0.6"/>
+
+            <Grid Margin="0,20,0,0">
+                <Grid HorizontalAlignment="Center" Width="920" Margin="0,75,0,0">
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <Border x:Name="SearchSystemBorder" Height="40" Margin="1,0,1,0"
+        BorderThickness="0" CornerRadius="12" 
+        Background="{DynamicResource MainBackgroundBrushServer}">
+
+                        <ui:TextBox x:Name="SearchSystemTXT" 
+                PlaceholderText="Пошук..." 
+                IconPlacement="Left" 
+                Icon="{ui:SymbolIcon Search48}" 
+                RenderOptions.BitmapScalingMode="HighQuality" 
+                TextWrapping="NoWrap"
+                Foreground="{DynamicResource MainForegroundBrush}" 
+                CaretBrush="White" 
+                BorderThickness="0"
+                VerticalAlignment="Center"
+                VerticalContentAlignment="Center" 
+                FontSize="14" 
+                TextChanged="SearchSystem_TextChanged">
+                        </ui:TextBox>
+                    </Border>
+                    <Grid Grid.Row="1" Margin="0,0,0,10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Border x:Name="TabRegularServer" Grid.Column="0" Cursor="Hand" MouseDown="TabRegularServer_MouseDown" Background="Transparent" Visibility="Hidden">
+                            <Label x:Name="LabelRegular" Content="Звичайні сервери" 
+                           HorizontalAlignment="Center" FontSize="16" FontFamily="Inter" FontWeight="SemiBold"
+                           Foreground="{DynamicResource MainForegroundBrush}" Opacity="1.0"/>
+                        </Border>
+
+                        <Border x:Name="TabModdedServer" Grid.Column="1" Cursor="Hand" MouseDown="TabModdedServer_MouseDown" Background="Transparent" Visibility="Hidden">
+                            <Label x:Name="LabelModded" Content="Модові сервери" 
+                           HorizontalAlignment="Center" FontSize="16" FontFamily="Inter" FontWeight="SemiBold"
+                           Foreground="{DynamicResource MainForegroundBrush}" Opacity="0.5"/>
+                        </Border>
+                    </Grid>
+
+                    <ui:HyperlinkButton x:Name="OwnerButton" 
+                                Grid.Row="2"
+                                NavigateUri="https://forms.gle/QpncJ9qJzAj7d1Ds7" 
+                                Icon="{ui:SymbolIcon ServerMultiple20}" 
+                                RenderOptions.BitmapScalingMode="HighQuality" 
+                                Content="Для власників серверів" 
+                                Height="30" 
+                                Margin="0,0,0,15"
+                                HorizontalAlignment="Stretch"
+                                Background="{x:Null}" 
+                                BorderBrush="{x:Null}" 
+                                Foreground="{DynamicResource MainForegroundBrush}" 
+                                HorizontalContentAlignment="Center"/>
+
+                    <ui:ListView x:Name="ServerList" 
+                         Grid.Row="3"
+                         Background="{x:Null}" 
+                         BorderBrush="{x:Null}" 
+                         Foreground="{x:Null}"
+                         ScrollViewer.CanContentScroll="True"
+                         VirtualizingPanel.IsVirtualizing="True"         
+                         VirtualizingPanel.VirtualizationMode="Recycling" 
+                         HorizontalContentAlignment="Stretch" 
+                         VerticalContentAlignment="Top"/>
+
+                </Grid>
+            </Grid>
+        </Grid>
+        <Grid x:Name="PanelInfoServer" Margin="0,16,0,0" Background="Transparent" Visibility="Hidden">
+            <Border Visibility="{DynamicResource GlassVisibility}">
+                <Border.Background>
+                    <VisualBrush Visual="{Binding ElementName=MainBackgroundContainer}" Stretch="None"/>
+                </Border.Background>
+                <Border.Effect>
+                    <BlurEffect Radius="{DynamicResource GlassBlurRadius}"/>
+                </Border.Effect>
+            </Border>
+            <Border CornerRadius="12" Background="{DynamicResource GlassTintBrush}"/>
+            <Image x:Name="BG" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Stretch="UniformToFill">
+                <Image.Effect>
+                    <BlurEffect Radius="5"/>
+                </Image.Effect>
+            </Image>
+
+            <Grid Margin="20,10,20,20">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <Grid Grid.Row="0" Margin="0,75,0,20">
+                    <Border BorderThickness="1" 
+                    CornerRadius="15" 
+                    BorderBrush="#33FFFFFF" 
+                    ClipToBounds="True" 
+                    Height="130">
+                        <Grid>
+                            <Border CornerRadius="15">
+                                <Border.Effect>
+                                    <BlurEffect Radius="20"/>
+                                </Border.Effect>
+                                <Border.Background>
+                                    <VisualBrush Visual="{Binding ElementName=MainBackgroundContainer}" Stretch="None"/>
+                                </Border.Background>
+                            </Border>
+
+                            <Border CornerRadius="15" Background="{DynamicResource MainBackgroundBrushServer}"/>
+
+                            <Grid Margin="10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Grid Grid.Column="0" Width="100" Height="100" Margin="0,0,20,0">
+                                    <Border BorderThickness="1" Background="#FF303030" CornerRadius="6"/>
+                                    <Image x:Name="MainIcon3" Stretch="Uniform" Margin="5"/>
+                                </Grid>
+
+                                <Grid Grid.Column="1">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+
+                                    <Label x:Name="TitleMain1" Content="Назва Сервера" VerticalAlignment="Center" Foreground="{DynamicResource MainForegroundBrush}" FontFamily="Inter" FontSize="28" FontWeight="Bold"/>
+
+                                    <WrapPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,5">
+                                        <Border x:Name="PortServer" BorderThickness="1" Height="30" MinWidth="75" Margin="0,0,10,5" Background="{DynamicResource MainBackgroundBrush}" CornerRadius="6" Padding="10,0">
+                                            <Label x:Name="PortTXT" Content="25565" Foreground="{DynamicResource MainForegroundBrush}" HorizontalAlignment="Center" VerticalAlignment="Center" ToolTip="Порт"/>
+                                        </Border>
+                                        <Border x:Name="VersionServer" BorderThickness="1" Height="30" MinWidth="75" Margin="0,0,10,5" Background="{DynamicResource MainBackgroundBrush}" CornerRadius="6" Padding="10,0">
+                                            <Label x:Name="VersionTXT" Content="1.21" Foreground="{DynamicResource MainForegroundBrush}" HorizontalAlignment="Center" VerticalAlignment="Center" ToolTip="Версія"/>
+                                        </Border>
+                                        <Border x:Name="OnlinePlayerPanel" BorderThickness="1" Height="30" MinWidth="75" Margin="0,0,10,5" Background="{DynamicResource MainBackgroundBrush}" CornerRadius="6" Padding="10,0">
+                                            <Label x:Name="OnlinePlayerTXT" Content="5/50" Foreground="{DynamicResource MainForegroundBrush}" HorizontalAlignment="Center" VerticalAlignment="Center" ToolTip="Онлайн"/>
+                                        </Border>
+                                        <Border x:Name="IPServerPanel" BorderThickness="1" Height="30" MinWidth="130" Margin="0,0,10,5" Background="{DynamicResource MainBackgroundBrush}" CornerRadius="6" Padding="10,0">
+                                            <Label x:Name="IPServerTXT" Content="bober.fun" Foreground="{DynamicResource MainForegroundBrush}" HorizontalAlignment="Center" VerticalAlignment="Center" ToolTip="IP"/>
+                                        </Border>
+                                    </WrapPanel>
+                                </Grid>
+                            </Grid>
+                        </Grid>
+                    </Border>
+                </Grid>
+
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="20"/>
+                        <ColumnDefinition Width="370"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Border Grid.Column="0" 
+                    CornerRadius="20" 
+                    ClipToBounds="True" 
+                    BorderBrush="#33FFFFFF" 
+                    BorderThickness="1">
+                        <Grid>
+
+                            <TextBox x:Name="DescriptionServer" 
+                             TextWrapping="Wrap" 
+                             Text="Тут буде опис сервера..." 
+                             Background="Transparent" 
+                             BorderThickness="0"
+                             Foreground="{DynamicResource MainForegroundBrush}" 
+                             IsReadOnly="True"
+                             Padding="20"
+                             FontSize="16"
+                             VerticalScrollBarVisibility="Auto"/>
+                        </Grid>
+                    </Border>
+
+                    <StackPanel Grid.Column="2" VerticalAlignment="Top">
+                        <ui:Button x:Name="PlayServer" Height="50" Margin="0,0,0,10" Background="#FF2B46A8" BorderBrush="{DynamicResource MainBackgroundBrushServer}" Foreground="White" Content="Грати" FontSize="18" Click="PlayServer_Click" Cursor="Hand" HorizontalAlignment="Stretch"/>
+
+                        <ui:Button x:Name="DiscordLink" Height="50" Margin="0,0,0,10" Background="{DynamicResource MainBackgroundButton}" BorderBrush="#FF656565" Foreground="{DynamicResource MainForegroundBrush}" Content="Discord" FontSize="18" Click="DiscordLink_Click" Cursor="Hand" HorizontalAlignment="Stretch"/>
+
+                        <ui:Button x:Name="SiteLink" Height="50" Margin="0,0,0,10" Background="{DynamicResource MainBackgroundButton}" BorderBrush="#FF656565" Foreground="{DynamicResource MainForegroundBrush}" Content="Сайт" FontSize="18" Click="SiteLink_Click" Cursor="Hand" HorizontalAlignment="Stretch"/>
+
+                        <ui:Button x:Name="DonateLink" Height="50" Background="{DynamicResource MainBackgroundButton}" BorderBrush="#FF656565" Foreground="{DynamicResource MainForegroundBrush}" Content="Сторінка для донату" FontSize="18" Click="DonateLink_Click" Cursor="Hand" HorizontalAlignment="Stretch"/>
+                    </StackPanel>
+                </Grid>
+            </Grid>
+        </Grid>
+        <Grid x:Name="ListModsGird" 
+      Background="Transparent" 
+      Margin="0,18,0,0" Visibility="Hidden">
+
+            <Border Visibility="{DynamicResource GlassVisibility}">
+                <Border.Background>
+                    <VisualBrush Visual="{Binding ElementName=MainBackgroundContainer}" Stretch="None"/>
+                </Border.Background>
+                <Border.Effect>
+                    <BlurEffect Radius="{DynamicResource GlassBlurRadius}"/>
+                </Border.Effect>
+            </Border>
+            <Border CornerRadius="12" Background="{DynamicResource GlassTintBrush}"/>
+
+            <Border Background="{DynamicResource GlassTintBrush}" Opacity="0.6"/>
+
+            <Grid Margin="10,10,0,10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="0" Orientation="Vertical" VerticalAlignment="Top" Margin="0,75,10,0">
+
+                    <Grid x:Name="GirdSiteMods" HorizontalAlignment="Left" Width="135" Height="84" Margin="0,0,0,15">
+                        <Border x:Name="BorderSiteMods" BorderThickness="1" CornerRadius="12" Background="{DynamicResource MainBackgroundBrushServer}"/>
+
+                        <Border x:Name="PanelSelectNowSiteMods" Width="127" Height="36"
+                        BorderThickness="1" CornerRadius="11" Background="{DynamicResource MainBackgroundButton}"
+                        HorizontalAlignment="Left" VerticalAlignment="Top" Margin="4,2,0,0">
+                            <Border.RenderTransform>
+                                <TranslateTransform x:Name="PanelTranslateTransform2" />
+                            </Border.RenderTransform>
+                        </Border>
+
+                        <Image x:Name="IconModrinth" RenderOptions.BitmapScalingMode="HighQuality" HorizontalAlignment="Left" Height="24" Margin="12,8,0,0" VerticalAlignment="Top" Width="24" Stretch="Fill" Source="/Assets/1200-818013157 1.png"/>
+                        <Label x:Name="ModrinthSiteModsTXT" Content="Modrinth" HorizontalAlignment="Left" Height="24" Margin="36,8,0,0" VerticalAlignment="Top" Width="85" Cursor="Hand" MouseDown="ModrinthSiteModsTXT_MouseDown" FontFamily="Inter 18pt 18pt"/>
+
+                        <Image x:Name="IconModrinth_Копировать" RenderOptions.BitmapScalingMode="HighQuality" HorizontalAlignment="Left" Height="24" Margin="12,52,0,0" VerticalAlignment="Top" Width="24" Stretch="Fill" Source="/Assets/curseforge-logo-3499974474.png"/>
+                        <Label x:Name="CurseForgeSiteModsTXT" Content="CurseForge" HorizontalAlignment="Left" Height="24" Margin="36,52,0,0" VerticalAlignment="Top" Width="85" Cursor="Hand" MouseDown="CurseForgeSiteModsTXT_MouseDown" FontFamily="Inter 18pt 18pt"/>
+                    </Grid>
+
+                    <Grid x:Name="GirdVersionType" HorizontalAlignment="Left" Width="135" Height="152" Margin="0,0,0,15">
+                        <Border x:Name="BorderVersionType" BorderThickness="1" CornerRadius="12" Background="{DynamicResource MainBackgroundBrushServer}"/>
+
+                        <Border x:Name="PanelSelectNowVersionType" Width="127" Height="36"
+                        BorderThickness="1" CornerRadius="11" Background="{DynamicResource MainBackgroundButton}"
+                        HorizontalAlignment="Left" VerticalAlignment="Top" Margin="4,3,0,0">
+                            <Border.RenderTransform>
+                                <TranslateTransform x:Name="PanelTranslateTransform3" />
+                            </Border.RenderTransform>
+                        </Border>
+
+                        <Image x:Name="IconFabric" RenderOptions.BitmapScalingMode="HighQuality" HorizontalAlignment="Left" Height="24" Margin="11,8,0,0" VerticalAlignment="Top" Width="24" Stretch="Fill" Source="/Assets/fabric.png"/>
+                        <Label x:Name="FabricVesionTypeTXT" Content="Fabric" HorizontalAlignment="Center" Height="26" Margin="0,8,0,0" VerticalAlignment="Top" Width="115" HorizontalContentAlignment="Center" Cursor="Hand" MouseDown="FabricVesionTypeTXT_MouseDown" FontFamily="Inter 18pt 18pt"/>
+
+                        <Image x:Name="IconForge" RenderOptions.BitmapScalingMode="HighQuality" HorizontalAlignment="Left" Height="24" Margin="11,47,0,0" VerticalAlignment="Top" Width="24" Stretch="Fill" Source="/Assets/ForgeIcon.jpg"/>
+                        <Label x:Name="ForgeVesionTypeTXT" Content="Forge" HorizontalAlignment="Center" Height="27" VerticalAlignment="Top" Width="115" HorizontalContentAlignment="Center" Cursor="Hand" MouseDown="ForgeVesionTypeTXT_MouseDown" Margin="0,44,0,0" FontFamily="Inter 18pt 18pt"/>
+
+                        <Image x:Name="IconQuilt" RenderOptions.BitmapScalingMode="HighQuality" HorizontalAlignment="Left" Height="24" Margin="11,85,0,0" VerticalAlignment="Top" Width="24" Stretch="Fill" Source="/Assets/images.png"/>
+                        <Label x:Name="QuitVersionSelectMod" Content="Quilt" HorizontalAlignment="Center" Height="27" Margin="0,84,0,0" VerticalAlignment="Top" Width="115" HorizontalContentAlignment="Center" Cursor="Hand" MouseDown="QuitVersionSelectMod_MouseDown_1" FontFamily="Inter 18pt 18pt"/>
+
+                        <Image x:Name="IconNeoForge" RenderOptions.BitmapScalingMode="HighQuality" HorizontalAlignment="Left" Height="24" Margin="11,122,0,0" VerticalAlignment="Top" Width="24" Stretch="Fill" Source="/Assets/IconNeoForge.png"/>
+                        <Label x:Name="NeoForgeVersionSelectMod" Content="NeoForge" HorizontalAlignment="Center" Height="27" Margin="0,121,0,0" VerticalAlignment="Top" Width="115" HorizontalContentAlignment="Center" Cursor="Hand" FontFamily="Inter 18pt 18pt" MouseDown="NeoForgeVersionSelectMod_MouseDown"/>
+                    </Grid>
+
+                    <Grid x:Name="GirdModsType" HorizontalAlignment="Left" Width="135" Height="84">
+                        <Border x:Name="ModsTypeBorder" BorderThickness="1" CornerRadius="12" Background="{DynamicResource MainBackgroundBrushServer}"/>
+
+                        <Border x:Name="PanelSelectNowModsType" Width="127" Height="36"
+                        BorderThickness="1" CornerRadius="11" Background="{DynamicResource MainBackgroundButton}"
+                        HorizontalAlignment="Left" VerticalAlignment="Top" Margin="4,2,0,0">
+                            <Border.RenderTransform>
+                                <TranslateTransform x:Name="PanelTranslateTransform4" />
+                            </Border.RenderTransform>
+                        </Border>
+
+                        <Label x:Name="ModsDowloadTypeTXT" Content="Встановлення в збірку" HorizontalAlignment="Center" Height="26" Margin="0,8,0,0" VerticalAlignment="Top" Width="135" HorizontalContentAlignment="Center" Cursor="Hand" FontSize="12" MouseDown="ModsDowloadTypeTXT_MouseDown" FontFamily="Inter 18pt 18pt"/>
+                        <Label x:Name="ModsManegerTypeTXT" Content="Окреме встановлення" HorizontalAlignment="Center" Height="27" Margin="0,52,0,0" VerticalAlignment="Top" Width="135" HorizontalContentAlignment="Center" Cursor="Hand" FontSize="12" MouseDown="ModsManegerTypeTXT_MouseDown" FontFamily="Inter 18pt 18pt"/>
+                    </Grid>
+                </StackPanel>
+
+
+                <Grid Grid.Column="1" 
+              HorizontalAlignment="Center" 
+              Width="650"
+              Margin="0,75,0,0">
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <Grid Grid.Row="0" Height="40" Margin="-63,0,-48,15">
+                        <Border x:Name="BorderSelectDowloadModificed" BorderThickness="1" CornerRadius="12" Background="{DynamicResource MainBackgroundBrushServer}"/>
+
+                        <Border x:Name="PanelSelectNowDowloadModifi" Width="141" Height="30"
+                        BorderThickness="1" CornerRadius="11" Background="{DynamicResource MainBackgroundButton}"
+                        HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5,0,0,0">
+                            <Border.RenderTransform>
+                                <TranslateTransform x:Name="PanelTranslateTransform6" />
+                            </Border.RenderTransform>
+                        </Border>
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Label x:Name="ModsTXT" Grid.Column="0" Content="Моди" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Cursor="Hand" MouseDown="ModsTXT_MouseDown" FontFamily="Inter 18pt 18pt"/>
+                            <Label x:Name="ShardTXT" Grid.Column="1" Content="Шейдери" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Cursor="Hand" MouseDown="ShardTXT_MouseDown" FontFamily="Inter 18pt 18pt"/>
+                            <Label x:Name="ResourcePackTXT" Grid.Column="2" Content="Ресурс паки" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Cursor="Hand" MouseDown="ResourcePackTXT_MouseDown" FontFamily="Inter 18pt 18pt"/>
+
+                            <Label x:Name="MapsTXT" Grid.Column="3" Content="Мапи" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Cursor="Hand" MouseDown="MapsTXT_MouseDown" FontFamily="Inter 18pt 18pt"/>
+                            <Label x:Name="DataPacksTXT" Grid.Column="4" Content="Датапаки" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Cursor="Hand" MouseDown="DataPacksTXT_MouseDown" FontFamily="Inter 18pt 18pt"/>
+                        </Grid>
+                    </Grid>
+
+                    <Border x:Name="ServerSearch1" Grid.Row="1" Height="40" Margin="-63,0,-48,15"
+        BorderThickness="1" CornerRadius="12" 
+        Background="{DynamicResource MainBackgroundBrushServer}">
+
+                        <ui:TextBox x:Name="SearchSystemModsTXT" 
+                TextWrapping="Wrap" 
+                PlaceholderText="Пошук..." 
+                IconPlacement="Left" 
+                Icon="{ui:SymbolIcon Search48}" 
+                RenderOptions.BitmapScalingMode="HighQuality" 
+                Foreground="{DynamicResource MainForegroundBrush}" 
+                CaretBrush="White" 
+                VerticalContentAlignment="Center" 
+                FontSize="14" 
+                TextChanged="SearchSystemModsTXT_TextChanged"
+                BorderThickness="0">
+                        </ui:TextBox>
+                    </Border>
+
+                    <ui:ListView x:Name="ModsDowloadList" 
+                                 
+                         Grid.Row="2"
+                         d:ItemsSource="{d:SampleData ItemCount=5}" 
+                         Background="{x:Null}" 
+                         BorderBrush="{x:Null}" 
+                         Foreground="White" 
+                         ScrollViewer.HorizontalScrollBarVisibility="Hidden" 
+                         Loaded="ModsDowloadList_Loaded"
+                         ScrollViewer.CanContentScroll="True"
+                         VirtualizingPanel.IsVirtualizing="True"        
+                         VirtualizingPanel.VirtualizationMode="Recycling" Margin="-63,0,-48,47" Grid.RowSpan="2"/>
+
+                    <StackPanel x:Name="PaginationPanel" Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,25,0,5" Height="37" Width="344">
+                        <ui:Button x:Name="PrevPageBtn" Icon="{ui:SymbolIcon ArrowCircleLeft48}" Click="PrevPageBtn_Click" IsEnabled="False" Margin="5" Width="117" Cursor="Hand" Foreground="{DynamicResource MainForegroundBrush}" BorderBrush="{x:Null}" Background="{DynamicResource MainBackgroundButton}" Height="26" Content="Повернутися" FontSize="12"/>
+
+                        <TextBlock x:Name="PageNumberText" Text="1" VerticalAlignment="Center" FontSize="18" FontWeight="Bold" Margin="15,0" Foreground="{DynamicResource MainForegroundBrush}"/>
+
+                        <ui:Button x:Name="NextPageBtn" Icon="{ui:SymbolIcon ArrowCircleRight48}" Click="NextPageBtn_Click" Margin="5" Width="117" Cursor="Hand" Background="{DynamicResource MainBackgroundButton}" BorderBrush="{x:Null}" Foreground="{DynamicResource MainForegroundBrush}" Height="26" Content="Вперед" FontSize="12"/>
+                    </StackPanel>
+
+                </Grid>
+            </Grid>
+        </Grid>
+        <Grid x:Name="ListModsBuild" 
+      Background="Transparent" 
+      Margin="0,17,0,0" Visibility="Hidden">
+
+            <Border Visibility="{DynamicResource GlassVisibility}">
+                <Border.Background>
+                    <VisualBrush Visual="{Binding ElementName=MainBackgroundContainer}" Stretch="None"/>
+                </Border.Background>
+                <Border.Effect>
+                    <BlurEffect Radius="{DynamicResource GlassBlurRadius}"/>
+                </Border.Effect>
+            </Border>
+            <Border CornerRadius="12" Background="{DynamicResource GlassTintBrush}"/>
+
+            <Border Background="{DynamicResource GlassTintBrush}" Opacity="0.6"/>
+
+            <Grid Margin="10,10,110,10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" MinWidth="108.25"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <Grid x:Name="FilterGird" 
+              Grid.Column="0"
+              Margin="0,0,10,0" 
+              Visibility="Hidden">
+
+                    <Border x:Name="BorderFilter" 
+                      BorderThickness="1" 
+                      Background="{DynamicResource MainBackgroundBrushServer}" 
+                      CornerRadius="12"/>
+
+                    <Label Content="Фільтр Збірок" 
+                     HorizontalAlignment="Center" 
+                     VerticalAlignment="Top" 
+                     Margin="0,10,0,0"
+                     Foreground="{DynamicResource MainForegroundBrush}" 
+                     FontFamily="Inter 18pt 18pt"/>
+                </Grid>
+
+                <Grid Grid.Column="1" 
+              HorizontalAlignment="Center" 
+              Width="650"
+              Margin="0,75,0,0">
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <Border x:Name="SearchModPack" 
+                    Grid.Row="0"
+                    Height="40"
+                    BorderThickness="1" 
+                    CornerRadius="12" 
+                    Background="{DynamicResource MainBackgroundBrushServer}"
+                    Margin="0,0,0,15">
+                        <ui:TextBox x:Name="SearchSystemModsTXT1" 
+                            PlaceholderText="Пошук..." 
+                            IconPlacement="Left" 
+                            Icon="{ui:SymbolIcon Search48}" 
+                            Background="{x:Null}" 
+                            Foreground="{DynamicResource MainForegroundBrush}" 
+                            BorderBrush="{x:Null}" 
+                            CaretBrush="White" 
+                            VerticalContentAlignment="Center" 
+                            FontSize="12" 
+                            BorderThickness="0"
+                            TextChanged="SearchSystemModsTXT1_TextChanged" 
+                            PreviewMouseDown="SearchSystemModsTXT1_PreviewMouseDown"/>
+                    </Border>
+
+                    <Grid Grid.Row="1" Margin="0,0,0,15" Height="40">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="15"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Border BorderBrush="Black" BorderThickness="1" Grid.ColumnSpan="3" Margin="-4,-4,-6,-4" RenderTransformOrigin="0.5,0.5" Background="{DynamicResource MainBackgroundBrushServer}" CornerRadius="8,8,8,8">
+                            <Border.RenderTransform>
+                                <TransformGroup>
+                                    <ScaleTransform ScaleY="-1"/>
+                                    <SkewTransform/>
+                                    <RotateTransform/>
+                                    <TranslateTransform/>
+                                </TransformGroup>
+                            </Border.RenderTransform>
+                        </Border>
+
+                        <Border x:Name="ImportModPacks" 
+                        Grid.Column="0"
+                        BorderThickness="1" 
+                        Background="{DynamicResource MainBackgroundButton}" 
+                        CornerRadius="12">
+                            <Label x:Name="ImportTXT" 
+                           Content="Імпортувати" 
+                           HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                           HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                           FontFamily="Inter 18pt 18pt" FontSize="16" 
+                           Cursor="Hand" Foreground="{DynamicResource MainForegroundBrush}" 
+                           MouseDown="ImportTXT_MouseDown" 
+                           ToolTip="Натисність щоб імпортувати мод-пак збірки"/>
+                        </Border>
+
+                        <Border x:Name="DowloadModPacks" 
+                        Grid.Column="2"
+                        BorderThickness="1" 
+                        Background="{DynamicResource MainBackgroundButton}" 
+                        CornerRadius="12" 
+                        MouseDown="DowloadModPacks_MouseDown" 
+                        Cursor="Hand">
+                            <Label x:Name="CreateModPacksTXT" 
+                           Content="Створити" 
+                           HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                           HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                           FontFamily="Inter 18pt 18pt" FontSize="16" 
+                           Cursor="Hand" Foreground="{DynamicResource MainForegroundBrush}" 
+                           IsEnabled="False" 
+                           ToolTip="Натисність щоб створити власну мод-пак збірку" 
+                           MouseDown="CreateModPacksTXT_MouseDown"/>
+                        </Border>
+                    </Grid>
+
+                    <ui:ListView x:Name="ModsDowloadList1" 
+                         Grid.Row="2"
+                         HorizontalAlignment="Stretch" 
+                         VerticalAlignment="Stretch"
+                         d:ItemsSource="{d:SampleData ItemCount=5}" 
+                         Background="{x:Null}" 
+                         BorderBrush="{x:Null}" 
+                         Foreground="White" 
+                         Loaded="ModsDowloadList_Loaded"
+                         ScrollViewer.CanContentScroll="True"
+                         VirtualizingPanel.IsVirtualizing="True"       
+                         VirtualizingPanel.VirtualizationMode="Recycling"/>
+                </Grid>
+            </Grid>
+        </Grid>
+        <ScrollViewer x:Name="ScrollSetting" 
+              Padding="0,0,0,20" 
+              Margin="0,15,0,-38"
+              VerticalScrollBarVisibility="Auto" 
+              HorizontalScrollBarVisibility="Disabled" Visibility="Hidden">
+
+            <Grid x:Name="SettingPanelMinecraft" HorizontalAlignment="Stretch" VerticalAlignment="Top">
+                <Border CornerRadius="12" Background="{DynamicResource GlassTintBrush}"/>
+
+                <StackPanel Orientation="Vertical" Margin="20,65,20,20">
+
+                    <Label x:Name="MinecraftTextSetting" Content="Майнкрафт" Height="40" FontSize="24" HorizontalAlignment="Left" FontFamily="Inter 18pt 18pt" Foreground="{DynamicResource MainForegroundBrush}"/>
+
+                    <Grid Height="50" Margin="0,5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Border Grid.ColumnSpan="2" x:Name="LogBorder" BorderThickness="1" CornerRadius="15" Background="{DynamicResource MainBackgroundBrushServer}"/>
+                        <Label Content="Логи" Foreground="{DynamicResource MainForegroundBrush}" VerticalContentAlignment="Center" FontSize="20" Margin="15,0,0,0" FontFamily="Inter 18pt 18pt"/>
+
+                        <ui:ToggleSwitch Grid.Column="1" x:Name="DebugToggle" 
+                             VerticalAlignment="Center" Margin="0,0,20,0"
+                             Click="DebugOff_On_Click" Height="30" Width="58.2" />
+                    </Grid>
+
+                    <Grid Height="50" Margin="0,5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="Auto" MinWidth="78.2"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Border Grid.ColumnSpan="2" x:Name="FullScreenBorder" BorderThickness="1" CornerRadius="15" Background="{DynamicResource MainBackgroundBrushServer}"/>
+                        <Label Content="Повноекраний режим" Foreground="{DynamicResource MainForegroundBrush}" VerticalContentAlignment="Center" FontSize="20" Margin="15,0,0,0" FontFamily="Inter 18pt 18pt"/>
+
+                        <ui:ToggleSwitch Grid.Column="1" x:Name="FullScreenToggle" 
+                             VerticalAlignment="Center" Margin="0,0,20,0"
+                             Click="FullScreenOff_On_MouseDown" Height="30" />
+                    </Grid>
+
+                    <StackPanel>
+                        <Grid Height="50" Margin="0,5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Border Grid.ColumnSpan="2" x:Name="WindowBorder" BorderThickness="1" CornerRadius="15" Background="{DynamicResource MainBackgroundBrushServer}"/>
+                            <Label Content="Роздільна здатність екрану" Foreground="{DynamicResource MainForegroundBrush}" VerticalContentAlignment="Center" FontSize="20" Margin="15,0,0,0" FontFamily="Inter 18pt 18pt"/>
+
+                            <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="0,0,15,0">
+                                <ui:Button x:Name="MincraftWindowSize" Content="1920х1080" Width="110" Height="30" Click="MincraftWindowSize_Click" Background="{DynamicResource MainBackgroundButton}" Foreground="{DynamicResource MainForegroundBrush}" BorderBrush="{x:Null}" Margin="0,0,10,0"/>
+                                <Image x:Name="ResetResolution" Source="/Assets/SettingReset.png" Height="24" Width="26" MouseDown="ResetResolution_MouseDown" Cursor="Hand" ToolTip="Скинути" RenderOptions.BitmapScalingMode="HighQuality"/>
+                            </StackPanel>
+                        </Grid>
+
+                        <Grid x:Name="EditWditXHeghit" HorizontalAlignment="Right" Margin="0,0,60,10" Width="155" Height="160" Visibility="Collapsed">
+                            <StackPanel>
+                                <Border x:Name="HandEditScreen" BorderBrush="{DynamicResource MainBackgroundButton}" BorderThickness="1" CornerRadius="6" Margin="0,0,0,5" Background="{DynamicResource MainBackgroundBrushServer}" Height="50">
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
+                                        <TextBox x:Name="Width" Width="50" Height="35" Text="1920" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="{DynamicResource MainForegroundBrush}" FontSize="12" HorizontalContentAlignment="Center" PreviewKeyDown="Width_PreviewKeyDown" PreviewKeyUp="Width_PreviewKeyUp"/>
+                                        <Label Content="X" FontSize="12" Foreground="{DynamicResource MainForegroundBrush}"/>
+                                        <TextBox x:Name="Height" Width="50" Height="35" Text="1080" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="{DynamicResource MainForegroundBrush}" FontSize="12" HorizontalContentAlignment="Center" PreviewKeyDown="Height_PreviewKeyDown" PreviewKeyUp="Height_PreviewKeyUp"/>
+                                    </StackPanel>
+                                </Border>
+                                <Border x:Name="TemplateListScreen" BorderThickness="1" CornerRadius="6" BorderBrush="Gray" Background="{DynamicResource MainBackgroundBrushServer}">
+                                    <ListBox x:Name="ScreenSizeListBox" SelectionChanged="ScreenSizeListBox_SelectionChanged" Background="Transparent" Height="100" BorderBrush="{x:Null}" Foreground="{DynamicResource MainForegroundBrush}">
+                                        <ListBoxItem Content="1920x1080" />
+                                        <ListBoxItem Content="1600x900" />
+                                        <ListBoxItem Content="1366x768" />
+                                        <ListBoxItem Content="1280x720" />
+                                        <ListBoxItem Content="800x600" />
+                                    </ListBox>
+                                </Border>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+
+                    <Grid Height="50" Margin="0,5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Border Grid.ColumnSpan="2" x:Name="OpBorder" BorderThickness="1" CornerRadius="15" Background="{DynamicResource MainBackgroundBrushServer}"/>
+                        <Label Content="Оперативна пам’ять" Foreground="{DynamicResource MainForegroundBrush}" VerticalContentAlignment="Center" FontSize="20" Margin="15,0,0,0" FontFamily="Inter 18pt 18pt"/>
+
+                        <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="0,0,15,0" VerticalAlignment="Center">
+                            <Slider x:Name="OPSlider" Width="200" Minimum="2048" Maximum="8192" Value="2048" SmallChange="1" Margin="0,0,15,0" ValueChanged="OPSlider_ValueChanged" PreviewMouseDown="OPSlider_PreviewMouseDown_1" PreviewMouseUp="OPSlider_PreviewMouseUp"/>
+                            <ui:Button x:Name="SliderOPTXT" Content="2048 MB" Width="80" Height="30" IsHitTestVisible="False" Background="{DynamicResource MainBackgroundButton}" Foreground="{DynamicResource MainForegroundBrush}" BorderBrush="{x:Null}" Margin="0,0,10,0"/>
+                            <Image x:Name="ResetOP" Source="/Assets/SettingReset.png" Height="24" Width="26" PreviewMouseDown="ResetOP_PreviewMouseDown" Cursor="Hand" RenderOptions.BitmapScalingMode="HighQuality"/>
+                        </StackPanel>
+                    </Grid>
+
+                    <Grid Height="50" Margin="0,5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Border Grid.ColumnSpan="3" x:Name="BorderCustomPathLauncherDrive" BorderThickness="1" CornerRadius="15" Background="{DynamicResource MainBackgroundBrushServer}"/>
+                        <Label Content="Шлях папки для лаунчера" Foreground="{DynamicResource MainForegroundBrush}" VerticalContentAlignment="Center" FontSize="20" Margin="15,0,10,0" FontFamily="Inter 18pt 18pt"/>
+
+                        <ui:Button Grid.Column="1" x:Name="LauncherFloderButton" Content="C:\" Height="30" HorizontalAlignment="Stretch" Margin="0,0,10,0" Click="LauncherFloderButton_Click" BorderBrush="{x:Null}" Background="{DynamicResource MainBackgroundButton}" Foreground="{DynamicResource MainForegroundBrush}"/>
+                        <Image Grid.Column="2" x:Name="ResetPathMinecraftLauncher" Source="/Assets/SettingReset.png" Height="24" Width="26" Margin="0,0,15,0" MouseDown="ResetPathMinecraftLauncher_MouseDown" Cursor="Hand" RenderOptions.BitmapScalingMode="HighQuality"/>
+                    </Grid>
+
+                    <Label x:Name="LauncherTextSetting" Content="Запускач" Height="40" FontSize="24" HorizontalAlignment="Left" Margin="0,10,0,0" FontFamily="Inter 18pt 18pt" Foreground="{DynamicResource MainForegroundBrush}"/>
+
+                    <Grid Height="50" Margin="0,5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Border Grid.ColumnSpan="2" x:Name="BorderCloseLaucnherPlayMinecraft" BorderThickness="1" CornerRadius="15" Background="{DynamicResource MainBackgroundBrushServer}"/>
+                        <Label Content="Закриття лаунчера під час гри" Foreground="{DynamicResource MainForegroundBrush}" VerticalContentAlignment="Center" FontSize="20" Margin="15,0,0,0" FontFamily="Inter 18pt 18pt"/>
+
+                        <ui:ToggleSwitch Grid.Column="1" x:Name="CloseLauncherToggle" 
+                             VerticalAlignment="Center" Margin="0,0,20,0"
+                             Click="CloseLaucnherPlayMinecraft_MouseDown" Width="58.2" Height="30" />
+                    </Grid>
+                    <Grid Height="50" Margin="0,5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Border Grid.ColumnSpan="2" x:Name="DowloadModDepBorder" BorderThickness="1" CornerRadius="15" Background="{DynamicResource MainBackgroundBrushServer}"/>
+                        <Label Content="Експерментальна функція: залежності модів" Foreground="{DynamicResource MainForegroundBrush}" VerticalContentAlignment="Center" FontSize="14" Margin="15,0,0,0" FontFamily="Inter 18pt 18pt"/>
+
+                        <ui:ToggleSwitch Grid.Column="1" x:Name="ModDepsToggle" 
+                             VerticalAlignment="Center" Margin="0,0,20,0"
+                             Click="DowloadModDepOff_On_MouseDown" Height="30" Width="58.1" />
+                    </Grid>
+
+                    <Grid Height="50" Margin="0,5" Visibility="Collapsed">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Border Grid.ColumnSpan="2" x:Name="PotatoRegimeBorder" BorderThickness="1" CornerRadius="15" Background="{DynamicResource MainBackgroundBrushServer}"/>
+                        <Label Content="Режим &quot;Картопля&quot;" Foreground="{DynamicResource MainForegroundBrush}" VerticalContentAlignment="Center" FontSize="20" Margin="15,0,0,0" FontFamily="Inter 18pt 18pt"/>
+
+                        <ui:ToggleSwitch Grid.Column="1" x:Name="PotatoModeToggle" 
+                             VerticalAlignment="Center" Margin="0,0,20,0"
+                             Click="DisablePotatoRegimeToggle_MouseDown" />
+                    </Grid>
+                    <Grid Height="50" Margin="0,5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Border Grid.ColumnSpan="2" x:Name="GlassEffectBorder" BorderThickness="1" CornerRadius="15" Background="{DynamicResource MainBackgroundBrushServer}"/>
+                        <Label Content="Ефект прозорості (Скло)" Foreground="{DynamicResource MainForegroundBrush}" VerticalContentAlignment="Center" FontSize="20" Margin="15,0,0,0" FontFamily="Inter 18pt 18pt"/>
+
+                        <ui:ToggleSwitch Grid.Column="1" x:Name="GlassEffectToggle" 
+                             VerticalAlignment="Center" Margin="0,0,20,0"
+                             Click="DisableGlassEffectToggle_MouseDown" Width="58.2" Height="30" />
+                    </Grid>
+
+                    <Border x:Name="ThemBorder" BorderThickness="1" CornerRadius="15" Background="{DynamicResource MainBackgroundBrushServer}" Padding="15" Margin="0,5">
+                        <StackPanel>
+                            <Grid Margin="0,0,0,10">
+                                <Label Content="Тема" Foreground="{DynamicResource MainForegroundBrush}" FontSize="24" HorizontalAlignment="Left" FontFamily="Inter 18pt 18pt"/>
+                                <Image Width="39" Source="/Assets/DarkThem.png" x:Name="ThemNight_Light" MouseDown="ThemNight_Light_Click" HorizontalAlignment="Right" Cursor="Hand" RenderOptions.BitmapScalingMode="HighQuality"/>
+                            </Grid>
+
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <StackPanel Grid.Column="0">
+                                    <Label Content="Колір секції" Foreground="{DynamicResource MainForegroundBrush}" FontSize="16" Margin="0,7" FontFamily="Inter 18pt 18pt"/>
+                                    <Label Content="Колір фону" Foreground="{DynamicResource MainForegroundBrush}" FontSize="16" Margin="0,7" FontFamily="Inter 18pt 18pt"/>
+                                    <Label Content="Додатковий колір" Foreground="{DynamicResource MainForegroundBrush}" FontSize="16" Margin="0,7" FontFamily="Inter 18pt 18pt"/>
+                                    <Label Content="Колір тексту" Foreground="{DynamicResource MainForegroundBrush}" FontSize="16" Margin="0,7" FontFamily="Inter 18pt 18pt"/>
+                                    <Label Content="Колір кнопки" Foreground="{DynamicResource MainForegroundBrush}" FontSize="16" Margin="0,7" FontFamily="Inter 18pt 18pt"/>
+                                    <Label Content="Зображення фону" Foreground="{DynamicResource MainForegroundBrush}" FontSize="16" Margin="0,7" FontFamily="Inter 18pt 18pt"/>
+                                </StackPanel>
+
+                                <StackPanel Grid.Column="1" HorizontalAlignment="Right">
+                                    <ui:Button x:Name="Section_colourButton" Click="Section_colourButton_Click" Content="#" Width="120" Height="30" Margin="0,5" Background="{DynamicResource MainBackgroundButton}" Foreground="{DynamicResource MainForegroundBrush}" BorderBrush="{x:Null}"/>
+                                    <ui:Button x:Name="Background_colourButton" Click="Background_colourButton_Click" Content="#" Width="120" Height="30" Margin="0,5" Background="{DynamicResource MainBackgroundButton}" Foreground="{DynamicResource MainForegroundBrush}" BorderBrush="{x:Null}"/>
+                                    <ui:Button x:Name="Additional_colourButton" Click="Additional_colourButton_Click" Content="#" Width="120" Height="30" Margin="0,5" Background="{DynamicResource MainBackgroundButton}" Foreground="{DynamicResource MainForegroundBrush}" BorderBrush="{x:Null}"/>
+                                    <ui:Button x:Name="Text_colourButton" Click="Text_colourButton_Click" Content="#" Width="120" Height="30" Margin="0,5" Background="{DynamicResource MainBackgroundButton}" Foreground="{DynamicResource MainForegroundBrush}" BorderBrush="{x:Null}"/>
+                                    <ui:Button x:Name="Button_colourButton" Click="Button_colourButton_Click" Content="#" Width="120" Height="30" Margin="0,5" Background="{DynamicResource MainBackgroundButton}" Foreground="{DynamicResource MainForegroundBrush}" BorderBrush="{x:Null}"/>
+                                    <ui:Button x:Name="Background_imageButton" Click="Background_imageButton_Click" Content="Завантажити" Width="120" Height="30" Margin="0,5" Foreground="{DynamicResource MainForegroundBrush}" Background="{DynamicResource MainBackgroundButton}" BorderBrush="{x:Null}"/>
+                                </StackPanel>
+                            </Grid>
+
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,15,0,0">
+                                <Image Width="26" ToolTip="Скинути тему" Source="/Assets/SettingReset.png" x:Name="ResetCustomSetting" MouseDown="ResetCustomSetting_MouseDown" Cursor="Hand" Margin="0,0,15,0" RenderOptions.BitmapScalingMode="HighQuality" VerticalAlignment="Center"/>
+                                <ui:Button x:Name="SaveandAcceptCustomThem" Content="Зберегти та застосувати" Click="SaveandAcceptCustomThem_Click" BorderBrush="{x:Null}" Foreground="{DynamicResource MainForegroundBrush}" Background="{DynamicResource MainBackgroundButton}"/>
+                            </StackPanel>
+
+                            <Border BorderThickness="0,1,0,0" BorderBrush="#33FFFFFF" Margin="0,15,0,0" Padding="0,10,0,0" Background="{DynamicResource MainBackgroundBrush}">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <StackPanel Grid.Column="0">
+                                        <Label Content="Поділитися темою (Загальною)" Foreground="{DynamicResource MainForegroundBrush}" FontSize="12" FontFamily="Inter 18pt 18pt"/>
+                                        <TextBox x:Name="ThemeCodeBox" Height="30" Margin="0,5,10,5" Background="{DynamicResource MainBackgroundButton}" Foreground="{DynamicResource MainForegroundBrush}" BorderThickness="0" Padding="5" VerticalContentAlignment="Center" IsReadOnly="True"/>
+                                    </StackPanel>
+
+                                    <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Bottom">
+                                        <ui:Button Content="Копіювати" Click="CopyTheme_Click" Width="80" Height="30" Margin="0,0,5,5" Background="{DynamicResource MainBackgroundButton}" Foreground="{DynamicResource MainForegroundBrush}" BorderBrush="{x:Null}"/>
+                                        <ui:Button Content="Вставити" Click="PasteTheme_Click" Width="80" Height="30" Margin="0,0,0,5" Background="{DynamicResource MainBackgroundButton}" Foreground="{DynamicResource MainForegroundBrush}" BorderBrush="{x:Null}"/>
+                                    </StackPanel>
+                                </Grid>
+                            </Border>
+                        </StackPanel>
+                    </Border>
+
+                    <Border x:Name="LoadScreenSettingBorder" BorderThickness="1" CornerRadius="15" Background="{DynamicResource MainBackgroundBrushServer}" Padding="15" Margin="0,5">
+                        <StackPanel>
+                            <Grid Margin="0,0,0,10">
+                                <Label Content="Завантажувальний екран" Foreground="{DynamicResource MainForegroundBrush}" FontSize="24" HorizontalAlignment="Left" FontFamily="Inter 18pt 18pt"/>
+                            </Grid>
+
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                                    <Label Content="Зображення фону" Foreground="{DynamicResource MainForegroundBrush}" FontSize="16" Margin="0,7" FontFamily="Inter 18pt 18pt"/>
+                                    <Label Content="Колір смужки завантаження" Foreground="{DynamicResource MainForegroundBrush}" FontSize="16" Margin="0,7" FontFamily="Inter 18pt 18pt"/>
+                                    <Label Content="Кастомні фрази" Foreground="{DynamicResource MainForegroundBrush}" FontSize="16" Margin="0,7" FontFamily="Inter 18pt 18pt" ToolTip="Відкриває текстовий файл..."/>
+                                </StackPanel>
+
+                                <StackPanel Grid.Column="1" HorizontalAlignment="Right">
+                                    <ui:Button x:Name="LoadScreenBgButton" Click="LoadScreenBgButton_Click" Content="Завантажити" Width="120" Height="30" Margin="0,5" Foreground="{DynamicResource MainForegroundBrush}" Background="{DynamicResource MainBackgroundButton}" BorderBrush="{x:Null}"/>
+                                    <ui:Button x:Name="LoadScreenColorButton" Click="LoadScreenColorButton_Click" Content="#" Width="120" Height="30" Margin="0,5" Background="{DynamicResource MainBackgroundButton}" Foreground="{DynamicResource MainForegroundBrush}" BorderBrush="{x:Null}"/>
+                                    <ui:Button x:Name="EditPhrasesButton" Click="EditPhrasesButton_Click" Content="Редагувати" Width="120" Height="30" Margin="0,5" Foreground="{DynamicResource MainForegroundBrush}" Background="{DynamicResource MainBackgroundButton}" BorderBrush="{x:Null}"/>
+                                </StackPanel>
+                            </Grid>
+
+                            <Border BorderThickness="0,1,0,0" BorderBrush="#33FFFFFF" Margin="0,15,0,0" Padding="0,10,0,0" Background="{DynamicResource MainBackgroundBrush}">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                                        <Label Content="Поділитися стилем LoadScreen" Foreground="{DynamicResource MainForegroundBrush}" FontSize="12" FontFamily="Inter 18pt 18pt"/>
+                                        <TextBox x:Name="LoadScreenCodeBox" Height="30" Margin="0,5,10,5" Background="{DynamicResource MainBackgroundButton}" Foreground="{DynamicResource MainForegroundBrush}" BorderThickness="0" Padding="5" VerticalContentAlignment="Center" IsReadOnly="True"/>
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Bottom">
+                                        <ui:Button Content="Копіювати" Click="CopyLoadScreen_Click" Width="80" Height="30" Margin="0,0,5,5" Background="{DynamicResource MainBackgroundButton}" Foreground="{DynamicResource MainForegroundBrush}" BorderBrush="{x:Null}"/>
+                                        <ui:Button Content="Вставити" Click="PasteLoadScreen_Click" Width="80" Height="30" Margin="0,0,0,5" Background="{DynamicResource MainBackgroundButton}" Foreground="{DynamicResource MainForegroundBrush}" BorderBrush="{x:Null}"/>
+                                    </StackPanel>
+                                </Grid>
+                            </Border>
+
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0">
+                                <Image x:Name="ResetLoadScreen" MouseDown="ResetLoadScreen_Click" Opacity="0.8" Height="26" RenderTransformOrigin="0.5,0.5" Width="26" Source="/Assets/SettingReset.png"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+
+                </StackPanel>
+            </Grid>
+        </ScrollViewer>
+        <Grid x:Name="GirdTXTNews" Background="Transparent" Margin="0,18,0,0" Visibility="Hidden">
+
+            <Border Visibility="{DynamicResource GlassVisibility}">
+                <Border.Background>
+                    <VisualBrush Visual="{Binding ElementName=MainBackgroundContainer}" Stretch="None"/>
+                </Border.Background>
+                <Border.Effect>
+                    <BlurEffect Radius="{DynamicResource GlassBlurRadius}"/>
+                </Border.Effect>
+            </Border>
+            <Border CornerRadius="12" Background="{DynamicResource GlassTintBrush}"/>
+
+            <Border Background="{DynamicResource GlassTintBrush}" Opacity="0.8"/>
+
+            <TextBox x:Name="TextNews" 
+             HorizontalAlignment="Stretch" 
+             VerticalAlignment="Stretch"
+             Margin="50,100,50,50" 
+             TextWrapping="Wrap" 
+             Text="TextBox" 
+             BorderBrush="{x:Null}" 
+             SelectionBrush="{x:Null}" 
+             Foreground="{DynamicResource MainForegroundBrush}" 
+             SelectionTextBrush="{x:Null}" 
+             Background="{x:Null}" 
+             Padding="10" 
+             IsReadOnly="True"
+             FontSize="16"/>
+        </Grid>
+
+        <Grid x:Name="GirdNews" Background="Transparent" Margin="0,18,0,0" Visibility="Hidden">
+
+            <Border Visibility="{DynamicResource GlassVisibility}">
+                <Border.Background>
+                    <VisualBrush Visual="{Binding ElementName=MainBackgroundContainer}" Stretch="None"/>
+                </Border.Background>
+                <Border.Effect>
+                    <BlurEffect Radius="{DynamicResource GlassBlurRadius}"/>
+                </Border.Effect>
+            </Border>
+            <Border CornerRadius="12" Background="{DynamicResource GlassTintBrush}"/>
+
+            <Border Background="{DynamicResource GlassTintBrush}" Opacity="0.6"/>
+
+            <ui:ListView x:Name="ListNews"
+                 HorizontalAlignment="Stretch"
+                 VerticalAlignment="Stretch"
+                 Margin="20,100,20,20"
+                 Background="{x:Null}"
+                 Foreground="{DynamicResource MainForegroundBrush}"
+                 BorderBrush="{x:Null}"
+                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                 ScrollViewer.VerticalScrollBarVisibility="Auto"
+                 SelectionMode="Single"
+                 ScrollViewer.CanContentScroll="True"
+                 VirtualizingPanel.IsVirtualizing="True"       
+                 VirtualizingPanel.VirtualizationMode="Recycling">
+
+                <ListView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center" />
+                    </ItemsPanelTemplate>
+                </ListView.ItemsPanel>
+
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="{x:Type ListViewItem}">
+                        <Setter Property="HorizontalAlignment" Value="Left"/>
+                        <Setter Property="Margin" Value="10"/>
+                        <Setter Property="Padding" Value="0"/>
+                        <Setter Property="BorderThickness" Value="0"/>
+                        <Setter Property="Background" Value="Transparent"/>
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="Transparent"/>
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="Background" Value="Transparent"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </ListView.ItemContainerStyle>
+
+            </ui:ListView>
+        </Grid>
+        <Grid x:Name="GalleryContainer" Margin="0,16,0,-10" Visibility="Hidden">
+
+            <Border CornerRadius="12" ClipToBounds="True">
+                <Grid>
+                    <Border Visibility="{DynamicResource GlassVisibility}" Margin="-20">
+                        <Border.Background>
+                            <VisualBrush Visual="{Binding ElementName=MainBackgroundContainer}" Stretch="None"/>
+                        </Border.Background>
+                        <Border.Effect>
+                            <BlurEffect Radius="{DynamicResource GlassBlurRadius}"/>
+                        </Border.Effect>
+                    </Border>
+
+                    <Border Background="{DynamicResource GlassTintBrush}"/>
+                </Grid>
+            </Border>
+
+            <Grid Margin="20,74,20,20">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition/>
+                    <RowDefinition Height="Auto" MinHeight="65"/>
+                </Grid.RowDefinitions>
+
+                <Border BorderThickness="1" Background="{DynamicResource MainBackgroundBrushServer}" Margin="0,0,0,15"/>
+
+                <Grid Grid.Row="0" Margin="0,0,0,15">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="Auto" MinWidth="205"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Border Grid.Column="0" Grid.ColumnSpan="2" 
+        Margin="0,2,533,2"
+        Background="{DynamicResource MainBackgroundButton}" 
+        BorderThickness="1" 
+        BorderBrush="#33FFFFFF" 
+        CornerRadius="8">
+
+                        <ComboBox x:Name="SourceSelector" 
+              Background="{DynamicResource MainBackgroundButton}" 
+              Foreground="{DynamicResource MainForegroundBrush}"
+              BorderThickness="0" 
+              BorderBrush="{x:Null}"
+              VerticalContentAlignment="Center"
+              SelectionChanged="SourceSelector_SelectionChanged" 
+              FontSize="11"
+              Padding="10,0" Margin="0,0,-1,0">
+
+                            <ComboBox.Resources>
+                                <SolidColorBrush x:Key="{x:Static SystemColors.WindowBrushKey}" Color="#202020"/>
+                            </ComboBox.Resources>
+
+                            <ComboBox.ItemContainerStyle>
+                                <Style TargetType="{x:Type ComboBoxItem}">
+                                    <Setter Property="Foreground" Value="{DynamicResource MainForegroundBrush}"/>
+                                    <Setter Property="Background" Value="Transparent"/>
+                                    <Setter Property="BorderThickness" Value="0"/>
+                                    <Setter Property="Padding" Value="8,6"/>
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="{x:Type ComboBoxItem}">
+                                                <Border x:Name="Bd" 
+                                    Background="{TemplateBinding Background}"
+                                    Padding="{TemplateBinding Padding}"
+                                    CornerRadius="4"
+                                    Margin="2,1">
+                                                    <ContentPresenter HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                                </Border>
+
+                                                <ControlTemplate.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter TargetName="Bd" Property="Background" Value="#33FFFFFF"/>
+                                                    </Trigger>
+                                                    <Trigger Property="IsSelected" Value="True">
+                                                        <Setter TargetName="Bd" Property="Background" Value="{DynamicResource MainBackgroundButton}"/>
+                                                    </Trigger>
+                                                </ControlTemplate.Triggers>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </ComboBox.ItemContainerStyle>
+
+                        </ComboBox>
+                    </Border>
+                    <StackPanel Grid.Column="2" Orientation="Horizontal">
+                        <ui:Button x:Name="BtnOpenFolder" Content="Відкрити папку" Click="BtnOpenFolder_Click"
+                           Padding="15,5" Margin="0,0,10,0" 
+                           Background="{DynamicResource MainBackgroundButton}" 
+                           Foreground="{DynamicResource MainForegroundBrush}" 
+                           BorderThickness="0" Width="140" Height="28"
+                           Cursor="Hand">
+                            <ui:Button.Resources>
+                                <Style TargetType="{x:Type Border}">
+                                    <Setter Property="CornerRadius" Value="6"/>
+                                </Style>
+                            </ui:Button.Resources>
+                        </ui:Button>
+
+                        <ui:Button x:Name="BtnRefresh" Content="🔄" Click="BtnRefresh_Click"
+                           Width="40" Height="32" 
+                           Background="{DynamicResource MainBackgroundButton}" 
+                           Foreground="{DynamicResource MainForegroundBrush}" 
+                           BorderThickness="0" ToolTip="Оновити список"
+                           Cursor="Hand">
+                            <ui:Button.Resources>
+                                <Style TargetType="{x:Type Border}">
+                                    <Setter Property="CornerRadius" Value="6"/>
+                                </Style>
+                            </ui:Button.Resources>
+                        </ui:Button>
+                    </StackPanel>
+                </Grid>
+
+                <Border Grid.Row="1" Background="{x:Null}" Margin="0,0,0,10">
+                    <ListBox x:Name="ScreenshotsList" 
+                     Background="Transparent" 
+                     BorderThickness="0" 
+                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                     SelectionMode="Single"
+                     SelectionChanged="ScreenshotsList_SelectionChanged" HorizontalContentAlignment="Center">
+
+                        <ListBox.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel Orientation="Horizontal" IsItemsHost="True" Width="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType={x:Type ListBox}}}"/>
+                            </ItemsPanelTemplate>
+                        </ListBox.ItemsPanel>
+
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="{x:Type ListBoxItem}">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                                            <ContentPresenter/>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Border Width="200" Height="165" Margin="8" CornerRadius="8" Cursor="Hand" ToolTip="{Binding FilePath}">
+                                    <Border.Style>
+                                        <Style TargetType="{x:Type Border}">
+                                            <Setter Property="Background" Value="{DynamicResource MainBackgroundBrushServer}"/>
+                                            <Setter Property="BorderThickness" Value="1"/>
+                                            <Setter Property="BorderBrush" Value="Transparent"/>
+                                            <Style.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Background" Value="#15FFFFFF"/>
+                                                    <Setter Property="BorderBrush" Value="#33FFFFFF"/>
+                                                </Trigger>
+                                                <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}}}" Value="True">
+                                                    <Setter Property="BorderBrush" Value="{DynamicResource MainForegroundBrush}"/>
+                                                    <Setter Property="Background" Value="#25FFFFFF"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Border.Style>
+
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="*"/>
+                                            <RowDefinition Height="Auto"/>
+                                        </Grid.RowDefinitions>
+
+                                        <Image Grid.Row="0" Source="{Binding ImagePath}" Stretch="UniformToFill" Margin="4,4,4,0">
+                                            <Image.Clip>
+                                                <RectangleGeometry Rect="0,0,192,120" RadiusX="6" RadiusY="6"/>
+                                            </Image.Clip>
+                                        </Image>
+
+                                        <Grid Grid.Row="1" Margin="8,6,8,8">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                            </Grid.RowDefinitions>
+
+                                            <TextBlock Grid.Row="0" Text="{Binding FileName}" Foreground="{DynamicResource MainForegroundBrush}" FontWeight="SemiBold" FontSize="11" TextTrimming="CharacterEllipsis" Margin="0,0,0,2"/>
+
+                                            <Grid Grid.Row="1">
+                                                <TextBlock Text="{Binding CreationDate}" Foreground="#999999" FontSize="10" HorizontalAlignment="Left"/>
+                                                <TextBlock Text="{Binding FileSize}" Foreground="#999999" FontSize="10" HorizontalAlignment="Right"/>
+                                            </Grid>
+                                        </Grid>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </Border>
+
+                <StackPanel Grid.Row="1" x:Name="NoScreenshotsText" 
+                    HorizontalAlignment="Center" VerticalAlignment="Center" 
+                    Visibility="Hidden" Opacity="0.6" Height="74" Width="272">
+                    <TextBlock Text="🖼️" FontSize="40" HorizontalAlignment="Center" Margin="0,0,0,10"/>
+                    <TextBlock Text="Скріншотів поки немає. Натисніть F2 у грі!" 
+                       Foreground="Gray" FontSize="14" HorizontalAlignment="Center"/>
+                </StackPanel>
+
+                <Grid Grid.Row="2" Margin="0,15,0,0" x:Name="ActionPanel" Visibility="Hidden">
+                    <Border Background="{DynamicResource MainBackgroundBrushServer}" CornerRadius="12" Padding="15,10">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                                <TextBlock Text="ВИБРАНИЙ ФАЙЛ" FontSize="9" Foreground="Gray" FontWeight="Bold"/>
+                                <TextBlock x:Name="SelectedFileNameText" Text="screenshot_2025..." Foreground="{DynamicResource MainForegroundBrush}" FontSize="12" TextTrimming="CharacterEllipsis"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                <ui:Button x:Name="BtnOpenImage" Content="Відкрити" Click="BtnOpenImage_Click" 
+                                   Background="#2000FF00" Foreground="#AAFFAA" BorderThickness="1" BorderBrush="#00FF00"
+                                   Padding="15,5" Margin="0,0,10,0" Cursor="Hand" Height="30">
+                                    <ui:Button.Resources>
+                                        <Style TargetType="{x:Type Border}">
+                                            <Setter Property="CornerRadius" Value="6"/>
+                                        </Style>
+                                    </ui:Button.Resources>
+                                </ui:Button>
+
+                                <ui:Button x:Name="BtnDelete" Content="Видалити" Click="BtnDelete_Click" 
+                                   Background="#20FF0000" Foreground="#FFAAAA" BorderThickness="1" BorderBrush="#FF0000"
+                                   Padding="15,5" Cursor="Hand" Height="30">
+                                    <ui:Button.Resources>
+                                        <Style TargetType="{x:Type Border}">
+                                            <Setter Property="CornerRadius" Value="6"/>
+                                        </Style>
+                                    </ui:Button.Resources>
+                                </ui:Button>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                </Grid>
+            </Grid>
+        </Grid>
+        <Grid x:Name="PanelSelectionAndAccount">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="12*" />
+                <ColumnDefinition Width="Auto" MinWidth="460" />
+                <ColumnDefinition Width="13*" />
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="80" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+
+            <Grid x:Name="SelectGirdPage" Grid.Row="0" Grid.Column="1" VerticalAlignment="Top" Margin="0,35,0,0">
+
+                <Border x:Name="SelectPanel" 
+            Height="45" Margin="45,0,35,0"
+            BorderThickness="1" 
+            CornerRadius="16" 
+            BorderBrush="#33FFFFFF" 
+            Background="{DynamicResource GlassTintBrush}">
+
+                    <Grid x:Name="SelectPanelGrid">
+
+                        <Grid.OpacityMask>
+                            <VisualBrush>
+                                <VisualBrush.Visual>
+                                    <Border Background="Black" CornerRadius="16"
+                                Width="{Binding ActualWidth, ElementName=SelectPanelGrid}"
+                                Height="{Binding ActualHeight, ElementName=SelectPanelGrid}"/>
+                                </VisualBrush.Visual>
+                            </VisualBrush>
+                        </Grid.OpacityMask>
+
+                        <Border Visibility="{DynamicResource GlassVisibility}">
+                            <Border.Background>
+                                <VisualBrush Visual="{Binding ElementName=MainBackgroundContainer}" 
+                                 Stretch="None" 
+                                 AlignmentX="Left" 
+                                 AlignmentY="Top"/>
+                            </Border.Background>
+                            <Border.Effect>
+                                <BlurEffect Radius="{DynamicResource GlassBlurRadius}"/>
+                            </Border.Effect>
+                        </Border>
+
+                        <Border Background="{DynamicResource GlassTintBrush}" CornerRadius="16"/>
+                    </Grid>
+                </Border>
+
+                <Border x:Name="PanelSelectNow"
+            BorderThickness="1"
+            CornerRadius="11"
+            Background="{DynamicResource MainBackgroundBrushServer}"
+            Height="40"
+            Width="70"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Center"
+            Margin="55,0,0,0">
+                    <Border.RenderTransform>
+                        <TranslateTransform x:Name="PanelTranslateTransform" />
+                    </Border.RenderTransform>
+                </Border>
+
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center" Width="350">
+                    <Label x:Name="PlayTXTPanelSelect" Content="Грати" Width="70" Height="35" 
+               HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+               FontFamily="Inter 18pt 18pt" FontSize="14" Foreground="{DynamicResource MainForegroundBrush}" 
+               Cursor="Hand" MouseDown="PlayTXTPanelSelect_MouseDown" ToolTip="Грати"/>
+
+                    <Label x:Name="modbuilds" Content="Збірки" Width="70" Height="35" 
+               HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+               FontFamily="Inter 18pt 18pt" FontSize="14" Foreground="{DynamicResource MainForegroundBrush}" 
+               Cursor="Hand" MouseDown="modbuilds_MouseDown" ToolTip="Збірки"/>
+
+                    <Label x:Name="ModsTXTPanelSelect" Content="Моди" Width="70" Height="35" 
+               HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+               FontFamily="Inter 18pt 18pt" FontSize="14" Foreground="{DynamicResource MainForegroundBrush}" 
+               Cursor="Hand" MouseDown="ModsTXTPanelSelect_MouseDown" ToolTip="Моди"/>
+
+                    <Label x:Name="ServerTXTPanelSelect" Content="Сервери" Width="75" Height="35" 
+               HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+               FontFamily="Inter 18pt 18pt" FontSize="14" Foreground="{DynamicResource MainForegroundBrush}" 
+               Cursor="Hand" MouseDown="ServerTXTPanelSelect_MouseDown" ToolTip="Сервери"/>
+
+                    <Label x:Name="PhotoMinecraftTXT" Content="Галерея" Width="75" Height="35" 
+               HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+               FontFamily="Inter 18pt 18pt" FontSize="14" Foreground="{DynamicResource MainForegroundBrush}" 
+               Cursor="Hand" MouseDown="PhotoMinecraftTXT_MouseDown" ToolTip="Галерея"/>
+                </StackPanel>
+
+                <Border x:Name="FonBackIconServerList"
+            BorderThickness="1"
+            CornerRadius="16"
+            Background="{DynamicResource MainBackgroundBrushServer}"
+            Width="40" Height="40"
+            HorizontalAlignment="Left"
+            Margin="-50,0,0,0" 
+            Visibility="Hidden">
+                    <Image x:Name="BackIconServerList" Source="/Assets/faArrowRotateBack.png" 
+               Width="24" Height="24" RenderOptions.BitmapScalingMode="HighQuality"
+               Cursor="Hand" MouseDown="BackIconServerList_MouseDown" ToolTip="Повернутись"/>
+                </Border>
+            </Grid>
+            <Grid x:Name="SelectGirdAccount" Grid.Row="0" Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,33,25,0">
+
+                <Border x:Name="SelectPanelAccount" 
+        BorderThickness="1" 
+        CornerRadius="16" 
+        BorderBrush="#33FFFFFF" 
+        Background="{x:Null}"
+        Height="45"
+        Width="200">
+                    <Grid>
+                        <Grid.OpacityMask>
+                            <VisualBrush>
+                                <VisualBrush.Visual>
+                                    <Border Background="Black" Width="200" Height="45" CornerRadius="16"/>
+                                </VisualBrush.Visual>
+                            </VisualBrush>
+                        </Grid.OpacityMask>
+
+                        <Border Visibility="{DynamicResource GlassVisibility}">
+                            <Border.Effect>
+                                <BlurEffect Radius="{DynamicResource GlassBlurRadius}" />
+                            </Border.Effect>
+                            <Border.Background>
+                                <VisualBrush Visual="{Binding ElementName=MainBackgroundContainer}" Stretch="None"/>
+                            </Border.Background>
+                        </Border>
+
+                        <Border Background="{DynamicResource GlassTintBrush}" CornerRadius="16"/>
+
+                        <Grid Cursor="Hand" MouseDown="IconAccount_MouseDown" Background="Transparent">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Image x:Name="IconAccount" Grid.Column="0"
+                   Width="30" Height="30" 
+                   Margin="8,0,0,0" VerticalAlignment="Center"
+                   RenderOptions.BitmapScalingMode="HighQuality"
+                   ToolTip="ВИБІР ТИП АКАУНТА"/>
+
+                            <TextBlock x:Name="NameNik" Grid.Column="1"
+                       Text="Відсутній акаунт" 
+                       FontFamily="Inter 18pt 18pt" FontSize="12" 
+                       Foreground="{DynamicResource MainForegroundBrush}" 
+                       VerticalAlignment="Center" HorizontalAlignment="Left"
+                       Margin="10,0,5,0" 
+                       TextTrimming="CharacterEllipsis"/>
+
+                            <Image x:Name="CheckMarkAccount" Grid.Column="2"
+                   Source="/Assets/keyboard_arrow_down_100dp_E8EAED_FILL0_wght400_GRAD0_opsz48.png" 
+                   Height="27" Width="27"
+                   Margin="0,0,8,0" VerticalAlignment="Center"
+                   RenderTransformOrigin="0.5,0.5">
+                                <Image.RenderTransform>
+                                    <RotateTransform x:Name="IconRotateTransform" Angle="0"/>
+                                </Image.RenderTransform>
+                            </Image>
+                        </Grid>
+                    </Grid>
+                </Border>
+            </Grid>
+        </Grid>
+        <TextBlock x:Name="LoadingMessage" Text="Завантажуємо..." HorizontalAlignment="Left" Margin="40,162,0,0" Width="900" VerticalAlignment="Top" Foreground="{DynamicResource MainForegroundBrush}" FontFamily="Inter 18pt 18pt" Visibility="Hidden"/>
+        <Grid x:Name="GirdModsDowload" Margin="0,16,1,0" Cursor="Hand" ToolTip="Натисніть щоб повернутись" MouseDown="GirdModsDowload_MouseDown" Visibility="Hidden">
+            <Border Visibility="{DynamicResource GlassVisibility}">
+                <Border.Background>
+                    <VisualBrush Visual="{Binding ElementName=MainBackgroundContainer}" Stretch="None"/>
+                </Border.Background>
+                <Border.Effect>
+                    <BlurEffect Radius="{DynamicResource GlassBlurRadius}"/>
+                </Border.Effect>
+            </Border>
+            <Border CornerRadius="16" Background="{DynamicResource GlassTintBrush}"/>
+            <Border x:Name="ProgressBarContainer"
+                BorderThickness="1"
+                CornerRadius="10"
+                Width="254" Height="25"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Top"
+                Background="{DynamicResource MainBackgroundBrushServer}" Margin="0,373,0,0" BorderBrush="{DynamicResource MainBackgroundBrushServer}">
+                <ProgressBar x:Name="ProgressDowloadFile"
+                         Background="{x:Null}"
+                         Foreground="{DynamicResource MainBackgroundProgressBar}"
+                         VerticalAlignment="Center"
+                         Height="20"
+                         IsIndeterminate="False" BorderBrush="{x:Null}" Margin="3,0,5,0"/>
+            </Border>
+        </Grid>
+        <Grid x:Name="MenuInstaller" HorizontalAlignment="Center" Height="206" VerticalAlignment="Center" Width="256" Visibility="Hidden">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <Border BorderThickness="1" Background="{DynamicResource MainBackgroundBrushServer}" CornerRadius="14"/>
+
+            <Border x:Name="VersionVanilBorder" 
+                    BorderThickness="1" HorizontalAlignment="Left" Height="83" Margin="15,76,0,0" VerticalAlignment="Top" Width="70" CornerRadius="8" 
+                    Background="{DynamicResource MainBackgroundBrush}">
+
+                <ui:ListView x:Name="Version" 
+                             d:ItemsSource="{d:SampleData ItemCount=5}" 
+                             BorderBrush="{x:Null}" 
+                             Background="Transparent"
+                             SelectionChanged="Version_SelectionChanged" 
+                             FontSize="11">
+
+                    <ui:ListView.ItemContainerStyle>
+                        <Style TargetType="{x:Type ListViewItem}">
+                            <Setter Property="Foreground" Value="{DynamicResource MainForegroundBrush}"/>
+                            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+                        </Style>
+                    </ui:ListView.ItemContainerStyle>
+
+                </ui:ListView>
+            </Border>
+
+            <Border x:Name="CollectionListBorder" 
+                    BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="83" Margin="15,76,0,0" VerticalAlignment="Top" Width="70" CornerRadius="8" 
+                    Visibility="Hidden" 
+                    Background="{DynamicResource MainBackgroundBrush}">
+
+                <ui:ListView x:Name="CollectionList" 
+                             d:ItemsSource="{d:SampleData ItemCount=5}" 
+                             Background="Transparent" 
+                             BorderBrush="{x:Null}" 
+                             SelectionChanged="CollectionList_SelectionChanged" 
+                             FontSize="10">
+
+                    <ui:ListView.ItemContainerStyle>
+                        <Style TargetType="{x:Type ListViewItem}">
+                            <Setter Property="Foreground" Value="{DynamicResource MainForegroundBrush}"/>
+                            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                        </Style>
+                    </ui:ListView.ItemContainerStyle>
+
+                </ui:ListView>
+            </Border>
+            <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="83" Margin="96,76,0,0" VerticalAlignment="Top" Width="149" CornerRadius="8" Background="{DynamicResource MainBackgroundBrush}">
+                <ui:ListView x:Name="VersionMods" 
+             d:ItemsSource="{d:SampleData ItemCount=5}" 
+             Background="Transparent" 
+             BorderBrush="{x:Null}" 
+             SelectionChanged="VersionMods_SelectionChanged" 
+             FontSize="11">
+
+                    <ui:ListView.ItemContainerStyle>
+                        <Style TargetType="{x:Type ListViewItem}">
+                            <Setter Property="Foreground" Value="{DynamicResource MainForegroundBrush}"/>
+                            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                        </Style>
+                    </ui:ListView.ItemContainerStyle>
+
+                </ui:ListView>
+            </Border>
+
+            <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="30" Margin="15,41,0,0" VerticalAlignment="Top" Width="70" CornerRadius="8" Background="{DynamicResource MainBackgroundBrush}">
+                <TextBlock x:Name="GameVersionMinecraft" Text="Гра" 
+                   Foreground="{DynamicResource MainForegroundBrush}"
+                   HorizontalAlignment="Center" VerticalAlignment="Center"
+                   FontSize="14" FontFamily="Inter"/>
+            </Border>
+
+            <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="30" Margin="96,41,0,0" VerticalAlignment="Top" Width="149" CornerRadius="8" Background="{DynamicResource MainBackgroundBrush}">
+                <TextBlock x:Name="GameVersionMinecraft_Копировать" Text="Мод" 
+                   Foreground="{DynamicResource MainForegroundBrush}"
+                   HorizontalAlignment="Center" VerticalAlignment="Center"
+                   FontSize="14" FontFamily="Inter"/>
+            </Border>
+
+            <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Center" Height="30" Margin="0,6,0,0" VerticalAlignment="Top" Width="234" CornerRadius="8" Background="{DynamicResource MainBackgroundBrush}">
+                <TextBlock x:Name="TitleModsDowload" Text="Вибір версії моду" 
+                   Foreground="{DynamicResource MainForegroundBrush}"
+                   HorizontalAlignment="Center" VerticalAlignment="Center"
+                   FontSize="14" FontFamily="Inter"/>
+            </Border>
+
+            <Border x:Name="DowloadMod" BorderThickness="1" HorizontalAlignment="Center" Height="29" Margin="0,169,0,0" VerticalAlignment="Top" Width="234" Background="{DynamicResource MainBackgroundButton}" CornerRadius="8" Cursor="Hand" MouseDown="DowloadMod_MouseDown">
+                <TextBlock x:Name="DowloadTXT" Text="Встановити" 
+                   Foreground="{DynamicResource MainForegroundBrush}"
+                   HorizontalAlignment="Center" VerticalAlignment="Center"
+                   FontSize="14" FontFamily="Inter" FontWeight="Bold"/>
+            </Border>
+        </Grid>
+        <Grid x:Name="GirdFormAccountAdd" 
+      Margin="0,16,0,0" 
+      Background="Transparent" Cursor="Hand" 
+      ToolTip="Натисніть щоб повернутись" 
+      MouseDown="GirdFormAccountAdd_MouseDown" Visibility="Hidden">
+
+            <Border Visibility="{DynamicResource GlassVisibility}">
+                <Border.Background>
+                    <VisualBrush Visual="{Binding ElementName=MainBackgroundContainer}" Stretch="None"/>
+                </Border.Background>
+                <Border.Effect>
+                    <BlurEffect Radius="{DynamicResource GlassBlurRadius}"/>
+                </Border.Effect>
+            </Border>
+            <Border CornerRadius="12" Background="{DynamicResource GlassTintBrush}"/>
+
+            <Border Background="{DynamicResource GlassTintBrush}" 
+            Opacity="0.6"/>
+        </Grid>
+        <Grid x:Name="GirdOfflineMode" HorizontalAlignment="Center" Height="146" VerticalAlignment="Center" Width="256" Visibility="Hidden">
+            <Border x:Name="PanelOffline" BorderThickness="1" Background="{DynamicResource MainBackgroundBrushServer}" CornerRadius="14,14,14,14"/>
+            <Border BorderThickness="1" HorizontalAlignment="Center" Height="30" Margin="0,6,0,0" VerticalAlignment="Top" Width="234" CornerRadius="8,8,8,8">
+                <Label x:Name="TitleManegerAccountType" Content="Офлайн акаунт" HorizontalAlignment="Center" Height="66" VerticalAlignment="Center" Width="290" Background="{x:Null}" Foreground="{DynamicResource MainForegroundBrush}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="14"/>
+            </Border>
+            <Border x:Name="CreateAccount_Offline" BorderThickness="1" Background="{DynamicResource MainBackgroundButton}" CornerRadius="14,14,14,14" Margin="10,105,12,10" Cursor="Hand" MouseDown="CreateAccount_Offline_MouseDown">
+                <Label x:Name="TitleManegerAccountType_Копировать" Content="Створити" HorizontalAlignment="Center" Height="66" VerticalAlignment="Top" Width="290" Background="{x:Null}" Foreground="{DynamicResource MainForegroundBrush}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="14" Margin="0,-19,0,0"/>
+            </Border>
+            <ui:TextBox x:Name="NameNikManeger" PlaceholderText="Нік..." IconPlacement="Left" Icon="{ui:SymbolIcon ContactCard48}" RenderOptions.BitmapScalingMode="HighQuality" HorizontalAlignment="Center" Height="30" TextWrapping="Wrap" VerticalAlignment="Top" Width="234" Background="{DynamicResource MainBackgroundBrush}" SelectionBrush="{DynamicResource MainForegroundBrush}" Foreground="{DynamicResource MainForegroundBrush}" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" BorderBrush="{x:Null}" CaretBrush="{DynamicResource MainForegroundBrush}" Margin="0,47,0,0" FontSize="12"/>
+        </Grid>
+        <Grid x:Name="GirdLittleSkinMode" HorizontalAlignment="Center" Height="206" VerticalAlignment="Center" Width="256" Visibility="Hidden">
+            <Border x:Name="PanelOffline1" BorderThickness="1" Background="{DynamicResource MainBackgroundBrushServer}" CornerRadius="14,14,14,14"/>
+            <Border BorderThickness="1" HorizontalAlignment="Center" Height="30" Margin="0,6,0,0" VerticalAlignment="Top" Width="234" CornerRadius="8,8,8,8">
+                <Label x:Name="TitleManegerAccountType1" Content="LittleSkin акаунт" HorizontalAlignment="Center" Height="66" VerticalAlignment="Center" Width="290" Background="{x:Null}" Foreground="{DynamicResource MainForegroundBrush}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="14"/>
+            </Border>
+            <Border x:Name="LoginAccountLittleSkin" BorderThickness="1" Background="{DynamicResource MainBackgroundButton}" CornerRadius="14,14,14,14" Margin="11,164,11,10" Cursor="Hand" MouseDown="LoginAccountLittleSkin_MouseDown">
+                <Label x:Name="TitleManegerAccountType_Копировать2" Content="Увійти" HorizontalAlignment="Center" Height="66" VerticalAlignment="Top" Width="290" Background="{x:Null}" Foreground="{DynamicResource MainForegroundBrush}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="14" Margin="0,-19,0,0"/>
+            </Border>
+            <ui:HyperlinkButton x:Name="NoAccount_" Icon="{ui:SymbolIcon PersonQuestionMark24}" RenderOptions.BitmapScalingMode="HighQuality" NavigateUri="https:
+                                littleskin.cn/auth/register" Content="Немає акаунту?" HorizontalAlignment="Left" Margin="14,137,0,0" VerticalAlignment="Top" Width="231" Height="27" FontSize="12" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontFamily="Inter 18pt 18pt" Foreground="#FF3100FF" FontWeight="Bold" Cursor="Hand" Background="{x:Null}" BorderBrush="{x:Null}"/>
+            <ui:PasswordBox x:Name="PasswordLittleSkin" PlaceholderText="Пароль..." 
+                Height="35" 
+                Foreground="{DynamicResource MainForegroundBrush}"
+                BorderBrush="{x:Null}" 
+                CaretBrush="{DynamicResource MainForegroundBrush}" 
+                Margin="11,97,11,74" 
+                FontSize="12" Background="{DynamicResource MainBackgroundBrush}"
+                            Icon="{ui:SymbolIcon Password24}"/>
+            <ui:TextBox x:Name="Login_LittleSkin" IconPlacement="Left" PlaceholderText="Пошта..." Icon="{ui:SymbolIcon ContactCard48}" HorizontalAlignment="Center" Height="35" TextWrapping="Wrap" VerticalAlignment="Top" Width="234" Background="{DynamicResource MainBackgroundBrush}" SelectionBrush="{DynamicResource MainForegroundBrush}" Foreground="{DynamicResource MainForegroundBrush}" VerticalContentAlignment="Center" BorderBrush="{x:Null}" CaretBrush="{DynamicResource MainForegroundBrush}" Margin="0,52,0,0" FontSize="12"/>
+        </Grid>
+        <Grid x:Name="GirdOnlineMode" HorizontalAlignment="Center" Height="90" VerticalAlignment="Top" Width="256" Margin="0,236,0,0" Visibility="Hidden">
+            <Border x:Name="PanelOnline" BorderThickness="1" Background="{DynamicResource MainBackgroundBrushServer}" CornerRadius="14,14,14,14"/>
+            <Border BorderThickness="1" HorizontalAlignment="Center" Height="30" Margin="0,11,0,0" VerticalAlignment="Top" Width="234" CornerRadius="8,8,8,8">
+                <Label x:Name="TitleManegerAccountType2" Content="Microsoft-онлайн акаунт" HorizontalAlignment="Center" Height="66" VerticalAlignment="Center" Width="290" Background="{x:Null}" Foreground="{DynamicResource MainForegroundBrush}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="14"/>
+            </Border>
+            <Border x:Name="CreateAccount_Online" BorderThickness="1" Background="{DynamicResource MainBackgroundButton}" CornerRadius="14,14,14,14" Margin="11,46,11,15" Cursor="Hand" MouseDown="MicrosoftLoginButton_Click">
+                <Label x:Name="TitleManegerAccountType_Копировать1" Content="Увійти" HorizontalAlignment="Center" Height="66" VerticalAlignment="Top" Width="290" Background="{x:Null}" Foreground="{DynamicResource MainForegroundBrush}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="14" Margin="0,-19,0,0" Cursor="Hand"/>
+            </Border>
+        </Grid>
+        <Grid x:Name="GirdSelectAccountType" HorizontalAlignment="Center" Height="63" Margin="0,81,0,0" VerticalAlignment="Top" Width="260" Visibility="Hidden">
+            <Border x:Name="SelectTypeAccountPanel" BorderThickness="1" HorizontalAlignment="Left" Height="59" Margin="3,4,0,0" VerticalAlignment="Top" Width="256" CornerRadius="8,8,8,8" Background="{DynamicResource MainBackgroundBrushServer}"/>
+            <Image x:Name="MicrosoftAccount" RenderOptions.BitmapScalingMode="HighQuality" HorizontalAlignment="Left" Height="36" Margin="66,0,0,0" VerticalAlignment="Center" Width="37" Source="/Assets/microsoft logo.png" MouseDown="MicrosoftAccount_MouseDown" Cursor="Hand" Stretch="Fill"/>
+            <Image x:Name="OfflineAccount" RenderOptions.BitmapScalingMode="HighQuality" HorizontalAlignment="Left" Height="36" VerticalAlignment="Center" Width="37" Source="/Assets/big-steve-face-2002298922 2.png" Stretch="Fill" MouseDown="OfflineAccount_MouseDown" Cursor="Hand" Margin="108,0,0,0"/>
+            <Image x:Name="LittleSkinAccount" RenderOptions.BitmapScalingMode="HighQuality" HorizontalAlignment="Left" Height="36" Margin="150,0,0,0" VerticalAlignment="Center" Width="37" Source="/Assets/LittleSkinAccount.png" Stretch="Fill" MouseDown="LittleSkinAccount_MouseDown" Cursor="Hand"/>
+        </Grid>
+        <Grid AllowDrop="True" 
+      x:Name="MainGirdDropFile" 
+      Margin="0,16,0,0" 
+      Background="Transparent" Visibility="Hidden">
+
+            <Border Visibility="{DynamicResource GlassVisibility}">
+                <Border.Background>
+                    <VisualBrush Visual="{Binding ElementName=MainBackgroundContainer}" Stretch="None"/>
+                </Border.Background>
+                <Border.Effect>
+                    <BlurEffect Radius="{DynamicResource GlassBlurRadius}"/>
+                </Border.Effect>
+            </Border>
+            <Border CornerRadius="12" Background="{DynamicResource GlassTintBrush}"/>
+
+            <Border Background="{DynamicResource GlassTintBrush}" Opacity="0.6"/>
+
+            <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+
+                <Border x:Name="BorderFileDropBorder" 
+                Width="500" 
+                MinHeight="320"
+                BorderBrush="{DynamicResource MainForegroundBrush}" 
+                BorderThickness="2" 
+                Background="{DynamicResource MainBackgroundBrushServer}" 
+                CornerRadius="20">
+                    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Margin="20">
+
+                        <Image Source="/Assets/upload_1000dp_B7B7B7_FILL0_wght400_GRAD0_opsz48.png" 
+                       Height="120" 
+                       Width="120" 
+                       Stretch="Uniform"
+                       HorizontalAlignment="Center"
+                       Margin="0,0,0,20"/>
+                        <TextBlock Text="Перекиньте сюди файл (.jar, .zip, .rar)&#x0a;для модів, ресурс-паків, шейдерів." 
+                           TextWrapping="Wrap" 
+                           TextAlignment="Center"
+                           FontSize="20" 
+                           FontFamily="Inter"
+                           Foreground="{DynamicResource MainForegroundBrush}"
+                           HorizontalAlignment="Center"/>
+
+                        <Label Content="(або натисніть щоб обрати)" 
+                       HorizontalAlignment="Center" 
+                       FontSize="14" 
+                       Opacity="0.7" 
+                       Margin="0,10,0,0"
+                       Foreground="{DynamicResource MainForegroundBrush}"/>
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </Grid>
+        <Grid x:Name="TutorialGrid" Margin="0,16,0,0" Visibility="Hidden">
+
+            <Border Visibility="{DynamicResource GlassVisibility}">
+                <Border.Background>
+                    <VisualBrush Visual="{Binding ElementName=MainBackgroundContainer}" Stretch="None"/>
+                </Border.Background>
+                <Border.Effect>
+                    <BlurEffect Radius="{DynamicResource GlassBlurRadius}"/>
+                </Border.Effect>
+            </Border>
+            <Border CornerRadius="12" Background="{DynamicResource GlassTintBrush}"/>
+
+            <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Width="800" Height="450">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Image Grid.Column="0"  
+               Height="400" 
+               VerticalAlignment="Bottom" 
+               RenderOptions.BitmapScalingMode="HighQuality"
+               Margin="0,0,-50,-40" 
+               Panel.ZIndex="1"/>
+
+                <Border Grid.Column="1" 
+                x:Name="TutorialBorder" 
+                Background="{DynamicResource MainBackgroundBrushServer}" 
+                BorderThickness="1"
+                CornerRadius="20" 
+                Margin="20,0,0,100"
+                VerticalAlignment="Center"
+                Padding="20">
+
+                    <Border.Effect>
+                        <DropShadowEffect ShadowDepth="5" BlurRadius="20" Opacity="0.4" Direction="315"/>
+                    </Border.Effect>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <StackPanel>
+                            <Label Content="Привіт, я Сіель!" 
+                           FontSize="24" FontWeight="Bold" 
+                           Foreground="{DynamicResource MainForegroundBrush}" 
+                           FontFamily="Inter 18pt 18pt" 
+                           HorizontalAlignment="Left"/>
+
+                            <TextBlock x:Name="QuestionTXT" 
+                               Text="Я підготувала для тебе детальну документацію по лаунчеру. Хочеш поглянути?" 
+                               TextWrapping="Wrap" 
+                               FontSize="18" 
+                               Foreground="{DynamicResource MainForegroundBrush}" 
+                               Opacity="0.9"
+                               Margin="5,10,5,20"
+                               FontFamily="Inter 18pt 18pt"/>
+                        </StackPanel>
+
+                        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
+                            <ui:Button x:Name="NoQuestionTutorialButton" 
+                               Content="Ні, дякую" 
+                               Appearance="Secondary" 
+                               Width="120" Height="40"
+                               Click="NoQuestionTutorialButton_MouseDown"
+                               Cursor="Hand" Margin="0,0,10,0" Background="{DynamicResource MainBackgroundButton}" Foreground="{DynamicResource MainForegroundBrush}" BorderBrush="{x:Null}"/>
+
+                            <ui:Button x:Name="YesQuestionTutorialButton" 
+                               Content="Так, давай!" 
+                               Appearance="Primary" 
+                               Icon="BookOpen24" 
+                               Width="150" Height="40"
+                               Click="YesQuestionTutorialButton_MouseDown"
+                               Cursor="Hand" BorderBrush="{x:Null}" Foreground="{DynamicResource MainForegroundBrush}" Background="{DynamicResource MainBackgroundButton}"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+            </Grid>
+        </Grid>
+        <Grid x:Name="SelectCreatePackMinecraft" Width="330" Height="258" Margin="315,142,315,142" Visibility="Hidden">
+            <Border x:Name="SelectCreatePackMinecraftBorder" BorderThickness="1" Background="{DynamicResource MainBackgroundBrushServer}" CornerRadius="14,14,14,14"/>
+            <Border x:Name="SelectModPack"
+        Width="150" Height="150"
+        Margin="15,51,165,57"
+        Background="{DynamicResource MainBackgroundButton}"
+        BorderThickness="1" CornerRadius="8">
+                <Border.RenderTransform>
+                    <MatrixTransform x:Name="matrixTransform"/>
+                </Border.RenderTransform>
+            </Border>
+            <Image x:Name="VanilaPackIcon" HorizontalAlignment="Left" Height="106" Margin="37,65,0,0" VerticalAlignment="Top" Width="106" Source="/Assets/VanilaVersion.png" Stretch="Fill" MouseDown="VanilaPackIcon_MouseDown" Cursor="Hand"/>
+            <Image x:Name="ModPackIcon" HorizontalAlignment="Left" Height="106" Margin="184,65,0,0" VerticalAlignment="Top" Width="106" Source="/Assets/CustomVersion.png" Stretch="Fill" MouseDown="ModPackIcon_MouseDown" Cursor="Hand"/>
+            <Label x:Name="VanilaPackTxt" Content="Ванільна збірка" HorizontalAlignment="Left" Height="30" Margin="15,171,0,0" VerticalAlignment="Top" Width="150" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontFamily="Inter 18pt 18pt"/>
+            <Label x:Name="ModPackTxt" Content="Модова збірка" HorizontalAlignment="Left" Height="30" Margin="170,171,0,0" VerticalAlignment="Top" Width="150" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontFamily="Inter 18pt 18pt"/>
+            <Border x:Name="TitleBorderPack" BorderThickness="1" HorizontalAlignment="Center" Height="30" Margin="0,3,0,0" VerticalAlignment="Top" Width="318" CornerRadius="8,8,8,8" Background="{DynamicResource MainBackgroundBrush}">
+                <Label x:Name="TitleManegerCollection" Content="Створення збірки" HorizontalAlignment="Center" Height="30" VerticalAlignment="Center" Width="214" Background="{x:Null}" Foreground="{DynamicResource MainForegroundBrush}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="14" FontFamily="Inter 18pt 18pt"/>
+            </Border>
+            <Border x:Name="BorderCountionCreatePack" BorderThickness="1" HorizontalAlignment="Center" Height="30" Margin="0,224,0,0" VerticalAlignment="Top" Width="318" CornerRadius="8,8,8,8" Background="{DynamicResource MainBackgroundBrush}" MouseDown="BorderCountionCreatePack_MouseDown" Cursor="Hand">
+                <Label x:Name="TitleManegerCollection1" Content="Продовжити" HorizontalAlignment="Center" Height="30" VerticalAlignment="Center" Width="214" Background="{x:Null}" Foreground="{DynamicResource MainForegroundBrush}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="14" FontFamily="Inter 18pt 18pt" Cursor="Hand"/>
+            </Border>
+        </Grid>
+        <ui:SnackbarPresenter x:Name="SnackbarPresenter" 
+                      VerticalAlignment="Top"
+                      Margin="185,400,200,0" Height="142" RenderTransformOrigin="0.5,0.5" >
+            <ui:SnackbarPresenter.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform ScaleY="1"/>
+                    <SkewTransform/>
+                    <RotateTransform/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </ui:SnackbarPresenter.RenderTransform>
+        </ui:SnackbarPresenter>
+        <Grid x:Name="TutorialOverlay" Panel.ZIndex="999" Visibility="Hidden">
+
+            <Path Fill="#CC000000" Stretch="None" HorizontalAlignment="Left" VerticalAlignment="Top">
+                <Path.Data>
+                    <CombinedGeometry GeometryCombineMode="Exclude">
+                        <CombinedGeometry.Geometry1>
+                            <RectangleGeometry x:Name="OverlayScreenRect" Rect="0,0,2000,2000" />
+                        </CombinedGeometry.Geometry1>
+
+                        <CombinedGeometry.Geometry2>
+                            <RectangleGeometry x:Name="OverlayHoleRect" Rect="0,0,0,0" RadiusX="5" RadiusY="5"/>
+                        </CombinedGeometry.Geometry2>
+                    </CombinedGeometry>
+                </Path.Data>
+            </Path>
+
+            <Border x:Name="TutorialMessageParams" 
+        HorizontalAlignment="Left" VerticalAlignment="Top"
+        Background="White" CornerRadius="8" Padding="15" 
+        Width="300">
+                <Border.Effect>
+                    <DropShadowEffect Color="Black" Direction="315" ShadowDepth="5" BlurRadius="15" Opacity="0.4" />
+                </Border.Effect>
+
+                <ScrollViewer VerticalScrollBarVisibility="Auto" BorderThickness="0" Padding="0,0,5,0">
+                    <StackPanel>
+                        <TextBlock Text="Довідка тут!" FontWeight="Bold" FontSize="16" Foreground="Black" Margin="0,0,0,5"/>
+                        <TextBlock x:Name="TutorialBodyText" 
+                       Text="Якщо що, я (документація) завжди поряд з вами! Звертайтесь, якщо потрібно, натиснувши на цю кнопку. &quot;Інформація&quot;&gt;&quot;Документація&quot;" 
+                       TextWrapping="Wrap" Foreground="#555" Margin="0,0,0,15"/>
+
+                        <ui:Button Content="Зрозуміло, далі" Click="CloseTutorial_Click" 
+                    HorizontalAlignment="Right" Padding="15,5" Background="{DynamicResource MainBackgroundButton}" Foreground="{DynamicResource MainForegroundBrush}" BorderBrush="{x:Null}" PressedForeground="{DynamicResource MainForegroundBrush}" Appearance="Info"/>
+                    </StackPanel>
+                </ScrollViewer>
+            </Border>
+        </Grid>
+    </Grid>
+</ui:FluentWindow>

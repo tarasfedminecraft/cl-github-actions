@@ -1,0 +1,24 @@
+﻿<UserControl x:Name="Control" x:Class="CL_CLegendary_Launcher_.Windows.ItemNews"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:CL_CLegendary_Launcher_.Windows"
+             mc:Ignorable="d" Height="120" Width="245" Cursor="Hand">
+    <Grid x:Name="MainGird">
+        <Border x:Name="BG" BorderThickness="1" Background="{DynamicResource MainBackgroundBrushServer}" CornerRadius="12,12,12,12"/>
+        <Border x:Name="BGUpdate" BorderThickness="1" Margin="2,0,0,50" CornerRadius="14,14,14,14">
+            <Image x:Name="ImageNews" HorizontalAlignment="Left" Height="71" VerticalAlignment="Top" Width="242" Source="https://media.discordapp.net/attachments/1195494215262687353/1366028204854214718/4dfc0f3658375dfd50cf9420e0608145.jpg?ex=680f7467&amp;is=680e22e7&amp;hm=83e90689d1eb5d6db58b87237485e0d9fb47cf097cd12af941db6bd9bb8a9f55&amp;=&amp;format=webp&amp;width=920&amp;height=518" Stretch="UniformToFill" Margin="1,-1,0,0" RenderTransformOrigin="0.5,0.5">
+                <Image.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform/>
+                        <SkewTransform AngleY="0.05"/>
+                        <RotateTransform/>
+                        <TranslateTransform Y="0.099"/>
+                    </TransformGroup>
+                </Image.RenderTransform>
+            </Image>
+        </Border>
+        <Label x:Name="TitleUpdate" Content="Label" HorizontalAlignment="Center" Height="50" Margin="0,70,0,0" VerticalAlignment="Top" Width="245" Background="{x:Null}" Foreground="{DynamicResource MainBorderBrush}" VerticalContentAlignment="Center"/>
+    </Grid>
+</UserControl>

@@ -1,0 +1,79 @@
+﻿<ui:FluentWindow x:Class="CL_CLegendary_Launcher_.Windows.GameLog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CL_CLegendary_Launcher_.Windows"
+        mc:Ignorable="d"
+        Title="GameLog" Height="279" Width="303" 
+        WindowStyle="None" Background="{x:Null}" 
+        Foreground="{DynamicResource MainForegroundBrush}" 
+        FontFamily="Inter 18pt 18pt" 
+        ResizeMode="NoResize"     
+        ExtendsContentIntoTitleBar="True"
+        WindowBackdropType="Mica" Icon="/Icon/IconCL(Winter).ico">
+
+    <Grid x:Name="GridMain">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Border x:Name="BorderTool" Grid.Row="0"
+                BorderThickness="0,0,0,1" 
+                BorderBrush="#33FFFFFF"
+                Height="24" 
+                VerticalAlignment="Top" 
+                HorizontalAlignment="Stretch" 
+                Background="{DynamicResource MainBackgroundBrushServer}" 
+                CornerRadius="0" 
+                MouseDown="BorderTool_MouseDown">
+
+            <Grid>
+                <TextBlock x:Name="NameWin" 
+                           Text="GameLog - Minecraft" 
+                           HorizontalAlignment="Center" 
+                           VerticalAlignment="Center" 
+                           Foreground="{DynamicResource MainForegroundBrush}" 
+                           FontSize="10"
+                           IsHitTestVisible="False"/>
+                <Grid HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,5,0">
+                    <Border x:Name="BordrExitTXT"
+                            Background="#FFC50808"
+                            Width="14" Height="14"
+                            CornerRadius="7"
+                            Visibility="Hidden"/>
+
+                    <TextBlock x:Name="ExitTXT" Text="✕"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               FontSize="10"
+                               FontWeight="Bold"
+                               Foreground="{DynamicResource MainForegroundBrush}"
+                               Cursor="Hand"
+                               MouseDown="ExitLauncher_MouseDown"
+                               MouseEnter="ExitLauncher_MouseEnter"
+                               MouseLeave="ExitLauncher_MouseLeave"/>
+                </Grid>
+            </Grid>
+        </Border>
+
+        <TextBox x:Name="GameLogTXTMincraft" 
+                 Grid.Row="1"
+                 HorizontalAlignment="Stretch" 
+                 VerticalAlignment="Stretch" 
+                 Margin="0"
+                 TextWrapping="Wrap" 
+                 Background="{DynamicResource MainBackgroundBrush}" 
+                 CaretBrush="#FFBAB4B4" 
+                 Foreground="{DynamicResource MainForegroundBrush}" 
+                 SelectionBrush="#FF0F57C9" 
+                 SelectionTextBrush="#FF0F57C9" 
+                 FontFamily="Inter 18pt 18pt" 
+                 FontSize="12"
+                 IsReadOnly="True" 
+                 BorderBrush="{x:Null}"
+                 VerticalScrollBarVisibility="Auto"/>
+    </Grid>
+</ui:FluentWindow>

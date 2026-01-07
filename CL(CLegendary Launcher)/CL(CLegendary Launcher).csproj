@@ -1,0 +1,355 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup Label="Globals">
+    <WebView2DispatchAdapterUseJavaScriptCase>False</WebView2DispatchAdapterUseJavaScriptCase>
+    <WebView2EnableCsWinRTProjection>False</WebView2EnableCsWinRTProjection>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows10.0.26100.0</TargetFramework>
+    <RootNamespace>CL_CLegendary_Launcher_</RootNamespace>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+    <ApplicationIcon>Icon\IconCL(Winter).ico</ApplicationIcon>
+    <UseWindowsForms>true</UseWindowsForms>
+    <FileVersion>0.7.0.7</FileVersion>
+    <AssemblyVersion>0.7.0.7</AssemblyVersion>
+    <PackageIcon></PackageIcon>
+    <Copyright></Copyright>
+    <NeutralLanguage>uk-UA</NeutralLanguage>
+    <SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
+    <GenerateDocumentationFile>False</GenerateDocumentationFile>
+    <SignAssembly>False</SignAssembly>
+    <DelaySign>False</DelaySign>
+    <AssemblyOriginatorKeyFile></AssemblyOriginatorKeyFile>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <Optimize>True</Optimize>
+    <FileAlignment>2048</FileAlignment>
+    <PublishSingleFile>true</PublishSingleFile>
+    <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract> 
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <FileAlignment>2048</FileAlignment>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <AdditionalFiles Remove="app.manifest" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Assets\1200-818013157 1.png" />
+    <None Remove="Assets\add_1000dp_B7B7B7_FILL0_wght700_GRAD200_opsz48.png" />
+    <None Remove="Assets\big-steve-face-2002298922 2.png" />
+    <None Remove="Assets\bug_report_1000dp_E8EAED_FILL0_wght400_GRAD0_opsz48.png" />
+    <None Remove="Assets\CobblestoneIconAlpha.png" />
+    <None Remove="Assets\curseforge-logo-3499974474.png" />
+    <None Remove="Assets\CustomVersion.png" />
+    <None Remove="Assets\DarkThem.png" />
+    <None Remove="Assets\DarkThemBG.png" />
+    <None Remove="Assets\delete_1000dp_E8EAED_FILL0_wght400_GRAD0_opsz48.png" />
+    <None Remove="Assets\DirtIconSnapshot.png" />
+    <None Remove="Assets\download_1000dp_D9D9D9_FILL0_wght400_GRAD0_opsz48.png" />
+    <None Remove="Assets\faArrowRotateBack.png" />
+    <None Remove="Assets\fabric.png" />
+    <None Remove="Assets\folder-solid.png" />
+    <None Remove="Assets\ForgeIcon.jpg" />
+    <None Remove="Assets\gear-solid.png" />
+    <None Remove="Assets\history_1000dp_FFFFFF_FILL0_wght400_GRAD0_opsz48.png" />
+    <None Remove="Assets\IconCL%28Halloween%29.png" />
+    <None Remove="Assets\IconNeoForge.png" />
+    <None Remove="Assets\IconOptiFine.png" />
+    <None Remove="Assets\images.png" />
+    <None Remove="Assets\keyboard_arrow_down_100dp_E8EAED_FILL0_wght400_GRAD0_opsz48.png" />
+    <None Remove="Assets\LightThem.png" />
+    <None Remove="Assets\LightThemBG.png" />
+    <None Remove="Assets\LittleSkinAccount.png" />
+    <None Remove="Assets\microsoft logo.png" />
+    <None Remove="Assets\newspaper_1000dp_E8EAED_FILL0_wght400_GRAD0_opsz48.png" />
+    <None Remove="Assets\person_1000dp_FFFFFF_FILL0_wght400_GRAD0_opsz48.png" />
+    <None Remove="Assets\search.png" />
+    <None Remove="Assets\server-solid.png" />
+    <None Remove="Assets\SettingReset.png" />
+    <None Remove="Assets\Snow.png" />
+    <None Remove="Assets\Steve.obj" />
+    <None Remove="Assets\StoneIconBeta.png" />
+    <None Remove="Assets\toggle %281%29.png" />
+    <None Remove="Assets\toggle %282%29.png" />
+    <None Remove="Assets\upload_1000dp_B7B7B7_FILL0_wght400_GRAD0_opsz48.png" />
+    <None Remove="Assets\upload_file_1000dp_FFFFFF_FILL0_wght400_GRAD0_opsz48.png" />
+    <None Remove="Assets\VanilaVersion.png" />
+    <None Remove="Assets\Vector %281%29.png" />
+    <None Remove="Assets\Vector %282%29.png" />
+    <None Remove="Assets\Vector.png" />
+    <None Remove="Assets\youtube_activity_1000dp_B7B7B7_FILL0_wght700_GRAD200_opsz48.png" />
+    <None Remove="Assets\СMD.png" />
+    <None Remove="C:\Users\Vlad\.nuget\packages\naudio.vorbis\1.5.0\contentFiles\any\netstandard2.0\README.md" />
+    <None Remove="curseforge-logo 1.png" />
+    <None Remove="curseforge-logo 2.png" />
+    <None Remove="editorconfig" />
+    <None Remove="EnterEmail.png" />
+    <None Remove="faArrowRotateBack.png" />
+    <None Remove="folder-solid.png" />
+    <None Remove="ForgeIcon.png" />
+    <None Remove="gear-solid.png" />
+    <None Remove="Icon\IconCL%28Common%29.ico" />
+    <None Remove="Icon\IconCL%28Common%29.png" />
+    <None Remove="Icon\IconCL%28Halloween%29.png" />
+    <None Remove="keyboard_arrow_down_100dp_E8EAED_FILL0_wght400_GRAD0_opsz48.png" />
+    <None Remove="LoginPlese.png" />
+    <None Remove="MincrosoftIcon.png" />
+    <None Remove="OfflineIcon.png" />
+    <None Remove="PasswordPles.png" />
+    <None Remove="pling.wav" />
+    <None Remove="RelesedBlock.png" />
+    <None Remove="Resources\OfflineIconDeafult.png" />
+    <None Remove="Resources\snowflake.png" />
+    <None Remove="search.png" />
+    <None Remove="server-solid.png" />
+    <None Remove="Windows\0420.gif" />
+    <None Remove="Windows\1200-818013157 1.png" />
+    <None Remove="Windows\add_1000dp_B7B7B7_FILL0_wght700_GRAD200_opsz48.png" />
+    <None Remove="Windows\AutumnFonLight.png" />
+    <None Remove="Windows\big-steve-face-2002298922 2.png" />
+    <None Remove="Windows\bug_report_1000dp_E8EAED_FILL0_wght400_GRAD0_opsz48.png" />
+    <None Remove="Windows\curseforge-logo-3499974474.png" />
+    <None Remove="Windows\CustomVersion.png" />
+    <None Remove="Windows\DarkThem.png" />
+    <None Remove="Windows\delete_1000dp_E8EAED_FILL0_wght400_GRAD0_opsz48.png" />
+    <None Remove="Windows\download_1000dp_D9D9D9_FILL0_wght400_GRAD0_opsz48.png" />
+    <None Remove="Windows\faArrowRotateBack.png" />
+    <None Remove="Windows\fabric.png" />
+    <None Remove="Windows\folder-solid.png" />
+    <None Remove="Windows\ForgeIcon.jpg" />
+    <None Remove="Windows\Frame_73.png" />
+    <None Remove="Windows\gear-solid.png" />
+    <None Remove="Windows\history_1000dp_FFFFFF_FILL0_wght400_GRAD0_opsz48.png" />
+    <None Remove="Windows\IconCL%28Halloween%29.png" />
+    <None Remove="Windows\IconNeoForge.png" />
+    <None Remove="Windows\IconOptiFine.png" />
+    <None Remove="Windows\images.png" />
+    <None Remove="Windows\InfoIcon.png" />
+    <None Remove="Windows\LightThem.png" />
+    <None Remove="Windows\LittleSkinAccount.png" />
+    <None Remove="Windows\LoadScreenAutumn.gif" />
+    <None Remove="Windows\microsoft logo.png" />
+    <None Remove="Windows\newspaper_1000dp_E8EAED_FILL0_wght400_GRAD0_opsz48.png" />
+    <None Remove="Windows\person_1000dp_FFFFFF_FILL0_wght400_GRAD0_opsz48.png" />
+    <None Remove="Windows\server-solid.png" />
+    <None Remove="Windows\SettingReset.png" />
+    <None Remove="Windows\Snow.png" />
+    <None Remove="Windows\SummerLightBG.png" />
+    <None Remove="Windows\SummerNightBG.png" />
+    <None Remove="Windows\toggle %281%29.png" />
+    <None Remove="Windows\toggle %282%29.png" />
+    <None Remove="Windows\upload_1000dp_B7B7B7_FILL0_wght400_GRAD0_opsz48.png" />
+    <None Remove="Windows\upload_file_1000dp_FFFFFF_FILL0_wght400_GRAD0_opsz48.png" />
+    <None Remove="Windows\VanilaVersion.png" />
+    <None Remove="Windows\Vector %281%29.png" />
+    <None Remove="Windows\Vector %282%29.png" />
+    <None Remove="Windows\Vector.png" />
+    <None Remove="Windows\youtube_activity_1000dp_B7B7B7_FILL0_wght700_GRAD200_opsz48.png" />
+    <None Remove="СMD.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Icon\IconCL(Winter).ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Assets\CobblestoneIconAlpha.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Assets\1200-818013157 1.png" />
+    <Resource Include="Assets\add_1000dp_B7B7B7_FILL0_wght700_GRAD200_opsz48.png" />
+    <Resource Include="Assets\big-steve-face-2002298922 2.png" />
+    <Resource Include="Assets\bug_report_1000dp_E8EAED_FILL0_wght400_GRAD0_opsz48.png" />
+    <Resource Include="Assets\curseforge-logo-3499974474.png" />
+    <Resource Include="Assets\CustomVersion.png" />
+    <Resource Include="Assets\DarkThem.png" />
+    <Resource Include="Assets\DarkThemBG.png" />
+    <Resource Include="Assets\delete_1000dp_E8EAED_FILL0_wght400_GRAD0_opsz48.png" />
+    <Resource Include="Assets\DirtIconSnapshot.png" />
+    <Resource Include="Assets\download_1000dp_D9D9D9_FILL0_wght400_GRAD0_opsz48.png" />
+    <Resource Include="Assets\faArrowRotateBack.png" />
+    <Resource Include="Assets\fabric.png" />
+    <Resource Include="Assets\folder-solid.png" />
+    <Resource Include="Assets\ForgeIcon.jpg" />
+    <Resource Include="Assets\gear-solid.png" />
+    <Resource Include="Assets\history_1000dp_FFFFFF_FILL0_wght400_GRAD0_opsz48.png" />
+    <Resource Include="Assets\IconCL(Halloween).png" />
+    <Resource Include="Assets\IconNeoForge.png" />
+    <Resource Include="Assets\IconOptiFine.png" />
+    <Resource Include="Assets\images.png" />
+    <Resource Include="Assets\keyboard_arrow_down_100dp_E8EAED_FILL0_wght400_GRAD0_opsz48.png" />
+    <Resource Include="Assets\LightThem.png" />
+    <Resource Include="Assets\LightThemBG.png" />
+    <Resource Include="Assets\LittleSkinAccount.png" />
+    <Resource Include="Assets\microsoft logo.png" />
+    <Resource Include="Assets\newspaper_1000dp_E8EAED_FILL0_wght400_GRAD0_opsz48.png" />
+    <Resource Include="Assets\person_1000dp_FFFFFF_FILL0_wght400_GRAD0_opsz48.png" />
+    <Resource Include="Assets\search.png" />
+    <Resource Include="Assets\server-solid.png" />
+    <Resource Include="Assets\SettingReset.png" />
+    <Resource Include="Assets\Snow.png" />
+    <Resource Include="Assets\StoneIconBeta.png" />
+    <Resource Include="Assets\toggle (1).png" />
+    <Resource Include="Assets\toggle (2).png" />
+    <Resource Include="Assets\upload_1000dp_B7B7B7_FILL0_wght400_GRAD0_opsz48.png" />
+    <Resource Include="Assets\upload_file_1000dp_FFFFFF_FILL0_wght400_GRAD0_opsz48.png" />
+    <Resource Include="Assets\VanilaVersion.png" />
+    <Resource Include="Assets\Vector (1).png" />
+    <Resource Include="Assets\Vector (2).png" />
+    <Resource Include="Assets\Vector.png" />
+    <Resource Include="Assets\youtube_activity_1000dp_B7B7B7_FILL0_wght700_GRAD200_opsz48.png" />
+    <Resource Include="Assets\СMD.png" />
+    <Resource Include="Icon\IconCL(Halloween).ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CmlLib.Core" Version="4.0.6" />
+    <PackageReference Include="CmlLib.Core.Auth.Microsoft" Version="3.3.1" />
+    <PackageReference Include="CmlLib.Core.Installer.Forge" Version="1.1.1" />
+    <PackageReference Include="CmlLib.Core.Installer.NeoForge" Version="4.0.0" />
+    <PackageReference Include="CurseForge.APIClient" Version="4.2.0" />
+    <PackageReference Include="DiscordRichPresence" Version="1.6.1.70" />
+    <PackageReference Include="HtmlAgilityPack" Version="1.12.4" />
+    <PackageReference Include="MCQuery" Version="2022.7.13.192844" />
+    <PackageReference Include="Microsoft.Net.Sdk.Compilers.Toolset" Version="10.0.101" />
+    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.3650.58" />
+    <PackageReference Include="MojangAPI" Version="1.2.1" />
+    <PackageReference Include="NAudio" Version="2.2.1" />
+    <PackageReference Include="NAudio.Vorbis" Version="1.5.0" />
+    <PackageReference Include="Optifine.Installer" Version="1.0.1" />
+    <PackageReference Include="RestSharp" Version="113.0.0" />
+    <PackageReference Include="SharpCompress" Version="0.42.1" />
+    <PackageReference Include="System.Management" Version="10.0.1" />
+    <PackageReference Include="WPF-UI" Version="4.1.0" />
+    <PackageReference Include="WpfAnimatedGif" Version="2.0.2" />
+    <PackageReference Include="XamlAnimatedGif" Version="2.3.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="CmlLib.Core.Auth.Microsoft">
+      <HintPath>bin\Release\3.3.9\net7.0-windows\Lib\CmlLib.Core.Auth.Microsoft.dll</HintPath>
+    </Reference>
+    <Reference Include="CmlLib.Core.Installer.Forge">
+      <HintPath>bin\Release\3.3.9\net7.0-windows\Lib\CmlLib.Core.Installer.Forge.dll</HintPath>
+    </Reference>
+    <Reference Include="HtmlAgilityPack">
+      <HintPath>bin\Release\3.3.9\net7.0-windows\HtmlAgilityPack.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib">
+      <HintPath>bin\Release\3.3.9\net7.0-windows\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
+    <Reference Include="MCQuery">
+      <HintPath>bin\Release\3.3.9\net7.0-windows\MCQuery.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Logging.Abstractions">
+      <HintPath>bin\Release\3.3.9\net7.0-windows\Microsoft.Extensions.Logging.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.WebView2.Core">
+      <HintPath>bin\Release\3.3.9\net7.0-windows\Microsoft.Web.WebView2.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="MojangAPI">
+      <HintPath>bin\Release\3.3.9\net7.0-windows\MojangAPI.dll</HintPath>
+    </Reference>
+    <Reference Include="NAudio">
+      <HintPath>bin\Release\3.3.9\net7.0-windows\NAudio.dll</HintPath>
+    </Reference>
+    <Reference Include="NAudio.Asio">
+      <HintPath>bin\Release\3.3.9\net7.0-windows\NAudio.Asio.dll</HintPath>
+    </Reference>
+    <Reference Include="NAudio.Core">
+      <HintPath>bin\Release\3.3.9\net7.0-windows\NAudio.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="NAudio.Midi">
+      <HintPath>bin\Release\3.3.9\net7.0-windows\NAudio.Midi.dll</HintPath>
+    </Reference>
+    <Reference Include="NAudio.Vorbis">
+      <HintPath>bin\Release\3.3.9\net7.0-windows\NAudio.Vorbis.dll</HintPath>
+    </Reference>
+    <Reference Include="NAudio.Wasapi">
+      <HintPath>bin\Release\3.3.9\net7.0-windows\NAudio.Wasapi.dll</HintPath>
+    </Reference>
+    <Reference Include="NAudio.WinForms">
+      <HintPath>bin\Release\3.3.9\net7.0-windows\NAudio.WinForms.dll</HintPath>
+    </Reference>
+    <Reference Include="NAudio.WinMM">
+      <HintPath>bin\Release\3.3.9\net7.0-windows\NAudio.WinMM.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>bin\Release\3.3.9\net7.0-windows\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="NVorbis">
+      <HintPath>bin\Release\3.3.9\net7.0-windows\NVorbis.dll</HintPath>
+    </Reference>
+    <Reference Include="SevenZip">
+      <HintPath>bin\Release\3.3.9\net7.0-windows\SevenZip.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpCompress">
+      <HintPath>bin\Release\3.3.9\net7.0-windows\SharpCompress.dll</HintPath>
+    </Reference>
+    <Reference Include="System.CodeDom">
+      <HintPath>bin\Release\3.3.9\net7.0-windows\System.CodeDom.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Management">
+      <HintPath>bin\Release\3.3.9\net7.0-windows\System.Management.dll</HintPath>
+    </Reference>
+    <Reference Include="WpfAnimatedGif">
+      <HintPath>bin\Release\3.3.9\net7.0-windows\WpfAnimatedGif.dll</HintPath>
+    </Reference>
+    <Reference Include="XboxAuthNet">
+      <HintPath>bin\Release\3.3.9\net7.0-windows\XboxAuthNet.dll</HintPath>
+    </Reference>
+    <Reference Include="XboxAuthNet.Game">
+      <HintPath>bin\Release\3.3.9\net7.0-windows\XboxAuthNet.Game.dll</HintPath>
+    </Reference>
+    <Reference Include="ZstdSharp">
+      <HintPath>bin\Release\3.3.9\net7.0-windows\ZstdSharp.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Icon\IconCL(Common).ico" />
+    <Resource Include="Icon\IconCL(Common).png" />
+    <Resource Include="Icon\IconCL(Halloween).png" />
+    <Resource Include="Resources\OfflineIconDeafult.png" />
+    <Resource Include="Windows\InfoIcon.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Resource2.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resource2.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Settings1.Designer.cs">
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings1.settings</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Resource2.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resource2.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Settings1.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings1.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+
+</Project>

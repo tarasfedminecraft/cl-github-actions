@@ -1,0 +1,36 @@
+﻿<UserControl x:Class="CL_CLegendary_Launcher_.Windows.ItemModPack"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:CL_CLegendary_Launcher_.Windows"
+             mc:Ignorable="d" Height="120" Width="630" FontFamily="Inter 18pt 18pt">
+    <Grid>
+        <Border x:Name="MainBordr" BorderThickness="1" HorizontalAlignment="Center" Height="120" VerticalAlignment="Center" Width="630" Background="{DynamicResource MainBackgroundBrushServer}" CornerRadius="15,15,15,15"/>
+
+        <Label x:Name="NameModPack" Content="Label" Foreground="{DynamicResource MainForegroundBrush}" Margin="110,4,10,54" Height="50" FontSize="20"/>
+        <Label x:Name="DescriptionModPack" Content="Label" Foreground="{DynamicResource MainForegroundBrush}" Margin="110,60,256,8" Height="52" FontSize="12"/>
+        <Border x:Name="BGIconModPack" BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="90" Margin="10,0,0,0" VerticalAlignment="Center" Width="90" Background="{DynamicResource MainBackgroundBrush}" CornerRadius="6,6,6,6">
+            <Image x:Name="IconModPack" Width="90" Height="90" Source="/Frame_73.ico"/>
+        </Border>
+        <Border x:Name="BorderSetting" BorderThickness="1" HorizontalAlignment="Left" Height="26" Margin="395,86,0,0" VerticalAlignment="Top" Width="113" CornerRadius="6,6,6,6" Background="{DynamicResource MainBackgroundButton}">
+            <Label x:Name="SettingTXT" Content="Налаштування" Foreground="{DynamicResource MainForegroundBrush}" Background="{x:Null}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Cursor="Hand" MouseDown="SettingTXT_MouseDown"/>
+        </Border>
+        <Border x:Name="BorderPlay" BorderThickness="1" HorizontalAlignment="Left" Height="26" Margin="513,86,0,0" VerticalAlignment="Top" Width="108" CornerRadius="6,6,6,6" Background="{DynamicResource MainBackgroundButton}">
+            <Label x:Name="PlayTXT" Content="Грати" Foreground="{DynamicResource MainForegroundBrush}" Background="{x:Null}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Cursor="Hand" MouseDown="PlayTXT_MouseDown"/>
+        </Border>
+        <Grid x:Name="GirdFon" HorizontalAlignment="Left" Height="76" Margin="395,10,0,0" VerticalAlignment="Top" Width="113" Visibility="Hidden">
+            <Border x:Name="BordrFon" BorderThickness="1" Background="{DynamicResource MainBackgroundButton}" CornerRadius="12,12,12,12"/>
+            <Border x:Name="DeleteBorder" BorderThickness="1" HorizontalAlignment="Center" Height="21" VerticalAlignment="Top" Width="103" CornerRadius="6,6,6,6" Background="{DynamicResource MainBackgroundBrushServer}" Margin="0,5,0,0">
+                <Label x:Name="DeleteTXT" Content="Видалити" Background="{x:Null}" Foreground="{DynamicResource MainForegroundBrush}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Cursor="Hand" FontSize="9"/>
+            </Border>
+            <Border x:Name="SettingBorder" BorderThickness="1" HorizontalAlignment="Center" Height="21" VerticalAlignment="Top" Width="103" CornerRadius="6,6,6,6" Background="{DynamicResource MainBackgroundBrushServer}" Margin="0,51,0,0">
+                <Label x:Name="EditModPackTXT" Content="Редагувати" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Foreground="{DynamicResource MainForegroundBrush}" Background="{x:Null}" Cursor="Hand" FontSize="9"/>
+            </Border>
+            <Border x:Name="FloderPack" BorderThickness="1" HorizontalAlignment="Center" Height="21" VerticalAlignment="Center" Width="103" CornerRadius="6,6,6,6" Background="{DynamicResource MainBackgroundBrushServer}">
+                <Label x:Name="FloderPackTXT" Content="Тека Збірки" Background="{x:Null}" Foreground="{DynamicResource MainForegroundBrush}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Cursor="Hand" FontSize="9"/>
+            </Border>
+        </Grid>
+
+    </Grid>
+</UserControl>
