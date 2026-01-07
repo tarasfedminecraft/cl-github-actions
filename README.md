@@ -1,7 +1,7 @@
 <div align="center">
 
-# CL-Launcher Code | Windows Edition
-### 🇺🇦 Open Source Minecraft Launcher
+# CL-Launcher | CL (Clegendary Launcher) Code
+### Windows Edition
 
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/WER-CORE/CL-Win-Edition--Update?style=for-the-badge&color=blue)
 ![Platform](https://img.shields.io/badge/Platform-Windows-0078D6?style=for-the-badge&logo=windows&logoColor=white)
@@ -90,3 +90,4 @@ This project uses assets and libraries from various sources. We are grateful to 
 <b>Якщо вам подобається цей проект — поставте ⭐️ (Star) цьому репозиторію!</b>
 <i>Це мотивує розвивати український софт.</i>
 </div>
+
