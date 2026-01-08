@@ -1,5 +1,6 @@
 {
   "serverstest": {
+        "nik1": {
     "bgUrl": "https://github.com/WER-CORE/CL-Win-Edition--Update/blob/main/ServerBG/FonBGServer.png?raw=true",
     "description": "Top-tier Minecraft Network! 🌍\nSupports both Offline (Cracked) & Premium accounts.\n\nModes: Survival, Skyblock, BedWars, Factions, Earth Towny.\nJoin us for a lag-free experience with a huge community!",
     "discord": "https://discord.gg/herobrine",
@@ -16,5 +17,6 @@
     "type": "MiniGames",
     "partner": true,
     "version": "1.8"
+        }
   }
 }
