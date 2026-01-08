@@ -19,7 +19,7 @@ namespace CL_CLegendary_Launcher_.Class
 
     public static class EulaService
     {
-        private const string EulaUrl = "https://raw.githubusercontent.com/WER-CORE/CL-Win-Edition--Update/main/eula.json"; 
+        private const string EulaUrl = "YOUR_EULA_URL_HERE"; 
 
         public static async Task<EulaConfig> GetEulaAsync()
         {
