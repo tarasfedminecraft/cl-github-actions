@@ -185,7 +185,7 @@ namespace CL_CLegendary_Launcher_.Windows
                 client.DefaultRequestHeaders.UserAgent.ParseAdd("CL-Launcher");
                 client.Timeout = TimeSpan.FromSeconds(5);
 
-                string json = await client.GetStringAsync("https://raw.githubusercontent.com/WER-CORE/CL-Win-Edition--Update/main/update.json");
+                string json = await client.GetStringAsync("https://raw.githubusercontent.com/WER-CORE/CL-OpenSource/main/update.json"); // Або вставте своє посилання
 
                 var info = JsonSerializer.Deserialize<UpdateInfo>(json, new JsonSerializerOptions
                 {
