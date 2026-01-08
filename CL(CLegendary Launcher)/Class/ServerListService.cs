@@ -13,7 +13,8 @@ namespace CL_CLegendary_Launcher_.Class
     public class ServerListService
     {
         private readonly CL_Main_ _main;
-        private readonly string _serversUrl = "https://drive.google.com/uc?export=download&id=1AsQhx-on-dRhQu4suNd5RZM8Bqgz-XyG";
+        private readonly string _serversUrl = "YOUR_SERVERS_URL_HERE";
+
         private List<(MyItemsServer Item, int Priority)> _tempSortedList = new List<(MyItemsServer, int)>();
         private object _listLock = new object();
 
