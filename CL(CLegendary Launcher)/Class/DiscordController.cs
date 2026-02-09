@@ -14,20 +14,20 @@ namespace CL_CLegendary_Launcher_.Class
 
             try
             {
-                clientdsc = new DiscordRpcClient("1327198221180735609"); // це тестова Application-ID тому рекомендую вставити свою ID
+                clientdsc = new DiscordRpcClient("1210664596289884200");
 
                 clientdsc.Initialize();
 
                 clientdsc.SetPresence(new RichPresence()
                 {
                     State = textDetails,
-                    Details = "test",
+                    Details = "Український лаунчер майнкрафт",
                     Timestamps = Timestamps.Now,
-                    //Assets = new Assets()
-                    //{
-                    //    LargeImageKey = "test",
-                    //    SmallImageKey = "test",
-                    //}
+                    Assets = new Assets()
+                    {
+                        LargeImageKey = "frame_73",
+                        SmallImageKey = "ua",
+                    }
                 });
             }
             catch (Exception ex)
@@ -51,13 +51,13 @@ namespace CL_CLegendary_Launcher_.Class
                 clientdsc.SetPresence(new RichPresence()
                 {
                     State = textDetails,
-                    Details = "test",
+                    Details = "Український лаунчер майнкрафт",
                     Timestamps = Timestamps.Now,
-                    //Assets = new Assets()
-                    //{
-                    //    LargeImageKey = "test",
-                    //    SmallImageKey = "test",
-                    //}
+                    Assets = new Assets()
+                    {
+                        LargeImageKey = "frame_73",
+                        SmallImageKey = "ua",
+                    }
                 });
             }
             catch (Exception ex)

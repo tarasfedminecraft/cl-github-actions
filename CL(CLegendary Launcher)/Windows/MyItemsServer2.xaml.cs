@@ -72,7 +72,7 @@ namespace CL_CLegendary_Launcher_
         }
         private void IPServerTXT_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            Clipboard.SetText(IPServerTXT.Content.ToString());
+            Clipboard.SetText(IPServerTXT.Text.ToString());
         }
     }
 }

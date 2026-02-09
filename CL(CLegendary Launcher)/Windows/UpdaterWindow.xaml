@@ -9,12 +9,12 @@
         Height="450" Width="600" 
         ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen"
-        Foreground="{DynamicResource TextFillColorPrimaryBrush}" Icon="/Icon/IconCL(Winter).ico"    ExtendsContentIntoTitleBar="True"
+     Icon="/Icon/IconCL(Common).png"    ExtendsContentIntoTitleBar="True"
     WindowBackdropType="Mica">
 
     <Grid>
         <Grid.Background>
-            <ImageBrush ImageSource="/Assets/LightThemBG.png"/>
+            <ImageBrush ImageSource="/Assets/LightThemBG.webp"/>
         </Grid.Background>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -40,7 +40,7 @@
                 <TextBlock x:Name="VersionText" Text="Перевірка..." FontSize="16" Margin="0,0,0,20" 
                            Foreground="{DynamicResource MainForegroundBrush}" FontFamily="Inter" Opacity="0.8"/>
 
-                <StackPanel x:Name="PathSelectionPanel" Visibility="Collapsed" Margin="0,0,0,15">
+                <StackPanel x:Name="PathSelectionPanel" Margin="0,0,0,15" Visibility="Collapsed">
                     <TextBlock Text="Шлях встановлення:" FontSize="14" Margin="0,0,0,5" Foreground="{DynamicResource MainForegroundBrush}"/>
                     <Grid>
                         <Grid.ColumnDefinitions>

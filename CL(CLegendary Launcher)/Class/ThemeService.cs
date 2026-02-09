@@ -10,7 +10,8 @@ using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using Wpf.Ui.Appearance; 
+using Wpf.Ui.Appearance;
+using Wpf.Ui.Controls;
 using WpfAnimatedGif;
 using Application = System.Windows.Application;
 using Button = System.Windows.Controls.Button;
@@ -36,9 +37,10 @@ namespace CL_CLegendary_Launcher_.Class
     }
     public class ThemeService
     {
-        private readonly CL_Main_ _main; 
-        public static string currentTheme = "Dark"; 
+        private readonly CL_Main_ _main;
+        public static string currentTheme = "Dark";
         private readonly string _customThemePath;
+        public event Action<string> OnThemeChanged;
 
         public ThemeService(CL_Main_ main)
         {
@@ -50,8 +52,133 @@ namespace CL_CLegendary_Launcher_.Class
         {
             EnsureCustomThemeFileExists();
             ApplyTheme(Settings1.Default.Them);
-            SetThemeImage(Settings1.Default.Them);
             LoadBackgroundImage();
+            SetColourButtons();
+        }
+
+        public void ApplyTheme(string theme)
+        {
+            ApplicationTheme targetSystemTheme = theme == "Light" ? ApplicationTheme.Light : ApplicationTheme.Dark;
+
+            ApplicationThemeManager.Apply(targetSystemTheme, WindowBackdropType.Mica, true);
+
+            ImageBehavior.SetAnimatedSource(_main.Bg, null);
+
+            var dictionariesToAdd = new List<ResourceDictionary>();
+
+            try
+            {
+                switch (theme)
+                {
+                    case "Dark":
+                        Settings1.Default.bgImage = "";
+                        Settings1.Default.Save();
+
+                        dictionariesToAdd.Add(new ResourceDictionary { Source = new Uri("Them/DarkTheme.xaml", UriKind.Relative) });
+                        dictionariesToAdd.Add(new ResourceDictionary { Source = new Uri("Them/DarkThemeSerLisAndUpdMinecraft.xaml", UriKind.Relative) });
+
+                        _main.Bg.Source = new BitmapImage(new Uri("pack://application:,,,/Assets/DarkThemBG.webp"));
+                        break;
+
+                    case "Light":
+                        Settings1.Default.bgImage = "";
+                        Settings1.Default.Save();
+
+                        dictionariesToAdd.Add(new ResourceDictionary { Source = new Uri("Them/LightTheme.xaml", UriKind.Relative) });
+                        dictionariesToAdd.Add(new ResourceDictionary { Source = new Uri("Them/LightThemeSerLisAndUpdMinecraft.xaml", UriKind.Relative) });
+
+                        _main.Bg.Source = new BitmapImage(new Uri("pack://application:,,,/Assets/LightThemBG.webp"));
+                        break;
+
+                    case "Custom":
+                        dictionariesToAdd.Add(new ResourceDictionary { Source = new Uri(_customThemePath, UriKind.Absolute) });
+                        break;
+
+                    default:
+                        dictionariesToAdd.Add(new ResourceDictionary { Source = new Uri("Them/DarkTheme.xaml", UriKind.Relative) });
+                        break;
+                }
+
+                var mergedDicts = Application.Current.Resources.MergedDictionaries;
+                var dictsToRemove = new List<ResourceDictionary>();
+                foreach (var dict in mergedDicts)
+                {
+                    if (dict.Source != null)
+                    {
+                        string source = dict.Source.ToString();
+                        if (source.Contains("Them/") || source.Contains("CustomThem.xaml"))
+                        {
+                            dictsToRemove.Add(dict);
+                        }
+                    }
+                }
+
+                foreach (var dict in dictsToRemove)
+                {
+                    mergedDicts.Remove(dict);
+                }
+
+                foreach (var dict in dictionariesToAdd)
+                {
+                    mergedDicts.Add(dict);
+                }
+
+                bool glassDisabled = Settings1.Default.DisableGlassEffect;
+                foreach (Window window in Application.Current.Windows)
+                {
+                    if (window is Wpf.Ui.Controls.FluentWindow fluentWindow)
+                    {
+                        Wpf.Ui.Appearance.ApplicationThemeManager.Apply(fluentWindow);
+
+                        if (!glassDisabled)
+                        {
+                            fluentWindow.WindowBackdropType = WindowBackdropType.Mica; 
+                            fluentWindow.Background = Brushes.Transparent;
+                        }
+                        else
+                        {
+                            fluentWindow.WindowBackdropType = WindowBackdropType.None;
+                            fluentWindow.SetResourceReference(System.Windows.Controls.Control.BackgroundProperty, "MainBackgroundBrush");
+                        }
+                    }
+                    else
+                    {
+                        Wpf.Ui.Appearance.ApplicationThemeManager.Apply(window);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MascotMessageBox.Show($"Помилка теми: {ex.Message}");
+                return;
+            }
+
+            currentTheme = theme;
+            UpdateGlassEffect();
+        }
+
+        public void HandleResetCustomThemeClick()
+        {
+            EnsureCustomThemeFileExists();
+            _main.Click();
+
+            Settings1.Default.bgImage = "";
+
+            Settings1.Default.Button_colour = "#FF202020";
+            Settings1.Default.Section_colour = "#303030";
+            Settings1.Default.Background_colour = "#FF202020";
+            Settings1.Default.Additional_colour = "#FF1863C9";
+            Settings1.Default.Text_colour = "#FFFFFF";
+            Settings1.Default.Them = "Dark";
+            Settings1.Default.Save();
+
+            UpdateColorForElement(_customThemePath, "MainBackgroundBrushServer", "#303030");
+            UpdateColorForElement(_customThemePath, "MainBackgroundBrush", "#FF202020");
+            UpdateColorForElement(_customThemePath, "MainBackgroundProgressBar", "#FF1863C9");
+            UpdateColorForElement(_customThemePath, "MainForegroundBrush", "#FFFFFF");
+            UpdateColorForElement(_customThemePath, "MainBackgroundButton", "#FF202020");
+
+            ApplyTheme("Dark");
             SetColourButtons();
         }
         public object CreateColorButtonContent(string colorHex)
@@ -71,14 +198,14 @@ namespace CL_CLegendary_Launcher_.Class
                 {
                     Width = 16,
                     Height = 16,
-                    CornerRadius = new CornerRadius(3), 
+                    CornerRadius = new CornerRadius(3),
                     Margin = new Thickness(0, 0, 8, 0),
                     Background = new SolidColorBrush(color),
                     BorderThickness = new Thickness(1),
                     BorderBrush = new SolidColorBrush(Color.FromArgb(100, 128, 128, 128))
                 };
 
-                var textBlock = new TextBlock
+                var textBlock = new Wpf.Ui.Controls.TextBlock
                 {
                     Text = colorHex,
                     VerticalAlignment = VerticalAlignment.Center
@@ -94,62 +221,6 @@ namespace CL_CLegendary_Launcher_.Class
                 return colorHex;
             }
         }
-        public void ApplyTheme(string theme)
-        {
-            var dictionariesToAdd = new List<ResourceDictionary>();
-
-            ApplicationTheme wpfUiTheme = ApplicationTheme.Dark;
-            if (theme == "Light") wpfUiTheme = ApplicationTheme.Light;
-
-            ApplicationThemeManager.Apply(
-                wpfUiTheme,
-                Wpf.Ui.Controls.WindowBackdropType.Mica,
-                true
-            );
-
-            try
-            {
-                switch (theme)
-                {
-                    case "Dark":
-                        dictionariesToAdd.Add(new ResourceDictionary { Source = new Uri("Them/DarkTheme.xaml", UriKind.Relative) });
-                        dictionariesToAdd.Add(new ResourceDictionary { Source = new Uri("Them/DarkThemeSerLisAndUpdMinecraft.xaml", UriKind.Relative) });
-                        _main.Bg.Source = new BitmapImage(new Uri(@"pack://application:,,,/Assets/DarkThemBG.png"));
-                        break;
-
-                    case "Light":
-                        dictionariesToAdd.Add(new ResourceDictionary { Source = new Uri("Them/LightTheme.xaml", UriKind.Relative) });
-                        dictionariesToAdd.Add(new ResourceDictionary { Source = new Uri("Them/LightThemeSerLisAndUpdMinecraft.xaml", UriKind.Relative) });
-                        _main.Bg.Source = new BitmapImage(new Uri("pack://application:,,,/Assets/LightThemBG.png"));
-                        break;
-
-                    case "Custom":
-                        dictionariesToAdd.Add(new ResourceDictionary { Source = new Uri(_customThemePath, UriKind.Absolute) });
-                        break;
-
-                    default:
-                        ApplyTheme("Dark"); 
-                        return;
-                }
-            }
-            catch (Exception ex)
-            {
-                MascotMessageBox.Show(
-                                    $"Ой леле! Не вдалося завантажити тему '{theme}'.\nДоведеться повернутися до стандартної.\n\nДеталі: {ex.Message}",
-                                    "Помилка теми",
-                                    MascotEmotion.Sad);
-                return;
-            }
-
-            foreach (var dict in dictionariesToAdd)
-            {
-                Application.Current.Resources.MergedDictionaries.Add(dict);
-            }
-
-            currentTheme = theme;
-
-            UpdateGlassEffect();
-        }
 
         private void UpdateGlassEffect()
         {
@@ -157,52 +228,32 @@ namespace CL_CLegendary_Launcher_.Class
             {
                 bool isDisabled = Settings1.Default.DisableGlassEffect;
                 Application.Current.Resources["GlassBlurRadius"] = isDisabled ? 0.0 : 20.0;
-
                 Application.Current.Resources["GlassVisibility"] = isDisabled ? Visibility.Collapsed : Visibility.Visible;
 
-                var baseColorObj = Application.Current.Resources["MainBackgroundBrush"];
+                var baseColorObj = Application.Current.TryFindResource("MainBackgroundBrush");
                 Color baseColor = Colors.Black;
 
                 if (baseColorObj is Color c) baseColor = c;
                 else if (baseColorObj is SolidColorBrush scb) baseColor = scb.Color;
+
                 double targetOpacity = isDisabled ? 1.0 : 0.6;
 
                 var tintBrush = new SolidColorBrush(baseColor) { Opacity = targetOpacity };
-                tintBrush.Freeze();
+                if (tintBrush.CanFreeze) tintBrush.Freeze();
 
                 Application.Current.Resources["GlassTintBrush"] = tintBrush;
             }
-            catch (Exception ex)
-            {
-            }
+            catch (Exception) { }
         }
-        public void ToggleGlassEffect(bool isDisabled)
+
+        public void ToggleGlassEffect(bool shouldDisable)
         {
-            Settings1.Default.DisableGlassEffect = isDisabled;
+            Settings1.Default.DisableGlassEffect = shouldDisable;
             Settings1.Default.Save();
 
             ApplyTheme(currentTheme);
-
             LoadBackgroundImage();
         }
-        public void ApplyPotatoMode()
-        {
-            Settings1.Default.IsPotatoMode = !Settings1.Default.IsPotatoMode;
-            if (Settings1.Default.IsPotatoMode)
-            {
-                Settings1.Default.DisableGlassEffect = true;
-                UpdateGlassEffect(); 
-
-                RenderOptions.ProcessRenderMode = System.Windows.Interop.RenderMode.SoftwareOnly;
-            }
-            else
-            {
-                RenderOptions.ProcessRenderMode = System.Windows.Interop.RenderMode.Default;
-            }
-
-            Settings1.Default.Save();
-        }
-
         public void EnsureCustomThemeFileExists()
         {
             string directoryPath = Path.GetDirectoryName(_customThemePath);
@@ -214,7 +265,7 @@ namespace CL_CLegendary_Launcher_.Class
             if (!File.Exists(_customThemePath))
             {
                 string defaultXaml = @"<ResourceDictionary xmlns=""http://schemas.microsoft.com/winfx/2006/xaml/presentation""
-                                          xmlns:x=""http://schemas.microsoft.com/winfx/2006/xaml"">
+                                                      xmlns:x=""http://schemas.microsoft.com/winfx/2006/xaml"">
     <SolidColorBrush x:Key=""MainBackgroundButton"">#FF202020</SolidColorBrush>
     <SolidColorBrush x:Key=""MainForegroundBrush"">#FFFFFFFF</SolidColorBrush>
     <SolidColorBrush x:Key=""MainBackgroundProgressBar"">#FF1863C9</SolidColorBrush>
@@ -226,18 +277,6 @@ namespace CL_CLegendary_Launcher_.Class
                 File.WriteAllText(_customThemePath, defaultXaml);
             }
         }
-
-        public void SetThemeImage(string theme)
-        {
-            System.Drawing.Bitmap bitmap = theme switch
-            {
-                "Dark" => Resource2.DarkThem,
-                "Light" => Resource2.LightThem,
-                _ => Resource2.DarkThem
-            };
-            _main.ThemNight_Light.Source = _main.ConvertBitmapToBitmapImage(bitmap);
-        }
-
         public void LoadBackgroundImage()
         {
             string bg = Settings1.Default.bgImage;
@@ -250,7 +289,7 @@ namespace CL_CLegendary_Launcher_.Class
             try
             {
                 Uri uri = new(bg, UriKind.Absolute);
-                ImageBehavior.SetAnimatedSource(_main.Bg, null); 
+                ImageBehavior.SetAnimatedSource(_main.Bg, null);
 
                 if (bg.EndsWith(".gif", StringComparison.OrdinalIgnoreCase))
                 {
@@ -259,8 +298,16 @@ namespace CL_CLegendary_Launcher_.Class
                 }
                 else
                 {
-                    _main.Bg.Source = new BitmapImage(uri);
+                    var img = new BitmapImage();
+                    img.BeginInit();
+                    img.UriSource = uri;
+                    img.DecodePixelWidth = 1080;
+                    img.DecodePixelHeight = 1920;
+                    img.CacheOption = BitmapCacheOption.OnLoad; 
+                    img.EndInit();
+                    _main.Bg.Source = img;
                 }
+                _main.Bg.Opacity = 0.75;
             }
             catch
             {
@@ -277,21 +324,19 @@ namespace CL_CLegendary_Launcher_.Class
             _main.Text_colourButton.Content = CreateColorButtonContent(Settings1.Default.Text_colour);
             _main.Button_colourButton.Content = CreateColorButtonContent(Settings1.Default.Button_colour);
         }
-        public void HandleThemeToggleClick()
-        {
-            _main.Click();
-            currentTheme = (currentTheme == "Dark") ? "Light" : "Dark";
-
-            ApplyTheme(currentTheme);
-
-            Settings1.Default.Them = currentTheme;
-            Settings1.Default.Save();
-
-            SetThemeImage(currentTheme);
-        }
-
         public void HandleBackgroundImageClick()
         {
+            if (Settings1.Default.Them != "Custom")
+            {
+                MascotMessageBox.Show(
+                    "Змінювати фон можна тільки коли обрана тема 'Кастомна'!\n" +
+                    "Будь ласка, перемкни тему у списку вище, щоб поставити свою картинку.",
+                    "Обмеження",
+                    MascotEmotion.Confused 
+                );
+                return; 
+            }
+
             var openFileDialog = new Microsoft.Win32.OpenFileDialog
             {
                 Filter = "Image files (*.png;*.jpg;*.gif)|*.png;*.jpg;*.gif",
@@ -305,7 +350,6 @@ namespace CL_CLegendary_Launcher_.Class
                 LoadBackgroundImage();
             }
         }
-
         public void HandleColorChange(Button button, string settingKey, string resourceKey)
         {
             try
@@ -328,12 +372,10 @@ namespace CL_CLegendary_Launcher_.Class
             }
             catch (Exception ex)
             {
-                MascotMessageBox.Show(
-                                    $"Не змогла змінити колір.\n{ex.Message}",
-                                    "Помилка",
-                                    MascotEmotion.Sad);
+                MascotMessageBox.Show($"Не змогла змінити колір.\n{ex.Message}", "Помилка", MascotEmotion.Sad);
             }
         }
+
         public void HandleSaveCustomThemeClick()
         {
             currentTheme = "Custom";
@@ -341,31 +383,6 @@ namespace CL_CLegendary_Launcher_.Class
             Settings1.Default.Them = "Custom";
             Settings1.Default.Save();
         }
-
-        public void HandleResetCustomThemeClick()
-        {
-            EnsureCustomThemeFileExists();
-            _main.Click();
-
-            Settings1.Default.bgImage = "";
-            Settings1.Default.Button_colour = "#FF202020";
-            Settings1.Default.Section_colour = "#303030";
-            Settings1.Default.Background_colour = "#FF202020";
-            Settings1.Default.Additional_colour = "#FF1863C9";
-            Settings1.Default.Text_colour = "#FFFFFF";
-            Settings1.Default.Them = "Dark";
-            Settings1.Default.Save();
-
-            UpdateColorForElement(_customThemePath, "MainBackgroundBrushServer", "#303030");
-            UpdateColorForElement(_customThemePath, "MainBackgroundBrush", "#FF202020");
-            UpdateColorForElement(_customThemePath, "MainBackgroundProgressBar", "#FF1863C9");
-            UpdateColorForElement(_customThemePath, "MainForegroundBrush", "#FFFFFF");
-            UpdateColorForElement(_customThemePath, "MainBackgroundButton", "#FF202020");
-
-            ApplyTheme("Dark");
-            SetColourButtons();
-        }
-
         private string ShowColorDialog()
         {
             using (var colorDialog = new System.Windows.Forms.ColorDialog())
@@ -385,7 +402,7 @@ namespace CL_CLegendary_Launcher_.Class
             {
                 Color color = (Color)ColorConverter.ConvertFromString(colorHex);
                 var resourceDictionary = LoadResourceDictionary(resourceFilePath);
-                if (resourceDictionary != null && resourceDictionary.Contains(key))
+                if (resourceDictionary != null)
                 {
                     resourceDictionary[key] = new SolidColorBrush(color);
                     SaveResourceDictionary(resourceDictionary, resourceFilePath);
@@ -393,10 +410,7 @@ namespace CL_CLegendary_Launcher_.Class
             }
             catch (Exception ex)
             {
-                MascotMessageBox.Show(
-                                    $"Ой, щось не так з кольором.\n{ex.Message}",
-                                    "Збій",
-                                    MascotEmotion.Confused);
+                MascotMessageBox.Show($"Ой, щось не так з кольором.\n{ex.Message}", "Збій", MascotEmotion.Confused);
             }
         }
 
@@ -411,10 +425,7 @@ namespace CL_CLegendary_Launcher_.Class
             }
             catch (Exception ex)
             {
-                MascotMessageBox.Show(
-                                    $"Не вдалося зберегти налаштування теми.\n{ex.Message}",
-                                    "Помилка",
-                                    MascotEmotion.Sad);
+                MascotMessageBox.Show($"Не вдалося зберегти налаштування теми.\n{ex.Message}", "Помилка", MascotEmotion.Sad);
             }
         }
 
@@ -429,10 +440,7 @@ namespace CL_CLegendary_Launcher_.Class
             }
             catch (Exception ex)
             {
-                MascotMessageBox.Show(
-                                    $"Не можу прочитати файл теми.\n{ex.Message}",
-                                    "Помилка",
-                                    MascotEmotion.Sad);
+                MascotMessageBox.Show($"Не можу прочитати файл теми.\n{ex.Message}", "Помилка", MascotEmotion.Sad);
                 return null;
             }
         }

@@ -1,17 +1,21 @@
 ﻿using CL_CLegendary_Launcher_.Class;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.DirectoryServices.ActiveDirectory;
 using System.IO;
-using System.Linq; 
+using System.Linq;
 using System.Net.Http;
 using System.Reflection;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
+using Wpf.Ui.Appearance;
 using Wpf.Ui.Controls;
 
 namespace CL_CLegendary_Launcher_.Windows
@@ -51,7 +55,7 @@ namespace CL_CLegendary_Launcher_.Windows
             ApplyCustomSettings();
 
             Wpf.Ui.Appearance.SystemThemeWatcher.Watch(this, WindowBackdropType.Mica);
-            VersionLauncherTXT.Content = versionLauncher + "-Beta";
+            VersionLauncherTXT.Text = versionLauncher + "-Beta";
 
             Settings1.Default.OfflineModLauncher = false;
             Settings1.Default.Save();
@@ -63,7 +67,7 @@ namespace CL_CLegendary_Launcher_.Windows
         {
             try
             {
-                string phrasesPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory,"Data", "loading_phrases.txt");
+                string phrasesPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data", "loading_phrases.txt");
                 if (File.Exists(phrasesPath))
                 {
                     var lines = File.ReadAllLines(phrasesPath)
@@ -80,6 +84,7 @@ namespace CL_CLegendary_Launcher_.Windows
             }
             catch { }
         }
+
         private void ApplyCustomSettings()
         {
             string bgPath = Settings1.Default.LoadScreenBackground;
@@ -107,7 +112,6 @@ namespace CL_CLegendary_Launcher_.Windows
         private async void LoadScreen_Loaded(object sender, RoutedEventArgs e)
         {
             await UpgradeSettings();
-
             await RunStartupProcessAsync();
         }
 
@@ -165,19 +169,28 @@ namespace CL_CLegendary_Launcher_.Windows
 
                 await animationTask;
                 OpenMainWindow();
-
             }
             catch (Exception ex)
             {
+                string errorDetails = $"Помилка: {ex.Message}\n\n" +
+                                      $"Де сталося: {ex.TargetSite}\n\n" +
+                                      $"Стек (для розробника):\n{ex.StackTrace}";
+
+                string logPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "logs", "crash-report.txt");
+                try
+                {
+                    Directory.CreateDirectory(Path.GetDirectoryName(logPath));
+                    File.WriteAllText(logPath, errorDetails);
+                }
+                catch { }
+
                 MascotMessageBox.Show(
-                    $"Критичний збій запуску:\n{ex.Message}",
-                    "Error",
-                    MascotEmotion.Dead
-                );
+                    $"Ой! Критична помилка запуску.\nЯ зберегла деталі у файл {logPath}.\n\nКоротко: {ex.Message}",
+                    "Критичний збій",
+                    MascotEmotion.Dead);
                 this.Close();
             }
         }
-
         private async Task<bool> CheckForUpdatesAsync()
         {
             using (HttpClient client = new HttpClient())
@@ -185,19 +198,22 @@ namespace CL_CLegendary_Launcher_.Windows
                 client.DefaultRequestHeaders.UserAgent.ParseAdd("CL-Launcher");
                 client.Timeout = TimeSpan.FromSeconds(5);
 
-                string json = await client.GetStringAsync("https://raw.githubusercontent.com/WER-CORE/CL-OpenSource/main/update.json"); // Або вставте своє посилання
+                string json = await client.GetStringAsync(Secrets.UpdateUrlCheckLoadScreen);
 
-                var info = JsonSerializer.Deserialize<UpdateInfo>(json, new JsonSerializerOptions
-                {
-                    PropertyNameCaseInsensitive = true
-                });
+                var info = JsonSerializer.Deserialize<UpdateInfo>(json);
 
-                if (info != null && !string.IsNullOrEmpty(info.version))
+                if (info != null && !string.IsNullOrEmpty(info.Version))
                 {
-                    if (versionLauncher.Trim() != info.version.Trim())
+                    string remoteVerStr = info.Version.Trim().Replace("v", "", StringComparison.OrdinalIgnoreCase);
+                    string localVerStr = versionLauncher.Trim().Replace("v", "", StringComparison.OrdinalIgnoreCase);
+
+                    if (Version.TryParse(remoteVerStr, out Version vRemote) &&
+                        Version.TryParse(localVerStr, out Version vLocal))
                     {
-                        return true;
+                        return vRemote > vLocal;
                     }
+
+                    return remoteVerStr != localVerStr;
                 }
             }
             return false;
@@ -206,7 +222,8 @@ namespace CL_CLegendary_Launcher_.Windows
         private async Task SimulateLoadingAnimationAsync()
         {
             LoadingProgressBar.Value = 0;
-            RandomPhraseText.Text = RandomPhrases[_random.Next(RandomPhrases.Count)];
+            if (RandomPhrases.Count > 0)
+                RandomPhraseText.Text = RandomPhrases[_random.Next(RandomPhrases.Count)];
 
             for (int i = 0; i <= 100; i++)
             {
@@ -222,7 +239,7 @@ namespace CL_CLegendary_Launcher_.Windows
                 };
                 LoadingProgressBar.BeginAnimation(ProgressBar.ValueProperty, progressAnimation);
 
-                if (i % 20 == 0 && i > 0)
+                if (i % 20 == 0 && i > 0 && RandomPhrases.Count > 0)
                 {
                     string randomPhrase = RandomPhrases[_random.Next(RandomPhrases.Count)];
                     RandomPhraseText.Text = randomPhrase;
@@ -241,7 +258,6 @@ namespace CL_CLegendary_Launcher_.Windows
         private async Task<bool> CheckEulaAsync()
         {
             var eulaConfig = await EulaService.GetEulaAsync();
-
             bool showEula = false;
 
             if (eulaConfig != null)
@@ -262,41 +278,43 @@ namespace CL_CLegendary_Launcher_.Windows
             if (showEula)
             {
                 this.Visibility = Visibility.Hidden;
-
                 EulaWindow eulaWin = new EulaWindow(eulaConfig);
                 bool? result = eulaWin.ShowDialog();
-
                 this.Visibility = Visibility.Visible;
-
                 return result == true;
             }
 
             return true;
         }
+
         private async Task UpgradeSettings()
         {
             try
             {
-                if (Settings1.Default.CallUpgrade)
+                if (!Settings1.Default.CallUpgrade)
                 {
                     Settings1.Default.Upgrade();
-                    Settings1.Default.CallUpgrade = false;
+                    Settings1.Default.CallUpgrade = true;
                     Settings1.Default.Save();
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 Settings1.Default.Reset();
-                Settings1.Default.CallUpgrade = false;
+                Settings1.Default.CallUpgrade = true;
                 Settings1.Default.Save();
             }
-            return;
         }
     }
-
     public class UpdateInfo
     {
-        public string version { get; set; } = "";
-        public string url { get; set; } = "";
+        [JsonPropertyName("version")]
+        public string Version { get; set; } = "";
+
+        [JsonPropertyName("url")]
+        public string UrlDefault { get; set; } = "";
+
+        [JsonPropertyName("url_x86")]
+        public string UrlX86 { get; set; } = "";
     }
 }

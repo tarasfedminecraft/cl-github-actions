@@ -1,22 +1,24 @@
-﻿using CmlLib.Core.Installer.Forge;
-using CmlLib.Core.Installer.NeoForge.Installers;
+﻿using CL_CLegendary_Launcher_.Windows;
+using CmlLib.Core;
+using CmlLib.Core.Installer.Forge;
 using CmlLib.Core.Installer.NeoForge;
+using CmlLib.Core.Installer.NeoForge.Installers;
+using CmlLib.Core.Installers;
 using CmlLib.Core.ModLoaders.FabricMC;
+using CmlLib.Core.ModLoaders.LiteLoader;
 using CmlLib.Core.ModLoaders.QuiltMC;
 using CmlLib.Core.ProcessBuilder;
-using CmlLib.Core;
 using Optifine.Installer;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net.Http;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Net.Http;
-using System.IO;
-using CmlLib.Core.ModLoaders.LiteLoader;
 using Path = System.IO.Path;
-using CL_CLegendary_Launcher_.Windows;
 
 namespace CL_CLegendary_Launcher_.Class
 {
@@ -30,6 +32,7 @@ namespace CL_CLegendary_Launcher_.Class
         NeoForge,
         LiteLoader,
         Custom_Local,
+        OmniArchive
     }
 
     public class GameLaunchService
@@ -45,7 +48,6 @@ namespace CL_CLegendary_Launcher_.Class
             _gameSessionManager = sessionManager;
             _lastActionService = lastActionService;
         }
-
         public async Task LaunchGameAsync(LoaderType loaderType, string minecraftVersion, string loaderVersion, string serverIp = null, int? serverPort = null)
         {
             _cts = new CancellationTokenSource();
@@ -54,7 +56,7 @@ namespace CL_CLegendary_Launcher_.Class
             _main.Dispatcher.Invoke(() =>
             {
                 _main.InstallVersionOnPlay = true;
-                _main.PlayTXT.Content = "ЗАВАНТАЖЕННЯ";
+                _main.PlayTXT.Text = "ЗАВАНТАЖЕННЯ";
             });
 
             DowloadProgress dowloadProgress = new DowloadProgress { CTS = _cts };
@@ -62,10 +64,23 @@ namespace CL_CLegendary_Launcher_.Class
 
             try
             {
-                System.Net.ServicePointManager.DefaultConnectionLimit = 1000000;
-
+                System.Net.ServicePointManager.DefaultConnectionLimit = 256;
                 var path = new MinecraftPath(Settings1.Default.PathLacunher);
-                var launcher = new MinecraftLauncher(path);
+
+                var httpClient = new HttpClient();
+                int safeThreads = Math.Clamp(Environment.ProcessorCount * 2, 4, 16);
+
+                var parallelInstaller = new ParallelGameInstaller(
+                    maxChecker: 32,
+                    maxDownloader: safeThreads,
+                    boundedCapacity: 2048,
+                    httpClient
+                );
+
+                var parameters = MinecraftLauncherParameters.CreateDefault(path);
+                parameters.GameInstaller = parallelInstaller;
+
+                var launcher = new MinecraftLauncher(parameters);
 
                 launcher.FileProgressChanged += (sender, args) =>
                 {
@@ -95,9 +110,43 @@ namespace CL_CLegendary_Launcher_.Class
                                             "Ой леле! Я намагалася встановити цю версію, але нічого не вийшло.\nСпробуй ще раз пізніше.",
                                             "Помилка встановлення",
                                             MascotEmotion.Sad);
+                    return; 
                 }
 
                 var launchOption = CreateLaunchOptions(serverIp, serverPort);
+
+                if (Settings1.Default.EnableAutoBackup)
+                {
+                    _main.Dispatcher.Invoke(() => _main.PlayTXT.Text = "БЕКАП СВІТІВ...");
+
+                    string gameDir = path.BasePath;
+                    string savesPath = Path.Combine(gameDir, "saves");
+
+                    if (Directory.Exists(savesPath))
+                    {
+                        await Task.Run(async () =>
+                        {
+                            try
+                            {
+                                var worlds = Directory.GetDirectories(savesPath);
+                                foreach (var world in worlds)
+                                {
+                                    await WorldBackupService.AutoBackupWorldAsync(world);
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                _main.Dispatcher.Invoke(() =>
+                                {
+                                    NotificationService.ShowNotification("Йой! Помилка при створення бекапів!", $"Помилка авто-бекапу: {ex.Message}", _main.SnackbarPresenter, 10);
+                                });
+
+                                System.Diagnostics.Debug.WriteLine($"Backup error: {ex}");
+                            }
+                        });
+                    }
+                }
+                _main.Dispatcher.Invoke(() => _main.PlayTXT.Text = "ЗАПУСК...");
 
                 var process = await launcher.InstallAndBuildProcessAsync(versionName, launchOption, token);
 
@@ -158,16 +207,97 @@ namespace CL_CLegendary_Launcher_.Class
                 _main.Dispatcher.Invoke(() =>
                 {
                     _main.InstallVersionOnPlay = false;
-                    _main.PlayTXT.Content = $"ГРАТИ ({Settings1.Default.LastSelectedVersion}:{Settings1.Default.LastSelectedModVersion})";
+                    _main.PlayTXT.Text = $"ГРАТИ ({Settings1.Default.LastSelectedVersion}:{Settings1.Default.LastSelectedModVersion})";
                     if (dowloadProgress.IsLoaded) dowloadProgress.Close();
                 });
             }
-
         }
+        #region OmniArchive LogicInstall
+        //    private async Task<string> InstallOmniArchiveAsync(string versionName, string downloadUrl, string category, MinecraftLauncher launcher, CancellationToken token)
+        //    {
+        //        var path = launcher.MinecraftPath;
+        //        string versionDir = Path.Combine(path.Versions, versionName);
+        //        string jarPath = Path.Combine(versionDir, $"{versionName}.jar");
+        //        string jsonPath = Path.Combine(versionDir, $"{versionName}.json");
+
+        //        if (!Directory.Exists(versionDir))
+        //            Directory.CreateDirectory(versionDir);
+
+        //        if (!File.Exists(jarPath))
+        //        {
+        //            using (var client = new HttpClient())
+        //            {
+        //                var response = await client.GetAsync(downloadUrl, HttpCompletionOption.ResponseHeadersRead, token);
+        //                response.EnsureSuccessStatusCode();
+
+        //                using (var fs = new FileStream(jarPath, FileMode.Create, FileAccess.Write, FileShare.None))
+        //                {
+        //                    await response.Content.CopyToAsync(fs);
+        //                }
+        //            }
+        //        }
+
+        //        if (!File.Exists(jsonPath))
+        //        {
+        //            string type = "old_alpha"; 
+        //            string args = "";
+
+        //            switch (category.ToLower())
+        //            {
+        //                case "classic":
+        //                case "pre-classic":
+        //                    type = "old_alpha";
+        //                    args = "\"${auth_player_name} ${auth_session}\"";
+        //                    break;
+        //                case "indev":
+        //                case "infdev":
+        //                    type = "old_alpha";
+        //                    args = "\"${auth_player_name} ${auth_session}\"";
+        //                    break;
+        //                case "beta":
+        //                    type = "old_beta";
+        //                    args = "\"${auth_player_name} ${auth_session}\"";
+        //                    break;
+        //                default:
+        //                    type = "release";
+        //                    args = "\"--username ${auth_player_name} --session ${auth_session} --version ${version_name}\"";
+        //                    break;
+        //            }
+        //            string jsonContent = $@"{{
+        //""id"": ""{versionName}"",
+        //""inheritsFrom"": ""1.6.4"",
+        //""type"": ""{type}"",
+        //""mainClass"": ""net.minecraft.client.Minecraft"",
+        //""minecraftArguments"": {args},
+        //""libraries"": []
+        //                }}";
+
+        //            await File.WriteAllTextAsync(jsonPath, jsonContent);
+        //        }
+
+        //        await launcher.InstallAsync(versionName, token);
+
+        //        string resourcesPath = Path.Combine(launcher.MinecraftPath.BasePath, "resources");
+        //        if (!Directory.Exists(resourcesPath)) Directory.CreateDirectory(resourcesPath);
+
+        //        return versionName;
+        //    }
+        #endregion
         public async Task<string> InstallVersionAsync(LoaderType loaderType, string mcVersion, string loaderVersion, MinecraftLauncher launcher, CancellationToken token)
         {
             switch (loaderType)
             {
+                #region OmniArchive Loader
+                //case LoaderType.OmniArchive:
+                //    string category = "Infdev"; 
+
+                //    if (OmniArchiveService.OmniDownloadLinks.ContainsKey(mcVersion))
+                //    {
+                //        var foundVersion = _main._cachedOmniVersions?.FirstOrDefault(v => v.Name == mcVersion);
+                //        if (foundVersion != null) category = foundVersion.Category;
+                //    }
+                //    return await InstallOmniArchiveAsync(mcVersion, loaderVersion, category, launcher, token);
+                #endregion
                 case LoaderType.Forge:
                     var forge = new ForgeInstaller(launcher);
                     return await forge.Install(mcVersion, loaderVersion, new ForgeInstallOptions { CancellationToken = token });

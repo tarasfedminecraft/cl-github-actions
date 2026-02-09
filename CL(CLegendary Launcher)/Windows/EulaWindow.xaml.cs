@@ -28,7 +28,6 @@ namespace CL_CLegendary_Launcher_.Windows
         {
             InitializeComponent();
             ApplicationThemeManager.Apply(this);
-
             if (config != null)
             {
                 MascotMessageText.Text = "Привіт! Я оновила правила нашої Спільноти. Перед тим як ми продовжимо, будь ласка, прочитай і підтвердь їх, щоб ми були на одній хвилі! (´• ω •`)";

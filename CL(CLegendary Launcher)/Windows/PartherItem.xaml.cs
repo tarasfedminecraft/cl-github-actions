@@ -22,7 +22,7 @@ namespace CL_CLegendary_Launcher_.Windows
         public string _Title
         {
             get { return _title; }
-            set { _title = value; TitleMain1.Content = value; }
+            set { _title = value; TitleMain1.Text = value; }
         }
         [Category("Custom Props")]
         public Image ImageMain_
@@ -56,7 +56,7 @@ namespace CL_CLegendary_Launcher_.Windows
 
         private void IPServerTXT_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            Clipboard.SetText(IPServerTXT.Content.ToString());
+            Clipboard.SetText(IPServerTXT.Text.ToString());
         }
     }
 }

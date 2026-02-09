@@ -1,0 +1,252 @@
+﻿<ui:FluentWindow x:Class="CL_CLegendary_Launcher_.Windows.WorldBackupWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+        Title="Менеджер бекапів" Height="600" Width="900"
+        WindowStartupLocation="CenterScreen" ResizeMode="NoResize" WindowStyle="None"
+        Background="Transparent" FontFamily="Inter" ExtendsContentIntoTitleBar="True"
+        WindowBackdropType="Mica" Foreground="{DynamicResource MainForegroundBrush}" Icon="/Icon/IconCL(Common).png">
+
+    <ui:FluentWindow.Resources>
+        <Style x:Key="VersionBadgeStyle" TargetType="Border">
+            <Setter Property="Background" Value="#223344"/>
+            <Setter Property="CornerRadius" Value="3"/>
+            <Setter Property="Padding" Value="4,1"/>
+            <Setter Property="Margin" Value="0,0,6,0"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Visibility" Value="Visible"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Version}" Value="">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Version}" Value="{x:Null}">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Version}" Value="Unknown">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Version}" Value="?">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </ui:FluentWindow.Resources>
+
+    <ui:FluentWindow.Effect>
+        <DropShadowEffect BlurRadius="20" ShadowDepth="5" Opacity="0.6"/>
+    </ui:FluentWindow.Effect>
+
+    <Border Background="{DynamicResource MainBackgroundBrush}" CornerRadius="10" BorderThickness="1" BorderBrush="#333">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0" MouseDown="Header_MouseDown" Background="Transparent">
+                <TextBlock Text="Менеджер бекапів світів" Foreground="{DynamicResource MainForegroundBrush}" 
+                           VerticalAlignment="Center" Margin="20,0,0,0" FontWeight="Bold" FontSize="16"/>
+                <Button Click="Close_Click" Content="✕" HorizontalAlignment="Right" Width="40" 
+                        Background="{x:Null}" BorderThickness="0" Foreground="{DynamicResource MainForegroundBrush}" Cursor="Hand"/>
+            </Grid>
+
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="280"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Border Grid.Column="0" Background="{DynamicResource MainBackgroundBrushServer}" BorderThickness="0,1,1,0" BorderBrush="#333" CornerRadius="0,0,0,10">
+                    <Grid Margin="10">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <StackPanel Grid.Row="0" Margin="0,0,0,15">
+                            <TextBlock Text="Джерело світів:" Foreground="{DynamicResource MainForegroundBrush}" FontSize="11" Margin="0,0,0,5"/>
+                            <ComboBox x:Name="SourceCombo" SelectionChanged="SourceCombo_SelectionChanged"
+                                      Height="35" Background="{DynamicResource MainBackgroundBrush}" Foreground="{DynamicResource MainForegroundBrush}" 
+                                      BorderThickness="0" Padding="10,0" VerticalContentAlignment="Center" Cursor="Hand" BorderBrush="{x:Null}">
+                                <ComboBox.Resources>
+                                    <Style TargetType="Border">
+                                        <Setter Property="CornerRadius" Value="6"/>
+                                    </Style>
+                                </ComboBox.Resources>
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="{Binding Name}" FontWeight="Medium"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                        </StackPanel>
+
+                        <TextBlock Grid.Row="1" Text="Список світів" Foreground="{DynamicResource MainForegroundBrush}" Margin="5,0,0,10" FontWeight="SemiBold"/>
+
+                        <ListBox x:Name="WorldsListBox" Grid.Row="2" Background="Transparent" BorderThickness="0" 
+                                 SelectionChanged="WorldsListBox_SelectionChanged" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                 Padding="0" Foreground="{DynamicResource MainForegroundBrush}">
+
+                            <ListBox.ItemContainerStyle>
+                                <Style TargetType="ListBoxItem">
+                                    <Setter Property="Background" Value="Transparent"/>
+                                    <Setter Property="Margin" Value="0,0,0,5"/>
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="ListBoxItem">
+                                                <Border x:Name="bd" Background="{TemplateBinding Background}" CornerRadius="6" Padding="10" Cursor="Hand">
+                                                    <ContentPresenter/>
+                                                </Border>
+                                                <ControlTemplate.Triggers>
+                                                    <Trigger Property="IsSelected" Value="True">
+                                                        <Setter TargetName="bd" Property="Background" Value="#0067C0"/>
+                                                    </Trigger>
+                                                </ControlTemplate.Triggers>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </ListBox.ItemContainerStyle>
+
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <Border Width="36" Height="36" CornerRadius="4" ClipToBounds="True" Background="#333" Margin="0,0,10,0">
+                                            <Image Source="{Binding IconBitmap}" Stretch="UniformToFill"/>
+                                        </Border>
+
+                                        <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                            <TextBlock Text="{Binding Name}" Foreground="{DynamicResource MainForegroundBrush}" FontWeight="Medium" TextTrimming="CharacterEllipsis"/>
+
+                                            <StackPanel Orientation="Horizontal" Margin="0,2,0,0">
+                                                <Border Style="{StaticResource VersionBadgeStyle}">
+                                                    <TextBlock Text="{Binding Version}" Foreground="#4CC2FF" FontSize="10" FontWeight="Bold"/>
+                                                </Border>
+                                                <TextBlock Text="{Binding FolderName}" Foreground="{DynamicResource MainForegroundBrush}" Opacity="0.7" FontSize="10" TextTrimming="CharacterEllipsis" VerticalAlignment="Center"/>
+                                            </StackPanel>
+                                        </StackPanel>
+                                    </Grid>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+
+                        <TextBlock x:Name="NoWorldsTxt" Grid.Row="2" Text="У цій папці світів немає" Foreground="{DynamicResource MainForegroundBrush}" 
+                                   HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed"/>
+                    </Grid>
+                </Border>
+
+                <Grid Grid.Column="1" Margin="20" Background="Transparent">
+
+                    <StackPanel x:Name="PlaceholderPanel" VerticalAlignment="Center" HorizontalAlignment="Center">
+                        <TextBlock Text="⬅ Виберіть світ зі списку зліва," Foreground="{DynamicResource MainForegroundBrush}" FontSize="16"/>
+                        <TextBlock Text="щоб керувати його бекапами" Foreground="{DynamicResource MainForegroundBrush}" HorizontalAlignment="Center" Margin="0,5,0,0"/>
+                    </StackPanel>
+
+                    <Grid x:Name="ContentPanel" Visibility="Hidden">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,20">
+                            <Border Width="54" Height="54" CornerRadius="6" ClipToBounds="True" Background="{DynamicResource MainBackgroundBrushServer}" Margin="0,0,15,0">
+                                <Image x:Name="SelectedIcon" Stretch="UniformToFill"/>
+                            </Border>
+
+                            <StackPanel VerticalAlignment="Center">
+                                <TextBlock x:Name="SelectedName" Text="New World" FontSize="20" FontWeight="Bold" Foreground="{DynamicResource MainForegroundBrush}" Margin="0,0,0,4"/>
+
+                                <StackPanel Orientation="Horizontal">
+                                    <Border x:Name="SelectedVersionBadge" Background="#223344" CornerRadius="4" Padding="6,2" Margin="0,0,8,0" VerticalAlignment="Center">
+                                        <TextBlock x:Name="SelectedVersionText" Text="1.20.1" Foreground="#4CC2FF" FontSize="11" FontWeight="Bold"/>
+                                    </Border>
+
+                                    <TextBlock x:Name="SelectedFolder" Text="папка: New World" Foreground="{DynamicResource MainForegroundBrush}" Opacity="0.8" FontSize="12" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </StackPanel>
+
+                        <Button Grid.Row="1" x:Name="BtnCreate" Click="CreateBackup_Click" Height="45" Margin="0,0,0,20"
+                                Cursor="Hand" Background="{x:Null}" BorderThickness="0" Foreground="{DynamicResource MainForegroundBrush}" BorderBrush="{x:Null}">
+                            <Button.Template>
+                                <ControlTemplate TargetType="Button">
+                                    <Border x:Name="bdr" Background="{DynamicResource MainBackgroundButton}" CornerRadius="8" BorderBrush="#444" BorderThickness="1">
+                                        <Grid>
+                                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                                <TextBlock Text="+" Foreground="{DynamicResource MainBackgroundProgressBar}" FontWeight="Bold" FontSize="18" Margin="0,0,10,0"/>
+                                                <TextBlock Text="СТВОРИТИ НОВИЙ БЕКАП" Foreground="{DynamicResource MainForegroundBrush}" FontWeight="Bold"/>
+                                            </StackPanel>
+                                            <ProgressBar x:Name="loader" IsIndeterminate="True" Visibility="Hidden" Height="2" VerticalAlignment="Bottom" Background="Transparent" Foreground="{DynamicResource MainBackgroundProgressBar}" BorderBrush="{x:Null}"/>
+                                        </Grid>
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsEnabled" Value="False">
+                                            <Setter TargetName="bdr" Property="Opacity" Value="0.6"/>
+                                            <Setter TargetName="loader" Property="Visibility" Value="Visible"/>
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Button.Template>
+                        </Button>
+
+                        <Grid Grid.Row="2">
+                            <TextBlock Text="Історія відновлення" Foreground="{DynamicResource MainForegroundBrush}" Margin="0,0,0,10" VerticalAlignment="Top"/>
+                            <ScrollViewer Margin="0,25,0,0" VerticalScrollBarVisibility="Auto" Foreground="{DynamicResource MainForegroundBrush}">
+                                <ItemsControl x:Name="BackupsList">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Border Background="{DynamicResource MainBackgroundBrushServer}" CornerRadius="6" Margin="0,0,5,8" Padding="15,10">
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                    </Grid.ColumnDefinitions>
+
+                                                    <StackPanel>
+                                                        <TextBlock Text="{Binding CreationTime, StringFormat='dd.MM.yyyy  HH:mm'}" Foreground="White" FontWeight="Bold"/>
+                                                        <StackPanel Orientation="Horizontal" Margin="0,2,0,0">
+                                                            <TextBlock Text="{Binding SizeString}" Foreground="{DynamicResource MainBackgroundProgressBar}" FontSize="12"/>
+                                                            <TextBlock Text=" • zip архів" Foreground="{DynamicResource MainForegroundBrush}" Opacity="0.7" FontSize="12"/>
+                                                        </StackPanel>
+                                                    </StackPanel>
+
+                                                    <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                                        <Button Content="Відновити" Click="Restore_Click" Tag="{Binding}"
+                                                                Background="{DynamicResource MainBackgroundButton}" Foreground="{DynamicResource MainForegroundBrush}" BorderThickness="0"
+                                                                Padding="10,5" Margin="0,0,10,0" Cursor="Hand">
+                                                            <Button.Resources>
+                                                                <Style TargetType="Border">
+                                                                    <Setter Property="CornerRadius" Value="4"/>
+                                                                </Style>
+                                                            </Button.Resources>
+                                                        </Button>
+
+                                                        <Button Content="🗑" Click="Delete_Click" Tag="{Binding}"
+                                                                Background="Transparent" Foreground="#CC4444" BorderThickness="0"
+                                                                FontSize="14" Padding="5,0" Cursor="Hand"/>
+                                                    </StackPanel>
+                                                </Grid>
+                                            </Border>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </ScrollViewer>
+
+                            <TextBlock x:Name="NoBackupsTxt" Text="Для цього світу ще немає копій" 
+                                       Foreground="{DynamicResource MainForegroundBrush}" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Hidden"/>
+                        </Grid>
+                    </Grid>
+                </Grid>
+            </Grid>
+        </Grid>
+    </Border>
+</ui:FluentWindow>

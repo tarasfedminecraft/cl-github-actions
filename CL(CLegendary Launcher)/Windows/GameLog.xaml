@@ -12,7 +12,7 @@
         FontFamily="Inter 18pt 18pt" 
         ResizeMode="NoResize"     
         ExtendsContentIntoTitleBar="True"
-        WindowBackdropType="Mica" Icon="/Icon/IconCL(Winter).ico">
+        WindowBackdropType="Mica" Icon="/Icon/IconCL(Common).png">
 
     <Grid x:Name="GridMain">
         <Grid.RowDefinitions>

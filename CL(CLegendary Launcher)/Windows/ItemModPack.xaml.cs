@@ -53,7 +53,7 @@ namespace CL_CLegendary_Launcher_.Windows
                 To = 1,
                 Duration = TimeSpan.FromSeconds(duration),
                 FillBehavior = FillBehavior.HoldEnd,
-                EasingFunction = new QuadraticEase { EasingMode = EasingMode.EaseInOut } 
+                EasingFunction = new QuadraticEase { EasingMode = EasingMode.EaseInOut }
             };
 
             element.Visibility = Visibility.Visible;
@@ -82,15 +82,15 @@ namespace CL_CLegendary_Launcher_.Windows
         }
         private void SettingTXT_MouseDown(object sender, MouseButtonEventArgs e)
         {
-           Click();
-           if (GirdFon.Visibility == Visibility.Visible)
-           {
+            Click();
+            if (GirdFon.Visibility == Visibility.Visible)
+            {
                 FadeOut(GirdFon, 0.3);
-           }
-           else
-           {
-               FadeIn(GirdFon, 0.3);
-           }
+            }
+            else
+            {
+                FadeIn(GirdFon, 0.3);
+            }
         }
 
         private void PlayTXT_MouseDown(object sender, MouseButtonEventArgs e)

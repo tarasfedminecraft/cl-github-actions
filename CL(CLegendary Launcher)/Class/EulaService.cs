@@ -19,15 +19,13 @@ namespace CL_CLegendary_Launcher_.Class
 
     public static class EulaService
     {
-        private const string EulaUrl = "YOUR_EULA_URL_HERE"; 
-
         public static async Task<EulaConfig> GetEulaAsync()
         {
             try
             {
                 using (var client = new HttpClient())
                 {
-                    string url = $"{EulaUrl}";
+                    string url = $"{Secrets.EulaUrl}";
 
                     string json = await client.GetStringAsync(url);
 
