@@ -16,46 +16,45 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
       with:
-        fetch-depth: 0 # Потрібно для коректного визначення версій, якщо використовуєте GitVersion
+        fetch-depth: 0
 
     - name: Setup .NET 8.0
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 8.0.x
 
+    # Виправляємо помилку NETSDK1112: додаємо ідентифікатор рантайму
     - name: Restore NuGet packages
-      run: dotnet restore
+      run: dotnet restore -r win-x64
 
-    # Збірка проекту
+    # Збірка без параметра -o, щоб не було Warning NETSDK1194
     - name: Build Solution
-      run: dotnet build --configuration Release --no-restore
+      run: dotnet build --configuration Release -r win-x64 --no-restore
 
-    # Публікація (Створення EXE)
-    # Параметр --self-contained false означає, що користувачу потрібен встановлений .NET Runtime
-    # Якщо хочете, щоб працювало "з коробки" без .NET, змініть на true (але файл буде важити 150МБ+)
+    # Публікація конкретного проекту (змініть шлях, якщо назва папки інша)
     - name: Publish Win-x64
       run: >
-        dotnet publish -c Release -r win-x64 
+        dotnet publish "CL(CLegendary Launcher)/CL(CLegendary Launcher).csproj" 
+        -c Release 
+        -r win-x64 
         --no-build 
         --self-contained false 
         -o ./publish 
-        /p:PublishSingleFile=true 
-        /p:PublishReadyToRun=true 
-        /p:IncludeNativeLibrariesForSelfExtract=true
+        -p:PublishSingleFile=true 
+        -p:PublishReadyToRun=true 
+        -p:IncludeNativeLibrariesForSelfExtract=true
 
-    # Завантаження результату в артефакти GitHub (буде доступно 90 днів)
     - name: Upload Artifacts
       uses: actions/upload-artifact@v4
       with:
         name: CL-Launcher-${{ github.ref_name }}
         path: ./publish/*.exe
 
-    # Автоматичне створення релізу, якщо це пуш у main
     - name: Release Stable
       if: github.ref == 'refs/heads/main' && github.event_name == 'push'
       uses: softprops/action-gh-release@v1
       with:
-        tag_name: v${{ github.run_number }} # Можна змінити на ручне тегування
+        tag_name: v${{ github.run_number }}
         name: Release v${{ github.run_number }} (Auto-build)
         files: ./publish/*.exe
         draft: false
