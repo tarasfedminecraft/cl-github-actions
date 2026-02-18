@@ -15,34 +15,31 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
 
     - name: Setup .NET 8.0
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 8.0.x
 
-    # Виправляємо помилку NETSDK1112: додаємо ідентифікатор рантайму
+    - name: Clean
+      run: dotnet clean "CL(CLegendary Launcher)/CL(CLegendary Launcher).csproj"
+
     - name: Restore NuGet packages
-      run: dotnet restore -r win-x64
+      run: dotnet restore "CL(CLegendary Launcher)/CL(CLegendary Launcher).csproj" -r win-x64 --force
 
-    # Збірка без параметра -o, щоб не було Warning NETSDK1194
-    - name: Build Solution
-      run: dotnet build --configuration Release -r win-x64 --no-restore
-
-    # Публікація конкретного проекту (змініть шлях, якщо назва папки інша)
     - name: Publish Win-x64
       run: >
         dotnet publish "CL(CLegendary Launcher)/CL(CLegendary Launcher).csproj" 
         -c Release 
         -r win-x64 
-        --no-build 
+        --no-restore 
         --self-contained false 
         -o ./publish 
         -p:PublishSingleFile=true 
         -p:PublishReadyToRun=true 
         -p:IncludeNativeLibrariesForSelfExtract=true
+        -p:WarningLevel=0
+        -p:UseCommonOutputDirectory=false
 
     - name: Upload Artifacts
       uses: actions/upload-artifact@v4
@@ -55,7 +52,7 @@ jobs:
       uses: softprops/action-gh-release@v1
       with:
         tag_name: v${{ github.run_number }}
-        name: Release v${{ github.run_number }} (Auto-build)
+        name: Release v${{ github.run_number }}
         files: ./publish/*.exe
         draft: false
         prerelease: false
