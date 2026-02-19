@@ -37,7 +37,7 @@ jobs:
         -c Release 
         -r win-x64 
         --no-restore 
-        --self-contained true
+        --self-contained true 
         -o ./publish 
         -p:PublishSingleFile=true 
         -p:PublishReadyToRun=false 
@@ -48,5 +48,5 @@ jobs:
     - name: Upload Artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: CL-Launcher-${{ github.ref_name }}
+        name: CL-Launcher-Build-${{ github.ref_name }}
         path: ./publish/*.exe
