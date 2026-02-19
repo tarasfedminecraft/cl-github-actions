@@ -24,8 +24,6 @@ jobs:
     - name: Clean
       run: dotnet clean "CL(CLegendary Launcher)/CL(CLegendary Launcher).csproj"
 
-    # Крок 2: Відновлюємо пакети. 
-    # Додаємо PublishReadyToRun=false тут, щоб уникнути конфліктів SDK
     - name: Restore NuGet packages
       run: >
         dotnet restore "CL(CLegendary Launcher)/CL(CLegendary Launcher).csproj" 
@@ -33,15 +31,13 @@ jobs:
         --force 
         -p:PublishReadyToRun=false
 
-    # Крок 3: Публікація.
-    # Міняємо ReadyToRun на false для стабільності на віртуальній машині
     - name: Publish Win-x64
       run: >
         dotnet publish "CL(CLegendary Launcher)/CL(CLegendary Launcher).csproj" 
         -c Release 
         -r win-x64 
         --no-restore 
-        --self-contained false 
+        --self-contained true
         -o ./publish 
         -p:PublishSingleFile=true 
         -p:PublishReadyToRun=false 
@@ -54,15 +50,3 @@ jobs:
       with:
         name: CL-Launcher-${{ github.ref_name }}
         path: ./publish/*.exe
-
-    - name: Release Stable
-      if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-      uses: softprops/action-gh-release@v1
-      with:
-        tag_name: v${{ github.run_number }}
-        name: Release v${{ github.run_number }}
-        files: ./publish/*.exe
-        draft: false
-        prerelease: false
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
